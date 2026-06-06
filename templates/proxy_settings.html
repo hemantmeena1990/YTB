@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Proxy Settings</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #1e1e2f; 
+            color: #eee; 
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { margin-bottom: 20px; color: #4f46e5; }
+        h2 { font-size: 1.2rem; margin-bottom: 15px; color: #a1a1aa; border-bottom: 1px solid #3a3a4a; padding-bottom: 8px; }
+        .card { background: #2d2d3a; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .row { display: flex; gap: 20px; flex-wrap: wrap; }
+        .col { flex: 1; min-width: 250px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.85rem; }
+        input, select, textarea { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #555; background: #3a3a4a; color: #fff; }
+        button { background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-right: 10px; margin-top: 10px; }
+        button:hover { background: #6366f1; }
+        .btn-danger { background: #dc2626; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-success { background: #10b981; }
+        .btn-success:hover { background: #059669; }
+        .btn-warning { background: #f59e0b; color: #1e1e2f; }
+        .btn-warning:hover { background: #d97706; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #555; padding: 8px; text-align: left; font-size: 0.8rem; }
+        th { background: #3a3a4a; }
+        .proxy-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #3a3a4a; }
+        .proxy-item:last-child { border-bottom: none; }
+        .proxy-text { font-family: monospace; font-size: 0.8rem; word-break: break-all; }
+        .button-group { display: flex; gap: 5px; flex-wrap: wrap; }
+        .status-badge { display: inline-block; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; }
+        .status-working { background: #10b981; }
+        .status-failed { background: #dc2626; }
+        .modal-footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid #3a3a4a; text-align: right; }
+        .progress-bar { width: 100%; height: 4px; background: #3a3a4a; border-radius: 2px; margin-top: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #4f46e5; width: 0%; transition: width 0.3s; }
+        .inline-input { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .inline-input input { flex: 1; min-width: 150px; }
+        .inline-input button { margin-top: 0; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="flex-between" style="margin-bottom: 20px;">
+        <h1>Proxy Manager</h1>
+        <button onclick="closeModal()" class="btn-danger" style="background:#dc2626;">X Close</button>
+    </div>
+
+    <!-- Settings Card -->
+    <div class="card">
+        <h2>Settings</h2>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Test URL</label>
+                    <input type="text" id="test_url" value="https://httpbin.org/ip">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Timeout (seconds)</label>
+                    <input type="number" id="timeout" value="10" min="1" max="30">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Max Workers (parallel tests)</label>
+                    <input type="number" id="max_workers" value="20" min="5" max="50">
+                </div>
+            </div>
+        </div>
+        <div class="progress-bar" id="progressBar" style="display:none;">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <!-- Online Sources Card -->
+    <div class="card">
+        <h2>Online Proxy Sources</h2>
+        <div id="sourcesList"></div>
+        <div class="inline-input">
+            <select id="sourceProtocol" style="width: auto; min-width: 100px;">
+                <option value="socks4">SOCKS4</option>
+                <option value="socks5">SOCKS5</option>
+                <option value="http">HTTP/HTTPS</option>
+            </select>
+            <input type="text" id="newSourceUrl" placeholder="https://api.proxyscrape.com/...">
+            <button onclick="addSource()">+ Add Source</button>
+        </div>
+    </div>
+
+    <!-- Manual Proxies & Blacklist & Whitelist Card -->
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <h2>Manual Proxies</h2>
+                <div id="manualProxiesList"></div>
+                <div class="inline-input">
+                    <input type="text" id="newManualProxy" placeholder="socks5://1.2.3.4:1080">
+                    <button onclick="addManualProxy()">+ Add</button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <h2>Blacklist</h2>
+                <div id="blacklistList"></div>
+                <div class="inline-input">
+                    <input type="text" id="newBlacklistProxy" placeholder="proxy to blacklist">
+                    <button onclick="addToBlacklist()">+ Add</button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <h2>Whitelist</h2>
+                <div id="whitelistList"></div>
+                <div class="inline-input">
+                    <input type="text" id="newWhitelistProxy" placeholder="proxy to whitelist">
+                    <button onclick="addToWhitelist()">+ Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Working Proxies Card -->
+    <div class="card">
+        <h2>Working Proxies</h2>
+        <div id="workingProxiesList"></div>
+        <div class="button-group" style="margin-top: 15px;">
+            <button onclick="fetchProxies()" class="btn-success">Fetch New Proxies</button>
+            <button onclick="testAllProxies()" class="btn-warning">Test All Proxies</button>
+            <button onclick="clearAllData()" class="btn-danger">Clear All Proxy Data</button>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button onclick="saveSettings()" class="btn-success">Save Settings</button>
+        <button onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+// ========== API Calls ==========
+async function apiCall(endpoint, method='GET', data=null) {
+    const options = { method: method, headers: {'Content-Type': 'application/json'}};
+    if (data) options.body = JSON.stringify(data);
+    const response = await fetch(endpoint, options);
+    return response.json();
+}
+
+// ========== Load Data ==========
+async function loadAllData() {
+    await loadSettings();
+    await loadSources();
+    await loadManualProxies();
+    await loadBlacklist();
+    await loadWhitelist();
+    await loadWorkingProxies();
+}
+
+async function loadSettings() {
+    const data = await apiCall('/api/proxy/settings');
+    document.getElementById('test_url').value = data.test_url;
+    document.getElementById('timeout').value = data.test_timeout;
+    document.getElementById('max_workers').value = data.max_workers;
+}
+
+async function loadSources() {
+    const sources = await apiCall('/api/proxy/sources');
+    const container = document.getElementById('sourcesList');
+    container.innerHTML = '';
+    for (const [protocol, urls] of Object.entries(sources)) {
+        for (const url of urls) {
+            const div = document.createElement('div');
+            div.className = 'proxy-item';
+            div.innerHTML = '<span class="proxy-text">[' + protocol.toUpperCase() + '] ' + url + '</span><button onclick="removeSource('' + protocol + '', '' + url.replace(/'/g, "\'") + '')" class="btn-danger" style="padding:2px 8px;">X</button>';
+            container.appendChild(div);
+        }
+    }
+}
+
+async function loadManualProxies() {
+    const proxies = await apiCall('/api/proxy/manual');
+    const container = document.getElementById('manualProxiesList');
+    container.innerHTML = '';
+    for (const proxy of proxies) {
+        const div = document.createElement('div');
+        div.className = 'proxy-item';
+        div.innerHTML = '<span class="proxy-text">' + proxy + '</span><button onclick="removeManualProxy('' + proxy.replace(/'/g, "\'") + '')" class="btn-danger" style="padding:2px 8px;">X</button>';
+        container.appendChild(div);
+    }
+}
+
+async function loadBlacklist() {
+    const blacklist = await apiCall('/api/proxy/blacklist');
+    const container = document.getElementById('blacklistList');
+    container.innerHTML = '';
+    for (const proxy of blacklist) {
+        const div = document.createElement('div');
+        div.className = 'proxy-item';
+        div.innerHTML = '<span class="proxy-text">' + proxy + '</span><button onclick="removeFromBlacklist('' + proxy.replace(/'/g, "\'") + '')" class="btn-success" style="padding:2px 8px;">Remove</button>';
+        container.appendChild(div);
+    }
+}
+
+async function loadWhitelist() {
+    const whitelist = await apiCall('/api/proxy/whitelist');
+    const container = document.getElementById('whitelistList');
+    container.innerHTML = '';
+    for (const proxy of whitelist) {
+        const div = document.createElement('div');
+        div.className = 'proxy-item';
+        div.innerHTML = '<span class="proxy-text">' + proxy + '</span><button onclick="removeFromWhitelist('' + proxy.replace(/'/g, "\'") + '')" class="btn-danger" style="padding:2px 8px;">X Remove</button>';
+        container.appendChild(div);
+    }
+}
+
+async function loadWorkingProxies() {
+    const data = await apiCall('/api/proxy/working');
+    const container = document.getElementById('workingProxiesList');
+    if (data.working && data.working.length > 0) {
+        let html = '<table><tr><th>Proxy</th><th>Status</th><th>Actions</th></tr>';
+        for (const proxy of data.working) {
+            html += '<tr><td class="proxy-text">' + proxy + '</td><td><span class="status-badge status-working">Working</span></td><td><button onclick="testSingleProxy('' + proxy.replace(/'/g, "\'") + '')">Test</button> <button onclick="addToBlacklistFromWorking('' + proxy.replace(/'/g, "\'") + '')" class="btn-danger">Blacklist</button></td></tr>';
+        }
+        html += '</table>';
+        container.innerHTML = html;
+    } else {
+        container.innerHTML = '<p>No working proxies found. Click "Fetch New Proxies" to get some.</p>';
+    }
+}
+
+// ========== Actions ==========
+async function saveSettings() {
+    const data = {
+        test_url: document.getElementById('test_url').value,
+        test_timeout: parseInt(document.getElementById('timeout').value),
+        max_workers: parseInt(document.getElementById('max_workers').value)
+    };
+    await apiCall('/api/proxy/settings', 'POST', data);
+    alert('Settings saved!');
+}
+
+async function addSource() {
+    const protocol = document.getElementById('sourceProtocol').value;
+    const url = document.getElementById('newSourceUrl').value.trim();
+    if (!url) { alert('Enter URL'); return; }
+    await apiCall('/api/proxy/sources/add', 'POST', {protocol, url});
+    document.getElementById('newSourceUrl').value = '';
+    loadSources();
+}
+
+async function removeSource(protocol, url) {
+    await apiCall('/api/proxy/sources/remove', 'POST', {protocol, url});
+    loadSources();
+}
+
+async function addManualProxy() {
+    const proxy = document.getElementById('newManualProxy').value.trim();
+    if (!proxy) { alert('Enter proxy'); return; }
+    await apiCall('/api/proxy/manual/add', 'POST', {proxy});
+    document.getElementById('newManualProxy').value = '';
+    loadManualProxies();
+}
+
+async function removeManualProxy(proxy) {
+    await apiCall('/api/proxy/manual/remove', 'POST', {proxy});
+    loadManualProxies();
+}
+
+async function addToBlacklist() {
+    const proxy = document.getElementById('newBlacklistProxy').value.trim();
+    if (!proxy) { alert('Enter proxy'); return; }
+    await apiCall('/api/proxy/blacklist/add', 'POST', {proxy});
+    document.getElementById('newBlacklistProxy').value = '';
+    loadBlacklist();
+    loadWorkingProxies();
+}
+
+async function addToBlacklistFromWorking(proxy) {
+    await apiCall('/api/proxy/blacklist/add', 'POST', {proxy});
+    loadBlacklist();
+    loadWorkingProxies();
+}
+
+async function removeFromBlacklist(proxy) {
+    await apiCall('/api/proxy/blacklist/remove', 'POST', {proxy});
+    loadBlacklist();
+}
+
+async function addToWhitelist() {
+    const proxy = document.getElementById('newWhitelistProxy').value.trim();
+    if (!proxy) { alert('Enter proxy'); return; }
+    await apiCall('/api/proxy/whitelist/add', 'POST', {proxy});
+    document.getElementById('newWhitelistProxy').value = '';
+    loadWhitelist();
+}
+
+async function removeFromWhitelist(proxy) {
+    await apiCall('/api/proxy/whitelist/remove', 'POST', {proxy});
+    loadWhitelist();
+}
+
+async function fetchProxies() {
+    const progressBar = document.getElementById('progressBar');
+    progressBar.style.display = 'block';
+    const result = await apiCall('/api/proxy/fetch', 'POST');
+    progressBar.style.display = 'none';
+    alert('Fetched ' + result.count + ' proxies. Click "Test All" to verify them.');
+}
+
+async function testAllProxies() {
+    const progressBar = document.getElementById('progressBar');
+    const progressFill = document.getElementById('progressFill');
+    progressBar.style.display = 'block';
+    
+    const result = await apiCall('/api/proxy/test', 'POST');
+    progressBar.style.display = 'none';
+    alert('Testing complete: ' + result.working + ' working, ' + result.failed + ' failed');
+    loadWorkingProxies();
+}
+
+async function testSingleProxy(proxy) {
+    const result = await apiCall('/api/proxy/test/single', 'POST', {proxy});
+    if (result.working) {
+        alert('Proxy is WORKING (' + result.response_time + 'ms)');
+        loadWorkingProxies();
+    } else {
+        alert('Proxy is FAILED');
+    }
+}
+
+async function clearAllData() {
+    if (!confirm('Delete all proxy data (sources, proxies, blacklist, whitelist)?')) return;
+    await apiCall('/api/proxy/clear', 'POST');
+    alert('All proxy data cleared');
+    loadAllData();
+}
+
+function closeModal() {
+    window.parent.postMessage('closeProxyModal', '*');
+}
+
+// Initialize
+loadAllData();
+</script>
+</body>
+</html>
