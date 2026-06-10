@@ -1,0 +1,19 @@
+[
+  {
+    "instance_id": 1,
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "video_id": "dQw4w9WgXcQ",
+    "constructed_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "view_type": "Direct/Unknown",
+    "min_watch_time": 10,
+    "max_watch_time": 20,
+    "suggested_min": 5,
+    "suggested_max": 10,
+    "suggested_chance": 0.3,
+    "headless": false,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "is_mobile": false,
+    "po_token_source": "external",
+    "proxy": "http://127.0.0.1:8888"
+  }
+]

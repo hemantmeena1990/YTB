@@ -1,0 +1,42 @@
+2026-06-08 22:29:14,145 - INFO - Instance 11: Created isolated profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_google_cache_1780937954_11_0bc55ae93fa7
+2026-06-08 22:29:20,154 - INFO - Instance 11: Cycle 1/5
+2026-06-08 22:29:20,184 - INFO - Instance 11: Simulating Google Search entry
+2026-06-08 22:29:20,192 - INFO - Instance 11: Searching Google for: छोरा में कूदू तू देख काया बल खाय कनिया | Anniversary Special Dance | Meenawati Song#meenawatidance
+2026-06-08 22:30:09,142 - WARNING - Instance 11: Could not find YouTube result, navigating directly
+2026-06-08 22:31:18,533 - INFO - Instance 11: Watching main for 82s
+2026-06-08 22:32:40,537 - INFO - Instance 11: Attempting suggested video
+2026-06-08 22:32:49,207 - INFO - Instance 11: Watching suggested for 5s
+2026-06-08 22:32:54,208 - INFO - Instance 11: Pausing 11.0s before next cycle
+2026-06-08 22:33:07,746 - INFO - Instance 11: Cycle 2/5
+2026-06-08 22:33:07,746 - INFO - Instance 11: Simulating Google Search entry
+2026-06-08 22:33:07,747 - INFO - Instance 11: Searching Google for: छोरा में कूदू तू देख काया बल खाय कनिया | Anniversary Special Dance | Meenawati Song#meenawatidance
+2026-06-08 22:33:24,356 - WARNING - Instance 11: Could not find YouTube result, navigating directly
+2026-06-08 22:33:29,395 - INFO - Instance 11: Watching main for 153s
+2026-06-08 22:36:02,397 - INFO - Instance 11: Attempting suggested video
+2026-06-08 22:36:11,127 - INFO - Instance 11: Watching suggested for 15s
+2026-06-08 22:36:26,127 - INFO - Instance 11: Pausing 12.7s before next cycle
+2026-06-08 22:36:42,793 - INFO - Instance 11: Cycle 3/5
+2026-06-08 22:36:42,794 - INFO - Instance 11: Simulating Google Search entry
+2026-06-08 22:36:42,794 - INFO - Instance 11: Searching Google for: छोरा में कूदू तू देख काया बल खाय कनिया | Anniversary Special Dance | Meenawati Song#meenawatidance
+2026-06-08 22:37:05,912 - INFO - Instance 11: Injected PO token into Google result
+2026-06-08 22:37:06,380 - INFO - Instance 11: Clicked YouTube result from Google Search (by video ID)
+2026-06-08 22:37:09,519 - INFO - Instance 11: Watching main for 136s
+2026-06-08 22:39:25,524 - INFO - Instance 11: Attempting suggested video
+2026-06-08 22:39:33,783 - INFO - Instance 11: Watching suggested for 5s
+2026-06-08 22:39:38,784 - INFO - Instance 11: Pausing 5.1s before next cycle
+2026-06-08 22:39:47,478 - INFO - Instance 11: Cycle 4/5
+2026-06-08 22:39:47,479 - INFO - Instance 11: Simulating Google Search entry
+2026-06-08 22:39:47,479 - INFO - Instance 11: Searching Google for: छोरा में कूदू तू देख काया बल खाय कनिया | Anniversary Special Dance | Meenawati Song#meenawatidance
+2026-06-08 22:40:06,321 - WARNING - Instance 11: Could not find YouTube result, navigating directly
+2026-06-08 22:40:11,322 - INFO - Instance 11: Watching main for 145s
+2026-06-08 22:42:36,323 - INFO - Instance 11: Attempting suggested video
+2026-06-08 22:42:46,452 - INFO - Instance 11: Watching suggested for 13s
+2026-06-08 22:42:59,453 - INFO - Instance 11: Pausing 5.4s before next cycle
+2026-06-08 22:43:08,053 - INFO - Instance 11: Cycle 5/5
+2026-06-08 22:43:08,054 - INFO - Instance 11: Simulating Google Search entry
+2026-06-08 22:43:08,054 - INFO - Instance 11: Searching Google for: छोरा में कूदू तू देख काया बल खाय कनिया | Anniversary Special Dance | Meenawati Song#meenawatidance
+2026-06-08 22:43:25,385 - WARNING - Instance 11: Could not find YouTube result, navigating directly
+2026-06-08 22:43:30,279 - INFO - Instance 11: Watching main for 50s
+2026-06-08 22:44:20,280 - INFO - Instance 11: Attempting suggested video
+2026-06-08 22:44:28,194 - INFO - Instance 11: Watching suggested for 8s
+2026-06-08 22:44:36,198 - INFO - Instance 11: Completed 5 cycle(s)

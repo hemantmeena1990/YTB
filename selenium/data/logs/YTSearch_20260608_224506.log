@@ -1,0 +1,36 @@
+2026-06-08 22:45:06,147 - INFO - Instance 13: Created isolated profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_search_cache_1780938906_13_f4186e35f024
+2026-06-08 22:45:10,507 - INFO - Instance 13: Cycle 1/5
+2026-06-08 22:45:46,903 - INFO - Instance 13: Injected PO token into video link href
+2026-06-08 22:45:47,444 - INFO - Instance 13: Clicked video result with pre-injected PO token
+2026-06-08 22:45:54,384 - INFO - Instance 13: Watching main for 119s
+2026-06-08 22:47:53,478 - INFO - Instance 13: Attempting suggested video
+2026-06-08 22:48:01,862 - INFO - Instance 13: Watching suggested for 12s
+2026-06-08 22:48:13,863 - INFO - Instance 13: Pausing 11.5s before next cycle
+2026-06-08 22:48:29,669 - INFO - Instance 13: Cycle 2/5
+2026-06-08 22:48:58,152 - INFO - Instance 13: Injected PO token into video link href
+2026-06-08 22:48:58,678 - INFO - Instance 13: Clicked video result with pre-injected PO token
+2026-06-08 22:49:01,260 - INFO - Instance 13: Watching main for 87s
+2026-06-08 22:50:28,260 - INFO - Instance 13: Attempting suggested video
+2026-06-08 22:51:09,179 - INFO - Instance 13: Watching suggested for 5s
+2026-06-08 22:51:14,181 - INFO - Instance 13: Pausing 9.0s before next cycle
+2026-06-08 22:51:27,075 - INFO - Instance 13: Cycle 3/5
+2026-06-08 22:51:52,292 - INFO - Instance 13: Injected PO token into video link href
+2026-06-08 22:51:52,816 - INFO - Instance 13: Clicked video result with pre-injected PO token
+2026-06-08 22:51:59,956 - INFO - Instance 13: Watching main for 147s
+2026-06-08 22:54:26,957 - INFO - Instance 13: Attempting suggested video
+2026-06-08 22:54:39,395 - WARNING - Instance 13: Could not load suggested video
+2026-06-08 22:54:39,395 - INFO - Instance 13: Pausing 5.1s before next cycle
+2026-06-08 22:54:48,917 - INFO - Instance 13: Cycle 4/5
+2026-06-08 22:55:18,459 - INFO - Instance 13: Injected PO token into video link href
+2026-06-08 22:55:18,982 - INFO - Instance 13: Clicked video result with pre-injected PO token
+2026-06-08 22:55:26,149 - INFO - Instance 13: Watching main for 46s
+2026-06-08 22:56:12,150 - INFO - Instance 13: Attempting suggested video
+2026-06-08 22:56:23,763 - WARNING - Instance 13: Could not load suggested video
+2026-06-08 22:56:23,763 - INFO - Instance 13: Pausing 9.5s before next cycle
+2026-06-08 22:56:36,664 - INFO - Instance 13: Cycle 5/5
+2026-06-08 22:57:01,943 - INFO - Instance 13: Injected PO token into video link href
+2026-06-08 22:57:02,469 - INFO - Instance 13: Clicked video result with pre-injected PO token
+2026-06-08 22:57:09,629 - INFO - Instance 13: Watching main for 80s
+2026-06-08 22:58:29,629 - INFO - Instance 13: Attempting suggested video
+2026-06-08 22:58:41,236 - WARNING - Instance 13: Could not load suggested video
+2026-06-08 22:58:41,236 - INFO - Instance 13: Completed 5 cycle(s)

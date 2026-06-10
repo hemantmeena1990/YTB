@@ -39,7 +39,9 @@ DEFAULT_CONFIG = {
     "proxy_url": "",
     "channel_name": "",
     "view_type": "",
-    "traffic_source": "direct"
+    "traffic_source": "direct",
+    "proxy_mode": "none",
+    "po_token_source": "native"
 }
 
 # User agent lists
@@ -77,11 +79,8 @@ def sanitize_text(text):
     """
     if not text:
         return ""
-    # Normalize unicode characters
     text = unicodedata.normalize('NFKD', text)
-    # Remove non-BMP characters (emojis, etc.) - keep only BMP characters
     text = ''.join(c for c in text if ord(c) <= 0xFFFF)
-    # Remove extra whitespace
     text = ' '.join(text.split())
     return text
 
@@ -92,7 +91,6 @@ def load_config() -> dict:
         try:
             with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
                 config = json.load(f)
-                # Merge with defaults for any missing keys
                 merged = DEFAULT_CONFIG.copy()
                 merged.update(config)
                 return merged
@@ -180,10 +178,11 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
     """
     video_id = extract_video_id(url)
     traffic_source = data.get('traffic_source', 'direct')
+    po_token_source = data.get('po_token_source', 'native')
+    proxy_mode = data.get('proxy_mode', 'none')
     
     # Determine user agent and mobile status based on view type
     if view_type == "Google Search":
-        # Google Search can use random device
         is_mobile = random.choice([True, False])
         user_agent = random.choice(MOBILE_AGENTS if is_mobile else DESKTOP_AGENTS)
     elif view_type in ("Other YouTube features", "Direct/Unknown"):
@@ -196,7 +195,6 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
         is_mobile = random.choice([True, False])
         user_agent = random.choice(MOBILE_AGENTS if is_mobile else DESKTOP_AGENTS)
     else:
-        # For Search, Channel View - random device
         is_mobile = random.choice([True, False])
         user_agent = random.choice(MOBILE_AGENTS if is_mobile else DESKTOP_AGENTS)
     
@@ -227,7 +225,14 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
         "cycles": data.get("cycles", 1),
         "channel_name": data.get("channel_name", ""),
         "traffic_source": traffic_source,
+        "po_token_source": po_token_source,
+        "proxy_mode": proxy_mode,
+        "num_instances": data.get("num_instances", 1),
     }
+    
+    # Add undetected mode flag (for stealth Selenium)
+    if data.get('automation_version') == 'selenium_undetected' or data.get('use_undetected'):
+        config['use_undetected'] = True
     
     # Add referer for direct URL view types and non-direct traffic sources
     direct_url_view_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds"]
@@ -243,10 +248,6 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
     if data.get("is_auto_random"):
         config["is_auto_random"] = True
         config["available_view_types"] = data.get("available_view_types", [])
-    
-    # Add proxy if configured
-    if data.get("proxy_url"):
-        config["proxy"] = data["proxy_url"]
     
     return config
 

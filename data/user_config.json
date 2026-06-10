@@ -8,9 +8,9 @@
   "suggested_min": 5,
   "suggested_max": 15,
   "suggested_chance": 1,
-  "use_proxy": false,
-  "proxy_url": "",
+  "proxy_mode": "tor_service",
   "channel_name": "@rajasthanidesidiaries",
-  "view_type": "Google Search",
-  "traffic_source": "direct"
+  "view_type": "Direct/Unknown",
+  "traffic_source": "direct",
+  "po_token_source": "potgen"
 }

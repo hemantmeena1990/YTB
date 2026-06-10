@@ -1,0 +1,5 @@
+2026-06-09 19:10:11,259 - INFO - Starting YTDirect with 1 instance(s)
+2026-06-09 19:10:11,260 - INFO - Instance 1: Requesting PO token for video gYuhqMcoj0k...
+2026-06-09 19:10:13,285 - WARNING - Instance 1: Cannot connect to PO token server on port 4416
+2026-06-09 19:10:13,286 - INFO - Instance 1: Make sure the server is running: node build/main.js --port 4416
+2026-06-09 19:12:32,977 - INFO - All sessions finished

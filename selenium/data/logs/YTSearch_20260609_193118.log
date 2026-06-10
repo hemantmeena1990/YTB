@@ -1,0 +1,8 @@
+2026-06-09 19:31:18,668 - INFO - Instance 1: Created profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_search_cache_1781013678_1_2cd3682243e0
+2026-06-09 19:31:21,907 - INFO - Instance 1: Loading embedded player for native token generation
+2026-06-09 19:31:30,697 - INFO - Instance 1: Extracted VISITOR_INFO1_LIVE cookie
+2026-06-09 19:31:30,697 - INFO - Instance 1: Native token generated successfully
+2026-06-09 19:31:30,697 - INFO - Instance 1: Using native token (fallback)
+2026-06-09 19:31:30,898 - INFO - Instance 1: Injected VISITOR_INFO1_LIVE cookie
+2026-06-09 19:31:30,899 - INFO - Instance 1: Cycle 1/1
+2026-06-09 19:31:53,812 - ERROR - Instance 1: Could not click video result

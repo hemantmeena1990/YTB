@@ -1,0 +1,31 @@
+2026-06-09 13:30:57,070 - INFO - Instance 6: Created isolated profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_direct_cache_1780992057_6_d00439dc4841
+2026-06-09 13:31:00,223 - INFO - Instance 6: Added PO token to URL
+2026-06-09 13:31:30,265 - ERROR - Instance 6: Error - Message: timeout: Timed out receiving message from renderer: 26.414
+  (Session info: chrome=149.0.7827.54)
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff7162f3435+14875]
+	chromedriver!GetHandleVerifier [0x7ff7162f3490+148d0]
+	chromedriver!(No symbol) [0x7ff715e4778d]
+	chromedriver!(No symbol) [0x7ff715e342c9]
+	chromedriver!(No symbol) [0x7ff715e33fb1]
+	chromedriver!(No symbol) [0x7ff715e31c67]
+	chromedriver!(No symbol) [0x7ff715e325bf]
+	chromedriver!(No symbol) [0x7ff715e41c8a]
+	chromedriver!(No symbol) [0x7ff715e588b7]
+	chromedriver!(No symbol) [0x7ff715e6074a]
+	chromedriver!(No symbol) [0x7ff715e32d81]
+	chromedriver!(No symbol) [0x7ff715e585e5]
+	chromedriver!(No symbol) [0x7ff715eeed76]
+	chromedriver!(No symbol) [0x7ff715e93eb0]
+	chromedriver!(No symbol) [0x7ff715e94e23]
+	chromedriver!GetHandleVerifier [0x7ff7168d6c91+5f80d1]
+	chromedriver!GetHandleVerifier [0x7ff7168d101b+5f245b]
+	chromedriver!GetHandleVerifier [0x7ff7168f6305+617745]
+	chromedriver!GetHandleVerifier [0x7ff7163103ee+3182e]
+	chromedriver!GetHandleVerifier [0x7ff716318b0c+39f4c]
+	chromedriver!GetHandleVerifier [0x7ff7162fcb04+1df44]
+	chromedriver!GetHandleVerifier [0x7ff7162fcc94+1e0d4]
+	chromedriver!GetHandleVerifier [0x7ff7162e0997+1dd7]
+	KERNEL32!BaseThreadInitThunk [0x7fff5fdd7374+14]
+	ntdll!RtlUserThreadStart [0x7fff60d7cc91+21]
+

@@ -1,0 +1,23 @@
+2026-06-09 13:20:32,492 - INFO - Instance 2: Created isolated profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_channel_cache_1780991432_2_4ca8c97e9a80
+2026-06-09 13:20:55,994 - INFO - Instance 2: Searching for channel: @rajasthanidesidiaries
+2026-06-09 13:20:55,995 - INFO - Instance 2: Cycle 1/3
+2026-06-09 13:21:42,015 - INFO - Instance 2: Injected PO token into video link href
+2026-06-09 13:21:44,982 - INFO - Instance 2: Clicked video with pre-injected PO token
+2026-06-09 13:21:51,058 - INFO - Instance 2: Watching main for 109s
+2026-06-09 13:23:40,059 - INFO - Instance 2: Attempting suggested video
+2026-06-09 13:23:47,001 - INFO - Instance 2: Watching suggested for 7s
+2026-06-09 13:23:54,002 - INFO - Instance 2: Pausing 8.6s before next cycle
+2026-06-09 13:24:12,045 - INFO - Instance 2: Cycle 2/3
+2026-06-09 13:24:41,563 - INFO - Instance 2: Injected PO token into video link href
+2026-06-09 13:24:42,247 - INFO - Instance 2: Clicked video with pre-injected PO token
+2026-06-09 13:24:44,942 - INFO - Instance 2: Watching main for 116s
+2026-06-09 13:26:40,943 - INFO - Instance 2: Attempting suggested video
+2026-06-09 13:26:47,478 - INFO - Instance 2: Watching suggested for 11s
+2026-06-09 13:26:58,605 - INFO - Instance 2: Pausing 11.7s before next cycle
+2026-06-09 13:27:15,563 - INFO - Instance 2: Cycle 3/3
+2026-06-09 13:27:50,323 - INFO - Instance 2: Injected PO token into video link href
+2026-06-09 13:27:51,162 - INFO - Instance 2: Clicked video with pre-injected PO token
+2026-06-09 13:27:54,418 - INFO - Instance 2: Watching main for 108s
+2026-06-09 13:29:42,419 - INFO - Instance 2: Attempting suggested video
+2026-06-09 13:29:49,951 - INFO - Instance 2: Watching suggested for 15s
+2026-06-09 13:30:04,951 - INFO - Instance 2: Completed 3 cycle(s)

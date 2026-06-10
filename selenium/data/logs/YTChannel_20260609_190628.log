@@ -1,0 +1,5 @@
+2026-06-09 19:06:28,436 - INFO - Starting YTChannel with 1 instance(s)
+2026-06-09 19:06:28,437 - INFO - Instance 2: Requesting PO token for video gYuhqMcoj0k...
+2026-06-09 19:06:30,488 - WARNING - Instance 2: Cannot connect to PO token server on port 4416
+2026-06-09 19:06:30,488 - INFO - Instance 2: Make sure the server is running: node build/main.js --port 4416
+2026-06-09 19:07:10,271 - INFO - All sessions finished

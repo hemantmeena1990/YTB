@@ -1,0 +1,12 @@
+2026-06-09 19:10:14,271 - INFO - Instance 2: Created profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_google_cache_1781012414_2_2cf457a429ff
+2026-06-09 19:10:17,233 - INFO - Instance 2: Loading embedded player for native token generation
+2026-06-09 19:10:27,121 - INFO - Instance 2: Extracted VISITOR_INFO1_LIVE cookie
+2026-06-09 19:10:27,121 - INFO - Instance 2: Native token generated successfully
+2026-06-09 19:10:27,121 - INFO - Instance 2: Cycle 1/1
+2026-06-09 19:10:27,123 - INFO - Instance 2: Simulating Google Search entry
+2026-06-09 19:10:27,123 - INFO - Instance 2: Searching Google for: छोरा में कूदू तू देख काया बल खाय कनिया | Anniversary Special Dance | Meenawati Song#meenawatidance
+2026-06-09 19:11:05,078 - INFO - Instance 2: Clicked YouTube result from Google Search (by video ID)
+2026-06-09 19:11:07,924 - INFO - Instance 2: Watching main for 74s
+2026-06-09 19:12:21,924 - INFO - Instance 2: Attempting suggested video
+2026-06-09 19:12:29,701 - INFO - Instance 2: Watching suggested for 14s
+2026-06-09 19:12:43,701 - INFO - Instance 2: Completed 1 cycle(s)

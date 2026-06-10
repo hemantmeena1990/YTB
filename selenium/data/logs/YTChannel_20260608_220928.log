@@ -1,0 +1,6 @@
+2026-06-08 22:09:28,736 - INFO - Starting YTChannel with 2 instance(s)
+2026-06-08 22:09:28,736 - INFO - Instance 4: Requesting PO token for video gYuhqMcoj0k...
+2026-06-08 22:09:40,212 - INFO - Instance 4: PO token received (length: 804)
+2026-06-08 22:09:42,815 - INFO - Instance 5: Requesting PO token for video gYuhqMcoj0k...
+2026-06-08 22:09:54,414 - INFO - Instance 5: PO token received (length: 804)
+2026-06-08 22:23:32,434 - INFO - All sessions finished

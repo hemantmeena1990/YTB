@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Automation Dashboard</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #1e1e2f; padding: 20px; color: #eee; }
+        .dashboard-container { display: flex; gap: 20px; max-width: 1600px; margin: 0 auto; }
+        .main-content { flex: 1; min-width: 0; }
+        .sidebar { width: 35%; min-width: 300px; }
+        .card { background: #2d2d3a; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        h1 { font-size: 1.6rem; margin: 0; }
+        h2 { font-size: 1.2rem; margin-bottom: 15px; color: #a1a1aa; }
+        label { display: block; margin: 10px 0 5px; font-weight: bold; font-size: 0.85rem; }
+        input, select, textarea { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #555; background: #3a3a4a; color: #fff; }
+        button { background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-right: 10px; }
+        button:hover { background: #6366f1; }
+        .btn-danger { background: #dc2626; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-success { background: #10b981; }
+        .btn-success:hover { background: #059669; }
+        .btn-secondary { background: #6b7280; }
+        .btn-secondary:hover { background: #4b5563; }
+        .btn-proxy { background: #8b5cf6; }
+        .btn-proxy:hover { background: #7c3aed; }
+        .row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .row .form-group { flex: 1; min-width: 120px; }
+        .console { background: #0f0f17; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 0.75rem; height: calc(100vh - 200px); overflow-y: auto; }
+        .log { border-left: 3px solid #4f46e5; padding: 4px 8px; margin: 4px 0; word-break: break-word; }
+        .log-error { border-left-color: #dc2626; color: #fca5a5; }
+        .log-success { border-left-color: #10b981; }
+        .log-warning { border-left-color: #f59e0b; }
+        .preview-card { background: #1e1e2f; border: 1px solid #4f46e5; border-radius: 8px; padding: 12px; margin-top: 15px; }
+        .info-text { font-family: monospace; font-size: 0.75rem; color: #a1a1aa; word-break: break-all; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold; }
+        .badge-short { background: #dc2626; color: white; }
+        .badge-video { background: #10b981; color: white; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .button-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        hr { border-color: #3a3a4a; margin: 15px 0; }
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #4f46e5; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { color: #a1a1aa; font-size: 0.75rem; margin-left: 10px; }
+        .right-column { flex: 0 0 auto; width: 220px; }
+        #channelAvatar, #thumbnailContainer { width: 100%; box-sizing: border-box; }
+        .right-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 20px; }
+        .right-buttons button { flex: 1; min-width: 80px; text-align: center; }
+        .video-stats { background: #1e1e2f; border-radius: 8px; padding: 10px; margin-top: 10px; font-size: 0.7rem; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+        .stat-label { color: #a1a1aa; }
+        .stat-value { color: #4f46e5; font-weight: bold; }
+        .subscriber-count { font-size: 0.7rem; color: #10b981; margin-top: 4px; }
+        .traffic-disabled-msg { color: #f59e0b; font-size: 0.7rem; margin-left: 8px; }
+        .proxy-status { font-size: 0.7rem; margin-top: 5px; color: #8b5cf6; }
+        .proxy-count { font-size: 0.7rem; color: #10b981; margin-left: 5px; }
+        .info-note { background: #1e1e2f; border-radius: 6px; padding: 8px; font-size: 0.7rem; color: #a1a1aa; margin-top: 8px; }
+        .info-note-success { background: #064e3b; color: #10b981; }
+        .info-note-warning { background: #451a03; color: #f59e0b; }
+        .info-note-info { background: #1e3a5f; color: #06b6d4; }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <div class="main-content">
+        <div class="flex-between" style="margin-bottom: 20px;">
+            <h1>🎬 YouTube Automation Dashboard</h1>
+            <div class="button-group">
+                <select id="automation_version" style="width: auto; background: #3a3a4a; padding: 8px 12px;">
+                    <option value="selenium">🐍 Selenium (Standard)</option>
+                    <option value="selenium_undetected">🛡️ Selenium (Undetected - Stealth)</option>
+                    <option value="playwright">🎭 Playwright (Experimental)</option>
+                </select>
+                <button class="btn-secondary" onclick="clearConsole()">🗑️ Clear Console</button>
+                <button class="btn-danger" onclick="cleanupAll()">🧹 Cleanup All</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h2>📝 Configuration</h2></div>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 300px;">
+                    <div class="form-group"><label>📢 Channel Name/Handle</label><input type="text" id="channel_name" placeholder="rajasthanidesidiaries or @handle"></div>
+                    <div class="form-group"><label>🔗 YouTube URL</label><input type="text" id="urlInput" placeholder="https://youtube.com/watch?v=... or https://youtube.com/shorts/..."></div>
+                    <hr>
+                    <div id="videoInfoDisplay" style="background: #1e1e2f; border-radius: 8px; padding: 12px; margin-bottom: 15px; display: none;">
+                        <h3 id="videoTitle" style="margin-bottom: 8px; color: #4f46e5; font-size: 0.95rem;">-</h3>
+                        <p><strong>🆔 Video ID:</strong> <span id="videoId">-</span></p>
+                        <p><strong>⏱️ Duration:</strong> <span id="videoDuration">-</span> seconds</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group"><label>📊 Instances</label><input type="number" id="num_instances" value="1" min="1" max="10"></div>
+                        <div class="form-group"><label>🔄 Cycles (1-100)</label><input type="number" id="cycles" value="1" min="1" max="100"></div>
+                        <div class="form-group"><label>🎭 Headless</label><select id="headless"><option value="false">No</option><option value="true">Yes</option></select></div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group"><label>⏱️ Min watch (s)</label><input type="number" id="min_watch" value="15"></div>
+                        <div class="form-group"><label>⏱️ Max watch (s)</label><input type="number" id="max_watch" value="30"></div>
+                        <div class="form-group"><label>⏭️ Next Suggested min</label><input type="number" id="suggested_min" value="15"></div>
+                        <div class="form-group"><label>⏭️ Next Suggested max</label><input type="number" id="suggested_max" value="35"></div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group"><label>🎲 Next Suggested chance (%)</label><input type="range" id="suggested_chance" min="0" max="100" value="40"><span id="chance_val">40%</span></div>
+                        <div class="form-group"><label>🔌 Proxy Mode</label>
+                            <select id="proxy_mode" style="width:100%; padding:8px;">
+                                <option value="none">🚫 No Proxy (Direct)</option>
+                                <option value="tor_service">🌐 Tor Service (Port 9050)</option>
+                                <option value="tor_browser">🌐 Tor Browser (Port 9150)</option>
+                                <option value="list">🔄 Proxy List (Rotating)</option>
+                            </select>
+                            <div id="proxyModeInfo" class="info-note" style="margin-top: 5px; font-size: 0.7rem;">
+                                💡 No proxy: Direct connection
+                            </div>
+                        </div>
+                        <div class="form-group"><label>&nbsp;</label><button type="button" class="btn-proxy" onclick="openProxySettings()" style="width:100%;">⚙️ Proxy Settings</button></div>
+                    </div>
+                    <div id="proxyStatus" class="proxy-status"></div>
+                </div>
+                <div class="right-column">
+                    <div class="right-buttons"><button onclick="saveConfig()">💾 Save</button><button onclick="loadConfig()">📂 Load</button></div>
+                    <div id="channelAvatar" style="display: none; background: #1e1e2f; border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: center;">
+                        <img id="channelAvatarImg" src="" alt="" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px;">
+                        <div><span id="channelDisplayName" style="font-weight: bold; font-size: 0.85rem; display: block;">-</span><small id="channelHandle" style="color: #a1a1aa; font-size: 0.7rem;">-</small><div id="subscriberCount" class="subscriber-count">-</div></div>
+                    </div>
+                    <div id="thumbnailContainer" style="display: none; background: #1e1e2f; border-radius: 12px; padding: 12px; text-align: center;">
+                        <img id="videoThumbnail" src="" alt="Thumbnail" style="width: 100%; max-width: 160px; border-radius: 6px; margin-bottom: 8px;">
+                        <div id="videoTypeBadgeContainer" style="margin-top: 5px;"></div>
+                        <div id="videoStats" class="video-stats" style="display: none;">
+                            <div class="stat-row"><span class="stat-label">👁️ Views:</span><span class="stat-value" id="viewCount">-</span></div>
+                            <div class="stat-row"><span class="stat-label">👍 Likes:</span><span class="stat-value" id="likeCount">-</span></div>
+                            <div class="stat-row"><span class="stat-label">💬 Comments:</span><span class="stat-value" id="commentCount">-</span></div>
+                            <div class="stat-row"><span class="stat-label">📅 Uploaded:</span><span class="stat-value" id="uploadDate">-</span></div>
+                        </div>
+                    </div>
+                    <!-- PO Token Source Selection -->
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>🔐 PO Token Source</label>
+                        <select id="po_token_source" style="width:100%; padding:8px;">
+                            <option value="native">🌿 Native Browser (YouTube generates token)</option>
+                            <option value="external">🖥️ External Server (bgutil - Port 4416)</option>
+                            <option value="potgen">🤖 po-token-generator (Node.js - Port 4417)</option>
+                        </select>
+                        <div id="poTokenInfo" class="info-note" style="margin-top: 8px;">
+                            💡 Native: Browser generates its own token via embedded player.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- View Type & Traffic Source Combined Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🎯 View Type & Traffic Source</h2>
+                <button class="btn-success" onclick="launch()">🚀 Launch</button>
+            </div>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 200px;">
+                    <label>📺 View Type</label>
+                    <select id="view_type" style="width:100%; padding:8px;"></select>
+                </div>
+                <div style="flex: 1; min-width: 180px;">
+                    <label>🌐 Traffic Source <span id="trafficSourceDisabledMsg" class="traffic-disabled-msg" style="display:none;">(Only for Direct URL views)</span></label>
+                    <select id="traffic_source" style="width:100%; padding:8px;">
+                        <option value="direct">Direct / None</option>
+                        <option value="google_search">🔍 Google Search</option>
+                        <option value="whatsapp_web">💬 WhatsApp Web</option>
+                        <option value="instagram">📸 Instagram</option>
+                        <option value="telegram_web">📱 Telegram Web</option>
+                        <option value="github">🐙 GitHub.io</option>
+                        <option value="bing">🔎 Bing</option>
+                        <option value="twitter">🐦 Twitter/X</option>
+                        <option value="reddit">🤖 Reddit</option>
+                        <option value="facebook">📘 Facebook</option>
+                        <option value="linkedin">💼 LinkedIn</option>
+                    </select>
+                </div>
+            </div>
+            <div id="viewTypeWarning" style="color:#f59e0b; font-size:0.85rem; display:none; margin-top:10px;"></div>
+            <div id="trafficSourceInfo" style="color:#10b981; font-size:0.75rem; margin-top:8px; display:none;">
+                ⚡ Custom referer will be applied for this traffic source
+            </div>
+        </div>
+    </div>
+    <div class="sidebar">
+        <div class="card" style="height: 100%; display: flex; flex-direction: column;">
+            <div class="card-header"><h2>📋 Activity Log</h2></div>
+            <div class="console" id="console"><div class="log">Dashboard ready.</div></div>
+            <div id="previewSection" class="preview-card" style="display:none;">
+                <h4>🔍 Preview</h4>
+                <div id="previewContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Modal for proxy settings
+let proxyModal = null;
+
+function openProxySettings() {
+    if (!proxyModal) {
+        proxyModal = document.createElement('div');
+        proxyModal.id = 'proxyModal';
+        proxyModal.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 10000; display: flex;
+            justify-content: center; align-items: center;
+        `;
+        document.body.appendChild(proxyModal);
+    }
+    
+    proxyModal.innerHTML = '<div style="color:white; text-align:center;">Loading proxy settings...</div>';
+    proxyModal.style.display = 'flex';
+    
+    fetch('/api/proxy/settings_page')
+        .then(response => response.text())
+        .then(html => {
+            const iframe = document.createElement('iframe');
+            iframe.style.cssText = `
+                width: 90%; height: 90%; border: none; border-radius: 12px;
+                background: #1e1e2f;
+            `;
+            iframe.srcdoc = html;
+            proxyModal.innerHTML = '';
+            proxyModal.appendChild(iframe);
+            
+            window.addEventListener('message', function messageHandler(event) {
+                if (event.data === 'closeProxyModal') {
+                    closeProxySettings();
+                    window.removeEventListener('message', messageHandler);
+                }
+            });
+        })
+        .catch(err => {
+            proxyModal.innerHTML = `<div style="color:#ff6b6b; text-align:center;">
+                Failed to load proxy settings: ${err.message}<br>
+                <button onclick="closeProxySettings()" style="margin-top:10px; padding:8px 16px;">Close</button>
+            </div>`;
+        });
+}
+
+function closeProxySettings() {
+    if (proxyModal) {
+        proxyModal.style.display = 'none';
+        proxyModal.innerHTML = '';
+        updateProxyStatus();
+    }
+}
+
+function updateProxyModeInfo() {
+    const mode = document.getElementById('proxy_mode').value;
+    const infoDiv = document.getElementById('proxyModeInfo');
+    
+    if (mode === 'none') {
+        infoDiv.innerHTML = '🚫 No proxy: Direct connection - Your real IP will be visible';
+        infoDiv.className = 'info-note';
+    } else if (mode === 'tor_service') {
+        infoDiv.innerHTML = '🌐 Tor Service: Routing through Tor network on port 9050. Make sure Tor service is running!';
+        infoDiv.className = 'info-note info-note-success';
+    } else if (mode === 'tor_browser') {
+        infoDiv.innerHTML = '🌐 Tor Browser: Routing through Tor Browser on port 9150. Make sure Tor Browser is running!';
+        infoDiv.className = 'info-note info-note-success';
+    } else {
+        infoDiv.innerHTML = '🔄 Proxy List: Rotating proxies from proxy_list.txt. Each instance gets a different proxy.';
+        infoDiv.className = 'info-note info-note-info';
+    }
+}
+
+function updateProxyStatus() {
+    const proxyMode = document.getElementById('proxy_mode').value;
+    const statusDiv = document.getElementById('proxyStatus');
+    
+    if (proxyMode === 'none') {
+        statusDiv.innerHTML = `🚫 No Proxy - Direct connection`;
+        statusDiv.style.color = '#a1a1aa';
+    } else if (proxyMode === 'tor_service') {
+        statusDiv.innerHTML = `🌐 Tor Service Mode: Traffic routed through Tor network (127.0.0.1:9050)`;
+        statusDiv.style.color = '#10b981';
+    } else if (proxyMode === 'tor_browser') {
+        statusDiv.innerHTML = `🌐 Tor Browser Mode: Traffic routed through Tor Browser (127.0.0.1:9150)`;
+        statusDiv.style.color = '#10b981';
+    } else if (proxyMode === 'list') {
+        fetch('/api/proxy/status')
+            .then(response => response.json())
+            .then(data => {
+                if (data.working_proxies > 0) {
+                    statusDiv.innerHTML = `🔄 Proxy List Mode: <span class="proxy-count">${data.working_proxies} working proxies available</span> - Each instance gets a different proxy`;
+                    statusDiv.style.color = '#10b981';
+                } else {
+                    statusDiv.innerHTML = `⚠️ No working proxies in list. Add proxies in Proxy Settings.`;
+                    statusDiv.style.color = '#f59e0b';
+                }
+            })
+            .catch(err => console.error('Failed to get proxy status:', err));
+    }
+}
+
+function updatePoTokenInfo() {
+    const source = document.getElementById('po_token_source').value;
+    const infoDiv = document.getElementById('poTokenInfo');
+    if (source === 'native') {
+        infoDiv.innerHTML = '🌿 Native Browser Mode: YouTube\'s JavaScript generates the PO token naturally via embedded player. No external server needed. Best for stealth.';
+        infoDiv.className = 'info-note info-note-success';
+    } else if (source === 'external') {
+        infoDiv.innerHTML = '🖥️ External Server Mode (bgutil): Uses PO token server on port 4416. Make sure the server is running (node build/main.js --port 4416)';
+        infoDiv.className = 'info-note info-note-warning';
+    } else {
+        infoDiv.innerHTML = '🤖 po-token-generator Mode: Uses Node.js service on port 4417 with Puppeteer Stealth. Make sure the service is running (node token_service.js)';
+        infoDiv.className = 'info-note info-note-info';
+    }
+}
+
+function addLog(msg, type) {
+    type = type || 'info';
+    var c = document.getElementById('console');
+    var d = document.createElement('div');
+    d.className = 'log';
+    if (type === 'error') d.className += ' log-error';
+    if (type === 'success') d.className += ' log-success';
+    if (type === 'warning') d.className += ' log-warning';
+    d.innerText = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight;
+}
+
+function clearConsole() {
+    document.getElementById('console').innerHTML = '<div class="log">Console cleared.</div>';
+    addLog('Console cleared', 'info');
+}
+
+function formatNumber(num) {
+    if (!num) return '-';
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num.toString();
+}
+
+function getRefererUrl(source) {
+    var refs = {
+        'whatsapp_web': 'https://web.whatsapp.com/',
+        'instagram': 'https://www.instagram.com/',
+        'telegram_web': 'https://web.telegram.org/',
+        'github': 'https://github.io/',
+        'bing': 'https://www.bing.com/',
+        'twitter': 'https://twitter.com/',
+        'reddit': 'https://www.reddit.com/',
+        'facebook': 'https://www.facebook.com/',
+        'linkedin': 'https://www.linkedin.com/'
+    };
+    return refs[source] || 'custom';
+}
+
+function updateTrafficSourceVisibility() {
+    var viewType = document.getElementById('view_type').value;
+    var trafficSelect = document.getElementById('traffic_source');
+    var disabledMsg = document.getElementById('trafficSourceDisabledMsg');
+    var infoDiv = document.getElementById('trafficSourceInfo');
+    
+    var directUrlViewTypes = ['Other YouTube features', 'Direct/Unknown', 'Suggested', 'Short Feeds'];
+    
+    if (directUrlViewTypes.includes(viewType)) {
+        trafficSelect.disabled = false;
+        if (disabledMsg) disabledMsg.style.display = 'none';
+        if (trafficSelect.value !== 'direct') {
+            infoDiv.style.display = 'block';
+            infoDiv.innerHTML = '⚡ Custom referer will be applied: ' + getRefererUrl(trafficSelect.value);
+        } else {
+            infoDiv.style.display = 'none';
+        }
+    } else {
+        trafficSelect.disabled = true;
+        if (disabledMsg) disabledMsg.style.display = 'inline';
+        infoDiv.style.display = 'none';
+        trafficSelect.value = 'direct';
+    }
+}
+
+async function fetchChannelInfo(handle) {
+    if (!handle) return;
+    try {
+        var res = await fetch('/api/get_channel_info', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({handle: handle})
+        });
+        var data = await res.json();
+        if (data.success) {
+            document.getElementById('channelDisplayName').innerText = data.name || handle;
+            document.getElementById('channelHandle').innerText = '@' + handle.replace('@', '');
+            if (data.avatar_url) document.getElementById('channelAvatarImg').src = data.avatar_url;
+            if (data.subscriber_count) document.getElementById('subscriberCount').innerHTML = '👥 ' + data.subscriber_count;
+            document.getElementById('channelAvatar').style.display = 'block';
+        } else {
+            document.getElementById('channelAvatar').style.display = 'none';
+        }
+    } catch (err) { console.error(err); }
+}
+
+async function fetchVideoDetails(url) {
+    if (!url) return;
+    document.getElementById('videoInfoDisplay').style.display = 'block';
+    document.getElementById('videoTitle').innerHTML = '<span class="spinner"></span><span class="loading-text">Fetching...</span>';
+    document.getElementById('videoId').innerText = '-';
+    document.getElementById('videoDuration').innerText = '-';
+    document.getElementById('thumbnailContainer').style.display = 'none';
+    document.getElementById('videoStats').style.display = 'none';
+    try {
+        var res = await fetch('/api/get_video_details', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({url: url})
+        });
+        var data = await res.json();
+        if (data.success) {
+            document.getElementById('videoTitle').innerHTML = data.title || 'Untitled';
+            document.getElementById('videoId').innerText = data.video_id || '-';
+            document.getElementById('videoDuration').innerText = data.duration;
+            if (data.thumbnail_url) {
+                document.getElementById('videoThumbnail').src = data.thumbnail_url;
+                document.getElementById('thumbnailContainer').style.display = 'block';
+            }
+            var badgeHtml = data.is_short ? '<span class="badge badge-short">📱 SHORT</span>' : '<span class="badge badge-video">🎬 VIDEO</span>';
+            document.getElementById('videoTypeBadgeContainer').innerHTML = badgeHtml;
+            if (data.view_count || data.like_count || data.comment_count || data.upload_date) {
+                document.getElementById('viewCount').innerHTML = formatNumber(data.view_count);
+                document.getElementById('likeCount').innerHTML = formatNumber(data.like_count);
+                document.getElementById('commentCount').innerHTML = formatNumber(data.comment_count);
+                document.getElementById('uploadDate').innerHTML = data.upload_date || '-';
+                document.getElementById('videoStats').style.display = 'block';
+            }
+            if (data.duration && data.duration > 0) {
+                var maxWatchField = document.getElementById('max_watch');
+                var currentValue = parseInt(maxWatchField.value);
+                if (isNaN(currentValue) || currentValue === 30) {
+                    maxWatchField.value = data.duration;
+                    addLog('Auto-set max watch time to ' + data.duration + 's', 'info');
+                }
+            }
+            await updateViewTypesByType(data.is_short);
+            return data;
+        } else {
+            document.getElementById('videoInfoDisplay').style.display = 'none';
+            addLog('Error: ' + data.error, 'error');
+            return null;
+        }
+    } catch (err) {
+        addLog('Error: ' + err.message, 'error');
+        document.getElementById('videoInfoDisplay').style.display = 'none';
+        return null;
+    }
+}
+
+async function updateViewTypesByType(isShort) {
+    try {
+        var res = await fetch('/api/get_view_types_by_type', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({is_short: isShort})
+        });
+        var data = await res.json();
+        var select = document.getElementById('view_type');
+        select.innerHTML = '<option value="">-- Select View Type --</option>';
+        var types = data.view_types || [];
+        for (var i = 0; i < types.length; i++) {
+            var opt = document.createElement('option');
+            opt.value = types[i];
+            opt.text = types[i];
+            if (types[i] === 'Auto/Random') opt.style.color = '#8b5cf6';
+            if (types[i] === 'Google Search') opt.style.color = '#10b981';
+            select.appendChild(opt);
+        }
+        if (types.length === 1 && types[0] !== 'Auto/Random') {
+            select.value = types[0];
+            addLog('Auto-selected: ' + types[0], 'success');
+            updatePreview();
+        }
+        updateTrafficSourceVisibility();
+    } catch (err) {
+        addLog('Error loading view types: ' + err.message, 'error');
+    }
+}
+
+async function updatePreview() {
+    var url = document.getElementById('urlInput').value.trim();
+    var viewType = document.getElementById('view_type').value;
+    if (!url || !viewType) {
+        document.getElementById('previewSection').style.display = 'none';
+        return;
+    }
+    try {
+        var res = await fetch('/api/preview', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({url: url, view_type: viewType})
+        });
+        var data = await res.json();
+        if (data.success) {
+            document.getElementById('previewSection').style.display = 'block';
+            document.getElementById('previewContent').innerHTML = '<strong>Constructed URL:</strong><br><span class="info-text">' + data.constructed_url + '</span><br><br><strong>Device:</strong><br>' + (data.is_mobile ? '📱 Mobile' : '💻 Desktop');
+        } else {
+            document.getElementById('previewSection').style.display = 'block';
+            document.getElementById('previewContent').innerHTML = '<span style="color:#f59e0b;">⚠️ ' + data.error + '</span>';
+        }
+    } catch (err) { console.error(err); }
+}
+
+async function saveConfig() {
+    var config = {
+        url: document.getElementById('urlInput').value.trim(),
+        num_instances: parseInt(document.getElementById('num_instances').value),
+        cycles: parseInt(document.getElementById('cycles').value),
+        headless: document.getElementById('headless').value === 'true',
+        min_watch_time: parseInt(document.getElementById('min_watch').value),
+        max_watch_time: parseInt(document.getElementById('max_watch').value),
+        suggested_min: parseInt(document.getElementById('suggested_min').value),
+        suggested_max: parseInt(document.getElementById('suggested_max').value),
+        suggested_chance: parseInt(document.getElementById('suggested_chance').value) / 100,
+        proxy_mode: document.getElementById('proxy_mode').value,
+        channel_name: document.getElementById('channel_name').value,
+        view_type: document.getElementById('view_type').value,
+        traffic_source: document.getElementById('traffic_source').value,
+        po_token_source: document.getElementById('po_token_source').value
+    };
+    try {
+        var res = await fetch('/api/save_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(config)});
+        if (res.ok) addLog('Configuration saved', 'success');
+        else addLog('Save failed', 'error');
+    } catch (err) { addLog('Save error: ' + err.message, 'error'); }
+}
+
+async function loadConfig() {
+    try {
+        var res = await fetch('/api/load_config');
+        var cfg = await res.json();
+        document.getElementById('channel_name').value = cfg.channel_name || '';
+        if (cfg.channel_name) fetchChannelInfo(cfg.channel_name.replace('@', ''));
+        if (cfg.url) {
+            document.getElementById('urlInput').value = cfg.url;
+            await fetchVideoDetails(cfg.url);
+        }
+        document.getElementById('num_instances').value = cfg.num_instances || 1;
+        document.getElementById('cycles').value = cfg.cycles || 1;
+        document.getElementById('headless').value = cfg.headless ? 'true' : 'false';
+        document.getElementById('min_watch').value = cfg.min_watch_time || 15;
+        document.getElementById('max_watch').value = cfg.max_watch_time || 30;
+        document.getElementById('suggested_min').value = cfg.suggested_min || 15;
+        document.getElementById('suggested_max').value = cfg.suggested_max || 35;
+        var chanceSlider = document.getElementById('suggested_chance');
+        chanceSlider.value = (cfg.suggested_chance || 0.4) * 100;
+        document.getElementById('chance_val').innerText = chanceSlider.value + '%';
+        document.getElementById('proxy_mode').value = cfg.proxy_mode || 'none';
+        updateProxyModeInfo();
+        if (cfg.view_type) {
+            var select = document.getElementById('view_type');
+            for (var i = 0; i < select.options.length; i++) {
+                if (select.options[i].value === cfg.view_type) {
+                    select.value = cfg.view_type;
+                    break;
+                }
+            }
+            await updatePreview();
+        }
+        if (cfg.traffic_source) {
+            document.getElementById('traffic_source').value = cfg.traffic_source;
+        }
+        if (cfg.po_token_source) {
+            document.getElementById('po_token_source').value = cfg.po_token_source;
+            updatePoTokenInfo();
+        }
+        updateTrafficSourceVisibility();
+        updateProxyStatus();
+        addLog('Configuration loaded', 'success');
+    } catch (err) { addLog('Load error: ' + err.message, 'error'); }
+}
+
+async function cleanupAll() {
+    if (!confirm('Delete logs, cache folders, and old configs?')) return;
+    addLog('Starting cleanup...', 'info');
+    try {
+        var res = await fetch('/api/cleanup', {method: 'POST'});
+        var data = await res.json();
+        if (data.success) {
+            addLog('Cleanup complete: ' + data.deleted_files + ' files, ' + data.deleted_folders + ' folders deleted', 'success');
+            if (data.freed_space_mb > 0) addLog('Freed ~' + data.freed_space_mb + ' MB', 'success');
+        } else {
+            addLog('Cleanup failed: ' + data.error, 'error');
+        }
+    } catch (err) { addLog('Cleanup error: ' + err.message, 'error'); }
+}
+
+async function launch() {
+    var url = document.getElementById('urlInput').value.trim();
+    if (!url) { addLog('No URL entered', 'error'); return; }
+    var viewType = document.getElementById('view_type').value;
+    if (!viewType) { addLog('Select a view type', 'error'); return; }
+    var automationVersion = document.getElementById('automation_version').value;
+    var trafficSource = document.getElementById('traffic_source').value;
+    var proxyMode = document.getElementById('proxy_mode').value;  // ← GET PROXY MODE
+    var cycles = parseInt(document.getElementById('cycles').value);
+    var numInstances = parseInt(document.getElementById('num_instances').value);
+    var poTokenSource = document.getElementById('po_token_source').value;
+    
+    if (cycles < 1) {
+        addLog('Cycles must be at least 1', 'error');
+        return;
+    }
+    
+    // Log proxy mode
+    if (proxyMode === 'tor_service') {
+        addLog('🌐 Tor Service Mode: Traffic will be routed through Tor network on port 9050', 'info');
+        addLog('⚠️ Make sure Tor service is running! (net start Tor)', 'warning');
+    } else if (proxyMode === 'tor_browser') {
+        addLog('🌐 Tor Browser Mode: Traffic will be routed through Tor Browser on port 9150', 'info');
+        addLog('⚠️ Make sure Tor Browser is running!', 'warning');
+    } else if (proxyMode === 'list') {
+        var proxyStatus = await fetch('/api/proxy/status').then(r => r.json());
+        if (proxyStatus.working_proxies === 0) {
+            addLog('⚠️ Proxy List Mode enabled but no working proxies available. Please add proxies in Proxy Settings.', 'warning');
+            if (!confirm('No working proxies found. Continue without proxy?')) return;
+        } else {
+            addLog(`🔄 Proxy List Mode: ${proxyStatus.working_proxies} working proxies available. Each instance will get a different proxy.`, 'info');
+        }
+    } else {
+        addLog('🚫 No Proxy - Direct connection', 'info');
+    }
+    
+    // Log PO token source
+    if (poTokenSource === 'native') {
+        addLog('🌿 Using Native Browser PO Token Generation (YouTube generates token via embedded player)', 'info');
+    } else if (poTokenSource === 'external') {
+        addLog('🖥️ Using External PO Token Server (bgutil on port 4416). Ensure server is running.', 'info');
+    } else {
+        addLog('🤖 Using po-token-generator (Node.js service on port 4417). Ensure service is running.', 'info');
+    }
+    
+    var config = {
+        urls: [url],
+        num_instances: numInstances,
+        cycles: cycles,
+        headless: document.getElementById('headless').value === 'true',
+        min_watch_time: parseInt(document.getElementById('min_watch').value),
+        max_watch_time: parseInt(document.getElementById('max_watch').value),
+        suggested_min: parseInt(document.getElementById('suggested_min').value),
+        suggested_max: parseInt(document.getElementById('suggested_max').value),
+        suggested_chance: parseInt(document.getElementById('suggested_chance').value) / 100,
+        proxy_mode: proxyMode,  // ← MUST HAVE THIS
+        channel_name: document.getElementById('channel_name').value,
+        view_type: viewType,
+        automation_version: automationVersion,
+        traffic_source: trafficSource,
+        po_token_source: poTokenSource
+    };
+    
+    addLog('Launching ' + config.num_instances + ' instance(s) x ' + config.cycles + ' cycle(s)', 'info');
+    try {
+        var res = await fetch('/api/launch', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(config)});
+        var result = await res.json();
+        if (result.success) addLog(result.message, 'success');
+        else addLog('Launch error: ' + result.error, 'error');
+    } catch (err) { addLog('Launch failed: ' + err.message, 'error'); }
+}
+
+document.getElementById('channel_name').addEventListener('blur', function() { if (this.value.trim()) fetchChannelInfo(this.value.trim().replace('@', '')); });
+document.getElementById('urlInput').addEventListener('blur', function() { if (this.value.trim()) fetchVideoDetails(this.value.trim()); });
+document.getElementById('view_type').addEventListener('change', function() {
+    updatePreview();
+    updateTrafficSourceVisibility();
+});
+document.getElementById('traffic_source').addEventListener('change', function() {
+    var info = document.getElementById('trafficSourceInfo');
+    var viewType = document.getElementById('view_type').value;
+    var directUrlViewTypes = ['Other YouTube features', 'Direct/Unknown', 'Suggested', 'Short Feeds'];
+    if (directUrlViewTypes.includes(viewType) && this.value !== 'direct') {
+        info.style.display = 'block';
+        info.innerHTML = '⚡ Custom referer will be applied: ' + getRefererUrl(this.value);
+    } else {
+        info.style.display = 'none';
+    }
+});
+document.getElementById('suggested_chance').oninput = function() { document.getElementById('chance_val').innerText = this.value + '%'; };
+document.getElementById('proxy_mode').addEventListener('change', function() {
+    updateProxyModeInfo();
+    updateProxyStatus();
+});
+document.getElementById('po_token_source').addEventListener('change', updatePoTokenInfo);
+window.onload = function() { loadConfig(); updateProxyStatus(); updatePoTokenInfo(); updateProxyModeInfo(); };
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+2026-06-08 22:29:15,021 - INFO - Instance 12: Created isolated profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_channel_cache_1780937955_12_5813c837f7c4
+2026-06-08 22:29:21,706 - INFO - Instance 12: Searching for channel: @rajasthanidesidiaries
+2026-06-08 22:29:21,707 - INFO - Instance 12: Cycle 1/5
+2026-06-08 22:30:18,701 - INFO - Instance 12: Injected PO token into video link href
+2026-06-08 22:30:19,901 - INFO - Instance 12: Clicked video with pre-injected PO token
+2026-06-08 22:30:26,932 - INFO - Instance 12: Watching main for 61s
+2026-06-08 22:31:27,937 - INFO - Instance 12: Attempting suggested video
+2026-06-08 22:31:39,218 - INFO - Instance 12: Watching suggested for 10s
+2026-06-08 22:31:49,219 - INFO - Instance 12: Pausing 14.1s before next cycle
+2026-06-08 22:32:12,880 - INFO - Instance 12: Cycle 2/5
+2026-06-08 22:32:48,040 - INFO - Instance 12: Injected PO token into video link href
+2026-06-08 22:32:48,738 - INFO - Instance 12: Clicked video with pre-injected PO token
+2026-06-08 22:32:51,548 - INFO - Instance 12: Watching main for 93s
+2026-06-08 22:34:24,550 - INFO - Instance 12: Attempting suggested video
+2026-06-08 22:34:31,566 - INFO - Instance 12: Watching suggested for 11s
+2026-06-08 22:34:42,567 - INFO - Instance 12: Pausing 12.3s before next cycle
+2026-06-08 22:35:02,653 - INFO - Instance 12: Cycle 3/5
+2026-06-08 22:35:30,910 - INFO - Instance 12: Injected PO token into video link href
+2026-06-08 22:35:31,484 - INFO - Instance 12: Clicked video with pre-injected PO token
+2026-06-08 22:35:33,446 - INFO - Instance 12: Watching main for 77s
+2026-06-08 22:36:50,446 - INFO - Instance 12: Attempting suggested video
+2026-06-08 22:36:57,689 - INFO - Instance 12: Watching suggested for 7s
+2026-06-08 22:37:04,709 - INFO - Instance 12: Pausing 14.6s before next cycle
+2026-06-08 22:37:27,182 - INFO - Instance 12: Cycle 4/5
+2026-06-08 22:37:55,259 - INFO - Instance 12: Injected PO token into video link href
+2026-06-08 22:37:55,843 - INFO - Instance 12: Clicked video with pre-injected PO token
+2026-06-08 22:37:58,418 - INFO - Instance 12: Watching main for 102s
+2026-06-08 22:39:40,419 - INFO - Instance 12: Attempting suggested video
+2026-06-08 22:39:47,777 - INFO - Instance 12: Watching suggested for 14s
+2026-06-08 22:40:01,778 - INFO - Instance 12: Pausing 10.4s before next cycle
+2026-06-08 22:40:20,315 - INFO - Instance 12: Cycle 5/5
+2026-06-08 22:40:50,334 - INFO - Instance 12: Injected PO token into video link href
+2026-06-08 22:40:50,900 - INFO - Instance 12: Clicked video with pre-injected PO token
+2026-06-08 22:40:53,821 - INFO - Instance 12: Watching main for 119s
+2026-06-08 22:42:52,824 - INFO - Instance 12: Attempting suggested video
+2026-06-08 22:43:03,350 - INFO - Instance 12: Watching suggested for 7s
+2026-06-08 22:43:10,350 - INFO - Instance 12: Completed 5 cycle(s)
