@@ -2,62 +2,142 @@
 """
 YouTube Automation - SEARCH MODE for Regular Videos
 With PO token support using shared driver
+Runs one cycle per invocation – cycles are controlled by YTDash.
+Parallel instances using multiprocessing.Process.
 """
 
 import sys
-import json
 import os
+import json
 import random
 import shutil
 import time
 import logging
+import importlib.util
+import traceback
 from pathlib import Path
 from datetime import datetime
 from multiprocessing import Process
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# ========== PATH SETUP - PROJECT ROOT BASED ==========
+# Get the absolute path of this script
+_script_path = Path(__file__).resolve()
+PROJECT_ROOT = _script_path.parent.parent.parent
+SELENIUM_ROOT = _script_path.parent.parent
+COMMON_ROOT = PROJECT_ROOT / "common"
+SELENIUM_COMMON_ROOT = SELENIUM_ROOT / "common"
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
+# Store in environment for subprocesses
+os.environ['PROJECT_ROOT'] = str(PROJECT_ROOT)
 
-from common.utils import (
-    get_random_resolution, handle_cookies, get_variable_watch_time, wait_for_page_load,
-    human_delay, is_login_page
-)
-from common.human_behavior import (
-    watch_with_human_behavior, start_video_with_audio_mute, click_suggested_video,
-    ensure_video_playback
-)
-from common.search import DesktopSearch, MobileSearch
+# Add paths for imports
+sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(COMMON_ROOT))
+sys.path.insert(0, str(SELENIUM_ROOT))
+sys.path.insert(0, str(SELENIUM_COMMON_ROOT))
 
-# Import shared PO token modules
-from common.po_token import get_po_token, inject_visitor_cookie, set_logger as set_po_logger
-from common.po_driver import create_driver_with_po_token, set_logger as set_driver_logger
+# ========== HELPER FUNCTION FOR DIRECT MODULE LOADING ==========
+def _load_module_from_file(module_name, file_path):
+    """Load a module directly from file path (bypasses import system)"""
+    try:
+        spec = importlib.util.spec_from_file_location(module_name, file_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+    except Exception as e:
+        raise ImportError(f"Failed to load {module_name} from {file_path}: {e}")
 
-# Setup logging
-DATA_DIR = Path(__file__).parent.parent / "data"
+# ========== Import po_token (from common) ==========
+_po_token_path = COMMON_ROOT / "po_token.py"
+if _po_token_path.exists():
+    _po_token_module = _load_module_from_file("po_token", _po_token_path)
+    get_po_token = _po_token_module.get_po_token
+    add_po_token_to_url = _po_token_module.add_po_token_to_url
+    set_po_logger = _po_token_module.set_logger
+    set_po_token_source = _po_token_module.set_po_token_source
+else:
+    raise ImportError(f"Cannot find po_token module at {_po_token_path}")
+
+# ========== Import po_driver (from selenium/common) ==========
+_po_driver_path = SELENIUM_COMMON_ROOT / "po_driver.py"
+if _po_driver_path.exists():
+    _po_driver_module = _load_module_from_file("po_driver", _po_driver_path)
+    create_driver_with_po_token = _po_driver_module.create_driver_with_po_token
+    set_driver_logger = _po_driver_module.set_logger
+else:
+    raise ImportError(f"Cannot find po_driver module at {_po_driver_path}")
+
+# ========== Import utils (from selenium/common) ==========
+_utils_path = SELENIUM_COMMON_ROOT / "utils.py"
+if _utils_path.exists():
+    _utils_module = _load_module_from_file("utils", _utils_path)
+    handle_cookies = _utils_module.handle_cookies
+    get_variable_watch_time = _utils_module.get_variable_watch_time
+    wait_for_page_load = _utils_module.wait_for_page_load
+    is_login_page = _utils_module.is_login_page
+else:
+    raise ImportError(f"Cannot find utils module at {_utils_path}")
+
+# ========== Import human_behavior (from common) ==========
+_human_behavior_path = COMMON_ROOT / "human_behavior.py"
+if _human_behavior_path.exists():
+    _human_behavior_module = _load_module_from_file("human_behavior", _human_behavior_path)
+    watch_with_human_behavior = _human_behavior_module.watch_with_human_behavior
+    start_video_with_audio_mute = _human_behavior_module.start_video_with_audio_mute
+    click_suggested_video = _human_behavior_module.click_suggested_video
+    ensure_video_playback = _human_behavior_module.ensure_video_playback
+    handle_all_popups = _human_behavior_module.handle_all_popups
+else:
+    raise ImportError(f"Cannot find human_behavior module at {_human_behavior_path}")
+
+# ========== Import search (from selenium/common) ==========
+_search_path = SELENIUM_COMMON_ROOT / "search.py"
+if _search_path.exists():
+    _search_module = _load_module_from_file("search", _search_path)
+    DesktopSearch = _search_module.DesktopSearch
+    MobileSearch = _search_module.MobileSearch
+else:
+    raise ImportError(f"Cannot find search module at {_search_path}")
+
+# ========== Import find (from selenium/common) ==========
+_find_path = SELENIUM_COMMON_ROOT / "find.py"
+if _find_path.exists():
+    _find_module = _load_module_from_file("find", _find_path)
+    find_and_click_video_result = _find_module.find_and_click_video_result
+else:
+    raise ImportError(f"Cannot find find module at {_find_path}")
+
+# ========== Setup Logging ==========
+DATA_DIR = PROJECT_ROOT / "data"
 LOG_DIR = DATA_DIR / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 log_filename = LOG_DIR / f"YTSearch_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
 
 logger = logging.getLogger("YTSearch")
 logger.setLevel(logging.INFO)
-fh = logging.FileHandler(log_filename)
+fh = logging.FileHandler(log_filename, encoding='utf-8')
 fh.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logger.addHandler(fh)
 ch = logging.StreamHandler()
 ch.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logger.addHandler(ch)
 
-# Share logger with PO modules
-set_po_logger(logger)
-set_driver_logger(logger)
+# Set loggers for imported modules
+try:
+    set_po_logger(logger)
+except:
+    pass
+try:
+    set_driver_logger(logger)
+except:
+    pass
+
+logger.info(f"YTSearch.py started - PID: {os.getpid()}")
+logger.info(f"Project root: {PROJECT_ROOT}")
 
 
+# ========== Configuration ==========
 @dataclass
 class SessionConfig:
     instance_id: int
@@ -73,38 +153,52 @@ class SessionConfig:
     headless: bool
     user_agent: str
     is_mobile: bool
-    cycles: int = 1
     po_token: str = None
     visitor_id: str = None
+    po_token_source: str = "native"
+    proxy: str = None
+    proxy_mode: str = "none"
+    num_instances: int = 1
+    current_proxy: str = None
+    cycle_number: int = 1
 
 
-def click_video_result_with_po_token(driver, instance_id, video_id, po_token, is_mobile):
+# ========== Inject PO token into video link on search page ==========
+def inject_po_token_into_search_result(driver, instance_id, video_id, po_token, is_mobile):
     """
-    Find video result, inject PO token into its href, then click naturally.
-    No second reload - token is in the original navigation.
+    Find the video result link and inject PO token into its href.
+    Does NOT click - just prepares the link.
     """
     if not po_token:
         return False
     
     try:
-        # Wait for search results to load
-        time.sleep(2)
+        from selenium.webdriver.common.by import By
         
-        # Find video links in search results
-        video_selectors = [
-            f"a[href*='/watch?v={video_id}']",
-            "a#video-title",
-            "a[href*='/watch?v=']"
-        ]
-        
+        # Find the video link using same logic as find.py
         video_link = None
-        for selector in video_selectors:
+        if is_mobile:
+            selectors = [
+                f"//a[contains(@href, '{video_id}')]",
+                "ytm-compact-video-renderer a",
+                "a[href*='watch?v=']"
+            ]
+        else:
+            selectors = [
+                f"//a[contains(@href, '{video_id}')]",
+                "ytd-video-renderer a#thumbnail"
+            ]
+        
+        for sel in selectors:
             try:
-                elements = driver.find_elements(By.CSS_SELECTOR, selector)
-                for elem in elements:
-                    href = elem.get_attribute('href')
+                if sel.startswith("//"):
+                    elements = driver.find_elements(By.XPATH, sel)
+                else:
+                    elements = driver.find_elements(By.CSS_SELECTOR, sel)
+                for el in elements:
+                    href = el.get_attribute('href')
                     if href and video_id in href:
-                        video_link = elem
+                        video_link = el
                         break
                 if video_link:
                     break
@@ -112,161 +206,209 @@ def click_video_result_with_po_token(driver, instance_id, video_id, po_token, is
                 continue
         
         if not video_link:
-            logger.warning(f"Instance {instance_id}: Could not find video link for {video_id}")
+            logger.warning(f"Instance {instance_id}: Could not find video link for PO injection")
             return False
         
-        # Get original href
+        # Inject PO token into href
         original_href = video_link.get_attribute('href')
-        
-        # Inject PO token into the href attribute (no page reload)
         if 'pot=' not in original_href:
             separator = '&' if '?' in original_href else '?'
             new_href = f"{original_href}{separator}pot={po_token}"
-            
-            # Use JavaScript to modify the href attribute
             driver.execute_script(f"arguments[0].setAttribute('href', '{new_href}');", video_link)
-            logger.info(f"Instance {instance_id}: Injected PO token into video link href")
-        
-        # Click the link naturally (token already in href)
-        driver.execute_script("arguments[0].scrollIntoView(true);", video_link)
-        time.sleep(0.5)
-        driver.execute_script("arguments[0].click();", video_link)
-        logger.info(f"Instance {instance_id}: Clicked video result with pre-injected PO token")
-        
-        return True
-        
+            logger.info(f"Instance {instance_id}: Injected PO token into video link")
+            return True
+        else:
+            logger.info(f"Instance {instance_id}: PO token already present")
+            return True
+            
     except Exception as e:
-        logger.error(f"Instance {instance_id}: Error clicking video - {e}")
+        logger.error(f"Instance {instance_id}: PO injection error - {e}")
         return False
 
 
+# ========== Session Runner ==========
 def run_session(cfg: SessionConfig):
     driver = None
     profile_dir = None
     try:
-        # Use shared driver creator
+        if cfg.proxy:
+            logger.info(f"Instance {cfg.instance_id}: Using assigned proxy: {cfg.proxy[:80]}")
+        
         driver, profile_dir = create_driver_with_po_token(cfg, "yt_search_cache")
         
         search_query = cfg.video_title if cfg.video_title else cfg.video_id
         
-        cycles_done = 0
-        total_cycles = cfg.cycles
+        logger.info(f"Instance {cfg.instance_id}: Starting cycle {cfg.cycle_number}")
+        # Do NOT log the search_query to avoid Unicode issues
+        logger.info(f"Instance {cfg.instance_id}: Performing search...")
         
-        while total_cycles == 0 or cycles_done < total_cycles:
-            logger.info(f"Instance {cfg.instance_id}: Cycle {cycles_done + 1}/{total_cycles if total_cycles > 0 else '∞'}")
-            
-            # Perform search
-            if cfg.is_mobile:
-                if not MobileSearch.perform_search(driver, cfg.instance_id, search_query):
-                    logger.error(f"Instance {cfg.instance_id}: Mobile search failed")
-                    return
+        # Perform search with video_id fallback
+        if cfg.is_mobile:
+            if not MobileSearch.perform_search(driver, cfg.instance_id, search_query, video_id=cfg.video_id):
+                logger.error(f"Instance {cfg.instance_id}: Mobile search failed")
+                return
+        else:
+            if not DesktopSearch.perform_search(driver, cfg.instance_id, search_query, video_id=cfg.video_id):
+                logger.error(f"Instance {cfg.instance_id}: Desktop search failed")
+                return
+
+        # Wait for results to load
+        logger.info(f"Instance {cfg.instance_id}: Waiting for search results...")
+        time.sleep(3)
+        
+        # ========== INJECT PO TOKEN INTO SEARCH RESULT BEFORE CLICKING ==========
+        # This ensures the token is in the URL when the video page loads
+        if cfg.po_token:
+            logger.info(f"Instance {cfg.instance_id}: Injecting PO token into video result link...")
+            inject_success = inject_po_token_into_search_result(
+                driver, cfg.instance_id, cfg.video_id, cfg.po_token, cfg.is_mobile
+            )
+            if inject_success:
+                logger.info(f"Instance {cfg.instance_id}: PO token injected successfully")
             else:
-                if not DesktopSearch.perform_search(driver, cfg.instance_id, search_query):
-                    logger.error(f"Instance {cfg.instance_id}: Desktop search failed")
-                    return
-
-            # Click video result with PO token injection
-            if not click_video_result_with_po_token(driver, cfg.instance_id, cfg.video_id, cfg.po_token, cfg.is_mobile):
-                logger.error(f"Instance {cfg.instance_id}: Could not click video result")
-                return
-
-            # Continue with normal video playback
-            wait_for_page_load(driver, 20)
-            if is_login_page(driver):
-                logger.warning(f"Instance {cfg.instance_id}: Login page, aborting")
-                return
-
-            handle_cookies(driver, cfg.instance_id)
-            ensure_video_playback(driver, cfg.instance_id)
-            start_video_with_audio_mute(driver, cfg.instance_id, cfg.is_mobile, is_suggested=False)
-
-            main_watch = get_variable_watch_time(cfg.min_watch_time, cfg.max_watch_time)
-            logger.info(f"Instance {cfg.instance_id}: Watching main for {main_watch}s")
-            watch_with_human_behavior(driver, main_watch, cfg.is_mobile)
-
-            if random.random() < cfg.suggested_chance:
-                logger.info(f"Instance {cfg.instance_id}: Attempting suggested video")
-                if click_suggested_video(driver, cfg.is_mobile):
-                    time.sleep(2)
-                    wait_for_page_load(driver, 20)
-                    handle_cookies(driver, cfg.instance_id)
-                    ensure_video_playback(driver, cfg.instance_id)
-                    start_video_with_audio_mute(driver, cfg.instance_id, cfg.is_mobile, is_suggested=True)
-                    suggested_watch = random.randint(cfg.suggested_min, cfg.suggested_max)
-                    logger.info(f"Instance {cfg.instance_id}: Watching suggested for {suggested_watch}s")
-                    watch_with_human_behavior(driver, suggested_watch, cfg.is_mobile)
-                else:
-                    logger.warning(f"Instance {cfg.instance_id}: Could not load suggested video")
-            
-            cycles_done += 1
-            
-            if total_cycles == 0 or cycles_done < total_cycles:
-                pause_duration = random.uniform(5, 15)
-                logger.info(f"Instance {cfg.instance_id}: Pausing {pause_duration:.1f}s before next cycle")
-                time.sleep(pause_duration)
-                
-                # Clear cookies and return to home page
-                driver.delete_all_cookies()
-                driver.get("https://www.youtube.com")
-                time.sleep(2)
+                logger.warning(f"Instance {cfg.instance_id}: Failed to inject PO token, continuing anyway")
+        else:
+            logger.info(f"Instance {cfg.instance_id}: No PO token to inject")
+        # ========== END OF PO TOKEN INJECTION ==========
         
-        logger.info(f"Instance {cfg.instance_id}: Completed {cycles_done} cycle(s)")
+        # Click the video result using find.py
+        if not find_and_click_video_result(driver, cfg.instance_id, cfg.video_id, cfg.is_mobile):
+            logger.error(f"Instance {cfg.instance_id}: Could not click video result")
+            return
+
+        wait_for_page_load(driver, 20)
+        if is_login_page(driver):
+            logger.warning(f"Instance {cfg.instance_id}: Login page, aborting")
+            return
+
+        handle_cookies(driver, cfg.instance_id)
+        ensure_video_playback(driver, cfg.instance_id)
+        start_video_with_audio_mute(driver, cfg.instance_id, cfg.is_mobile, is_suggested=False)
+
+        main_watch = get_variable_watch_time(cfg.min_watch_time, cfg.max_watch_time)
+        logger.info(f"Instance {cfg.instance_id}: Watching main for {main_watch}s")
+        watch_with_human_behavior(driver, main_watch, cfg.is_mobile)
+
+        if random.random() < cfg.suggested_chance:
+            logger.info(f"Instance {cfg.instance_id}: Attempting suggested video")
+            if click_suggested_video(driver, cfg.is_mobile):
+                time.sleep(2)
+                wait_for_page_load(driver, 20)
+                handle_cookies(driver, cfg.instance_id)
+                ensure_video_playback(driver, cfg.instance_id)
+                start_video_with_audio_mute(driver, cfg.instance_id, cfg.is_mobile, is_suggested=True)
+                suggested_watch = random.randint(cfg.suggested_min, cfg.suggested_max)
+                logger.info(f"Instance {cfg.instance_id}: Watching suggested for {suggested_watch}s")
+                watch_with_human_behavior(driver, suggested_watch, cfg.is_mobile)
+            else:
+                logger.warning(f"Instance {cfg.instance_id}: Could not load suggested video")
+        
+        logger.info(f"Instance {cfg.instance_id}: Completed cycle {cfg.cycle_number}")
         
     except Exception as e:
         logger.error(f"Instance {cfg.instance_id}: Error - {e}")
+        if hasattr(cfg, 'current_proxy') and cfg.current_proxy:
+            try:
+                from common.proxy_manager import mark_proxy_failed
+                mark_proxy_failed(cfg.current_proxy)
+                logger.info(f"Instance {cfg.instance_id}: Marked proxy as failed")
+            except:
+                pass
+        logger.error(traceback.format_exc())
     finally:
+        logger.info(f"Instance {cfg.instance_id}: Cleaning up...")
         if driver:
-            driver.quit()
+            try:
+                driver.quit()
+                logger.info(f"Instance {cfg.instance_id}: Driver closed")
+            except Exception as e:
+                logger.warning(f"Instance {cfg.instance_id}: Error closing driver: {e}")
         if profile_dir and os.path.exists(profile_dir):
-            shutil.rmtree(profile_dir, ignore_errors=True)
+            try:
+                shutil.rmtree(profile_dir, ignore_errors=True)
+                logger.info(f"Instance {cfg.instance_id}: Profile deleted")
+            except Exception as e:
+                logger.warning(f"Instance {cfg.instance_id}: Could not delete profile: {e}")
+        logger.info(f"Instance {cfg.instance_id}: Cleanup complete")
+        
 
-
+# ========== Main ==========
 def main():
     if len(sys.argv) < 2 or not sys.argv[1].endswith('.json'):
         logger.error("Usage: python YTSearch.py <config.json>")
         sys.exit(1)
     
-    with open(sys.argv[1], 'r', encoding='utf-8-sig') as f:
-        instances = json.load(f)
+    config_path = sys.argv[1]
+    logger.info(f"Loading config from: {config_path}")
     
-    logger.info(f"Starting YTSearch with {len(instances)} instance(s)")
+    try:
+        with open(config_path, 'r', encoding='utf-8-sig') as f:
+            instances = json.load(f)
+    except Exception as e:
+        logger.error(f"Failed to load config: {e}")
+        sys.exit(1)
+
+    logger.info(f"Starting YTSearch with {len(instances)} parallel instance(s)")
     processes = []
     
     for d in instances:
         video_id = d.get("video_id", "")
         po_token = None
         visitor_id = None
+        
+        po_token_source = d.get("po_token_source", "native")
+        set_po_token_source(po_token_source)
+        
         if video_id:
-            po_token, visitor_id = get_po_token(video_id, d["instance_id"])
+            po_token, visitor_id = get_po_token(video_id, d.get("instance_id", 0))
+            if po_token:
+                logger.info(f"[TOKEN] Instance {d.get('instance_id', 0)}: PO token received (length: {len(po_token)})")
+            else:
+                logger.info(f"[TOKEN] Instance {d.get('instance_id', 0)}: No token, will use native")
+        
+        proxy_mode = d.get("proxy_mode", "none")
+        num_instances = d.get("num_instances", 1)
+        assigned_proxy = d.get("proxy", None)
+        cycle_number = d.get("cycle_number", 1)
+        
+        if assigned_proxy:
+            logger.info(f"Instance {d.get('instance_id', 0)}: Assigned proxy: {assigned_proxy[:80]}")
         
         cfg = SessionConfig(
-            instance_id=d["instance_id"],
-            url=d["url"],
-            constructed_url=d["constructed_url"],
+            instance_id=d.get("instance_id", 0),
+            url=d.get("url", ""),
+            constructed_url=d.get("constructed_url", ""),
             video_id=video_id,
             video_title=d.get("video_title", ""),
-            min_watch_time=d["min_watch_time"],
-            max_watch_time=d["max_watch_time"],
-            suggested_min=d["suggested_min"],
-            suggested_max=d["suggested_max"],
+            min_watch_time=d.get("min_watch_time", 15),
+            max_watch_time=d.get("max_watch_time", 30),
+            suggested_min=d.get("suggested_min", 15),
+            suggested_max=d.get("suggested_max", 35),
             suggested_chance=d.get("suggested_chance", 0.4),
-            headless=d["headless"],
-            user_agent=d["user_agent"],
-            is_mobile=d["is_mobile"],
-            cycles=d.get("cycles", 1),
+            headless=d.get("headless", False),
+            user_agent=d.get("user_agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"),
+            is_mobile=d.get("is_mobile", False),
             po_token=po_token,
-            visitor_id=visitor_id
+            visitor_id=visitor_id,
+            po_token_source=po_token_source,
+            proxy=assigned_proxy,
+            proxy_mode=proxy_mode,
+            num_instances=num_instances,
+            current_proxy=assigned_proxy,
+            cycle_number=cycle_number
         )
         
         p = Process(target=run_session, args=(cfg,))
         processes.append(p)
         p.start()
+        logger.info(f"Instance {cfg.instance_id} started in process {p.pid}")
         time.sleep(random.uniform(1, 3))
     
     for p in processes:
         p.join()
+        logger.info(f"Process {p.pid} completed")
     
-    logger.info("All sessions finished")
+    logger.info("All parallel instances finished")
 
 
 if __name__ == "__main__":

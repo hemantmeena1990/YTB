@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 YouTube Automation Dashboard – Backend Only
-HTML template is in templates/dash.html
+With integrated rotating proxy system, live progress tracking, and local caching
 """
 
 import sys
@@ -19,7 +19,10 @@ import requests as http_requests
 from pathlib import Path
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
+import io
+# Import cleanup module
+from common.cleanup import clean_all
 
 # Check yt-dlp
 try:
@@ -42,6 +45,16 @@ from common.input import (
     extract_video_id, get_video_title
 )
 
+# Import proxy manager for rotating proxy support
+from common.proxy_manager import start_background_service, get_rotating_proxy, get_proxy_stats
+
+# Import cache manager
+from common.cache_manager import (
+    get_cached_video_info, cache_video_info, cache_video_thumbnail, get_cached_video_thumbnail,
+    get_cached_channel_info, cache_channel_info, cache_channel_logo, get_cached_channel_logo,
+    clear_expired_cache, clear_all_cache, get_cache_stats
+)
+
 app = Flask(__name__)
 
 # Ensure data directory exists
@@ -56,6 +69,35 @@ PROXY_LIST_FILE = DATA_DIR / "proxy_list.txt"
 BLACKLIST_FILE = DATA_DIR / "blacklist.txt"
 
 CACHE_PATTERNS = ["yt_direct_cache_*", "yt_search_cache_*", "yt_channel_cache_*", "yt_shorts_cache_*", "yt_ss_cache_*"]
+
+# Ensure cache directories exist
+from common.cache_manager import VIDEO_CACHE_DIR, CHANNEL_CACHE_DIR, THUMBNAIL_CACHE_DIR, LOGO_CACHE_DIR
+for cache_dir in [VIDEO_CACHE_DIR, CHANNEL_CACHE_DIR, THUMBNAIL_CACHE_DIR, LOGO_CACHE_DIR]:
+    cache_dir.mkdir(parents=True, exist_ok=True)
+
+# Start background proxy rotation service
+print("[Proxy Service] Starting background proxy rotator...")
+start_background_service()
+print("[Proxy Service] Background proxy rotator is running")
+
+# Global progress tracking for proxy operations
+proxy_progress = {
+    "status": "idle",
+    "operation": "",
+    "current_source": "",
+    "total_sources": 0,
+    "sources_completed": 0,
+    "proxies_found": 0,
+    "proxies_tested": 0,
+    "proxies_working": 0,
+    "proxies_failed": 0,
+    "blacklisted": 0,
+    "whitelisted": 0,
+    "total_proxies": 0,
+    "percent": 0,
+    "last_update": 0,
+    "logs": []
+}
 
 # Auto-cleanup on startup
 def auto_cleanup_on_startup():
@@ -94,6 +136,24 @@ def format_number(num):
         return f"{num/1000:.1f}K"
     return str(num)
 
+def add_progress_log(message, level="info"):
+    """Add a log entry to progress tracking"""
+    timestamp = time.strftime("%H:%M:%S")
+    proxy_progress["logs"].append({
+        "timestamp": timestamp,
+        "message": message,
+        "level": level
+    })
+    if len(proxy_progress["logs"]) > 100:
+        proxy_progress["logs"] = proxy_progress["logs"][-100:]
+    print(f"[{timestamp}] {message}")
+
+def update_progress():
+    """Update progress percentage and timestamp"""
+    proxy_progress["last_update"] = time.time()
+    if proxy_progress["total_proxies"] > 0:
+        proxy_progress["percent"] = int((proxy_progress["proxies_tested"] / proxy_progress["total_proxies"]) * 100)
+
 def get_video_details_ytdlp(url):
     try:
         ydl_opts = {
@@ -127,13 +187,14 @@ def get_video_details_ytdlp(url):
         return {'success': False, 'error': str(e)}
 
 def get_channel_info_ytdlp(channel_handle: str) -> dict:
-    result = {"name": channel_handle, "avatar_url": "", "subscriber_count": ""}
+    result = {"name": channel_handle, "avatar_url": "", "subscriber_count": "", "error": None}
     handle = channel_handle.lstrip('@')
     channel_url = f"https://www.youtube.com/@{handle}"
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
         'extract_flat': True,
+        'ignoreerrors': True,
         'extractor_args': {
             'youtube': {
                 'po_token': ['web.gvs+http://127.0.0.1:4416'],
@@ -151,8 +212,11 @@ def get_channel_info_ytdlp(channel_handle: str) -> dict:
                 subscriber_count = info.get('channel_follower_count', 0)
                 if subscriber_count:
                     result["subscriber_count"] = format_number(subscriber_count) + " subscribers"
+            else:
+                result["error"] = "Channel not found"
     except Exception as e:
         print(f"yt-dlp channel error: {e}")
+        result["error"] = str(e)
     return result
 
 def get_preview_info(url: str, view_type: str):
@@ -263,24 +327,25 @@ def cleanup_all():
 def load_proxy_list():
     proxies = []
     if PROXY_LIST_FILE.exists():
-        with open(PROXY_LIST_FILE, 'r') as f:
-            proxies = [line.strip() for line in f if line.strip()]
+        with open(PROXY_LIST_FILE, 'r', encoding='utf-8', errors='ignore') as f:
+            proxies = [line.strip() for line in f if line.strip() and '<' not in line]
     return proxies
 
 def load_blacklist():
     blacklist = []
     if BLACKLIST_FILE.exists():
-        with open(BLACKLIST_FILE, 'r') as f:
+        with open(BLACKLIST_FILE, 'r', encoding='utf-8', errors='ignore') as f:
             blacklist = [line.strip() for line in f if line.strip()]
     return blacklist
 
 def save_proxy_list(proxies):
-    with open(PROXY_LIST_FILE, 'w') as f:
+    with open(PROXY_LIST_FILE, 'w', encoding='utf-8') as f:
         for proxy in proxies:
-            f.write(f"{proxy}\n")
+            if proxy and '<' not in proxy:
+                f.write(f"{proxy}\n")
 
 def save_blacklist(blacklist):
-    with open(BLACKLIST_FILE, 'w') as f:
+    with open(BLACKLIST_FILE, 'w', encoding='utf-8') as f:
         for proxy in blacklist:
             f.write(f"{proxy}\n")
 
@@ -295,10 +360,16 @@ def get_proxy_for_instance(instance_id, total_instances):
     proxy_index = (instance_id - 1) % len(available)
     return available[proxy_index]
 
+def get_whitelist():
+    whitelist_file = DATA_DIR / "whitelist.txt"
+    if whitelist_file.exists():
+        with open(whitelist_file, 'r', encoding='utf-8') as f:
+            return [line.strip() for line in f if line.strip()]
+    return []
+
 # ==================== PO Token Helper Functions ====================
 
 def get_po_token_from_potgen(video_id):
-    """Get PO token from po-token-generator service (port 4417)"""
     try:
         response = http_requests.post(
             "http://127.0.0.1:4417/get_token",
@@ -313,7 +384,6 @@ def get_po_token_from_potgen(video_id):
     return None, None
 
 def get_po_token_from_external(video_id):
-    """Get PO token from external bgutil server (port 4416)"""
     try:
         response = http_requests.post(
             "http://127.0.0.1:4416/get_pot",
@@ -334,7 +404,8 @@ def proxy_settings_page():
     template_path = BASE_DIR / "templates" / "proxy_settings.html"
     if template_path.exists():
         with open(template_path, 'r', encoding='utf-8') as f:
-            return f.read()
+            content = f.read()
+        return content
     return "<h1>Proxy settings page not found</h1>"
 
 @app.route('/api/proxy/status', methods=['GET'])
@@ -348,6 +419,18 @@ def proxy_status():
         "blacklisted": len(blacklist)
     })
 
+@app.route('/api/proxy/progress', methods=['GET'])
+def proxy_progress_endpoint():
+    return jsonify(proxy_progress)
+
+@app.route('/api/proxy/stats', methods=['GET'])
+def api_proxy_stats():
+    try:
+        stats = get_proxy_stats()
+        return jsonify(stats)
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
 @app.route('/api/proxy/manual', methods=['GET'])
 def proxy_manual():
     return jsonify(load_proxy_list())
@@ -360,6 +443,7 @@ def proxy_manual_add():
         if proxy not in proxies:
             proxies.append(proxy)
             save_proxy_list(proxies)
+            add_progress_log(f"Added manual proxy: {proxy[:50]}")
     return jsonify({"success": True})
 
 @app.route('/api/proxy/manual/remove', methods=['POST'])
@@ -370,6 +454,7 @@ def proxy_manual_remove():
         if proxy in proxies:
             proxies.remove(proxy)
             save_proxy_list(proxies)
+            add_progress_log(f"Removed manual proxy: {proxy[:50]}")
     return jsonify({"success": True})
 
 @app.route('/api/proxy/blacklist', methods=['GET'])
@@ -388,6 +473,7 @@ def proxy_blacklist_add():
             if proxy in proxies:
                 proxies.remove(proxy)
                 save_proxy_list(proxies)
+            add_progress_log(f"Added to blacklist: {proxy[:50]}")
     return jsonify({"success": True})
 
 @app.route('/api/proxy/blacklist/remove', methods=['POST'])
@@ -398,6 +484,7 @@ def proxy_blacklist_remove():
         if proxy in blacklist:
             blacklist.remove(proxy)
             save_blacklist(blacklist)
+            add_progress_log(f"Removed from blacklist: {proxy[:50]}")
     return jsonify({"success": True})
 
 @app.route('/api/proxy/working', methods=['GET'])
@@ -413,6 +500,7 @@ def proxy_clear():
         PROXY_LIST_FILE.unlink()
     if BLACKLIST_FILE.exists():
         BLACKLIST_FILE.unlink()
+    add_progress_log("Cleared all proxy data")
     return jsonify({"success": True})
 
 @app.route('/api/proxy/sources', methods=['GET'])
@@ -430,68 +518,181 @@ def proxy_sources_save():
     sources_file = DATA_DIR / "proxy_sources.json"
     with open(sources_file, 'w') as f:
         json.dump(sources, f)
+    add_progress_log(f"Saved {len(sources)} proxy sources")
     return jsonify({"success": True})
 
 @app.route('/api/proxy/fetch_from_sources', methods=['POST'])
 def proxy_fetch_from_sources():
+    global proxy_progress
+    
     sources = request.json.get('sources', [])
+    
+    proxy_progress = {
+        "status": "fetching",
+        "operation": "Fetching proxies from sources",
+        "current_source": "",
+        "total_sources": len(sources),
+        "sources_completed": 0,
+        "proxies_found": 0,
+        "proxies_tested": 0,
+        "proxies_working": 0,
+        "proxies_failed": 0,
+        "blacklisted": len(load_blacklist()),
+        "whitelisted": len(get_whitelist()),
+        "total_proxies": 0,
+        "percent": 0,
+        "last_update": time.time(),
+        "logs": []
+    }
+    
     all_proxies = set()
     
-    for source in sources:
+    for idx, source in enumerate(sources):
         protocol = source.get('protocol', 'http')
-        url = source.get('url')
+        url = source.get('url', '')
+        
+        if not url or not url.startswith('http'):
+            continue
+        
+        proxy_progress["current_source"] = url[:80]
+        proxy_progress["sources_completed"] = idx
+        proxy_progress["last_update"] = time.time()
+        
+        add_progress_log(f"📡 Fetching from {protocol.upper()} source {idx+1}/{len(sources)}")
+        
         try:
-            response = http_requests.get(url, timeout=30)
+            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+            response = http_requests.get(url, timeout=30, headers=headers)
+            
             if response.status_code == 200:
-                lines = response.text.splitlines()
+                content = response.text
+                
+                if '<!DOCTYPE html>' in content[:500] or '<html' in content[:500]:
+                    add_progress_log(f"   ⚠️ Source returned HTML, skipping", "warning")
+                    continue
+                
+                lines = content.strip().split('\n')
+                source_proxies = 0
+                
                 for line in lines:
                     proxy = line.strip()
-                    if proxy and not proxy.startswith('#'):
-                        if '://' not in proxy:
-                            proxy = f"{protocol}://{proxy}"
+                    if not proxy or proxy.startswith('#') or len(proxy) < 5:
+                        continue
+                    if '<' in proxy or '>' in proxy or 'script' in proxy.lower():
+                        continue
+                    if '://' not in proxy:
+                        proxy = f"{protocol}://{proxy}"
+                    
+                    host_part = proxy.split('://', 1)[-1].split(':')
+                    if len(host_part) == 2 and host_part[0].replace('.', '').replace('-', '').replace(' ', '').isdigit():
                         all_proxies.add(proxy)
+                        source_proxies += 1
+                        
+                        if source_proxies % 100 == 0:
+                            proxy_progress["proxies_found"] = len(all_proxies)
+                            add_progress_log(f"   ... found {len(all_proxies)} proxies")
+                
+                add_progress_log(f"   ✅ Found {source_proxies} valid proxies")
+            else:
+                add_progress_log(f"   ❌ HTTP {response.status_code}", "error")
         except Exception as e:
-            print(f"Failed to fetch from {url}: {e}")
+            add_progress_log(f"   ❌ Error: {str(e)[:80]}", "error")
     
+    add_progress_log(f"💾 Saving {len(all_proxies)} proxies...")
     existing = load_proxy_list()
-    new_proxies = list(all_proxies)
-    merged = list(set(existing + new_proxies))
+    merged = list(set(existing + list(all_proxies)))
     save_proxy_list(merged)
     
-    return jsonify({"total": len(new_proxies), "sources_count": len(sources)})
+    proxy_progress["status"] = "fetch_complete"
+    proxy_progress["proxies_found"] = len(all_proxies)
+    add_progress_log(f"✅ Fetch complete: {len(all_proxies)} new, {len(merged)} total")
+    
+    return jsonify({"total": len(all_proxies), "sources_count": len(sources)})
 
 @app.route('/api/proxy/test_all', methods=['POST'])
 def proxy_test_all():
+    global proxy_progress
+    
     proxies = load_proxy_list()
+    
+    if not proxies:
+        add_progress_log("❌ No proxies to test", "error")
+        return jsonify({"working": 0, "failed": 0})
+    
+    whitelist = get_whitelist()
     blacklist = load_blacklist()
+    
+    proxy_progress = {
+        "status": "testing",
+        "operation": "Testing proxies",
+        "current_source": "Testing in progress...",
+        "total_sources": len(proxies),
+        "sources_completed": 0,
+        "proxies_found": len(proxies),
+        "proxies_tested": 0,
+        "proxies_working": 0,
+        "proxies_failed": 0,
+        "blacklisted": len(blacklist),
+        "whitelisted": len(whitelist),
+        "total_proxies": len(proxies),
+        "percent": 0,
+        "last_update": time.time(),
+        "logs": []
+    }
+    
     working = []
     failed = []
-    
     test_url = "https://httpbin.org/ip"
     timeout = 10
+    max_workers = 50
     
-    def test_proxy(proxy):
+    add_progress_log(f"🔍 Testing {len(proxies)} proxies with {max_workers} workers")
+    
+    def test_proxy_with_progress(proxy):
         try:
             proxies_dict = {"http": proxy, "https": proxy}
+            start_time = time.time()
             response = http_requests.get(test_url, proxies=proxies_dict, timeout=timeout)
+            elapsed = (time.time() - start_time) * 1000
             if response.status_code == 200:
-                return proxy, True
+                return proxy, True, elapsed
         except:
             pass
-        return proxy, False
+        return proxy, False, None
     
-    with ThreadPoolExecutor(max_workers=20) as executor:
-        futures = {executor.submit(test_proxy, proxy): proxy for proxy in proxies}
-        for future in as_completed(futures):
-            proxy, is_working = future.result()
-            if is_working:
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(test_proxy_with_progress, proxy): proxy for proxy in proxies}
+        
+        for idx, future in enumerate(as_completed(futures)):
+            proxy, is_working, latency = future.result()
+            
+            proxy_progress["proxies_tested"] = idx + 1
+            proxy_progress["last_update"] = time.time()
+            
+            if is_working or proxy in whitelist:
                 working.append(proxy)
+                proxy_progress["proxies_working"] = len(working)
             else:
                 failed.append(proxy)
+                proxy_progress["proxies_failed"] = len(failed)
+            
+            update_progress()
+            
+            if (idx + 1) % 100 == 0 or (idx + 1) == len(proxies):
+                add_progress_log(f"📊 Tested {idx+1}/{len(proxies)} | ✅ {len(working)} | ❌ {len(failed)}")
+            
+            if not is_working and proxy not in whitelist:
+                blacklist = load_blacklist()
+                if proxy not in blacklist:
+                    blacklist.append(proxy)
+                    save_blacklist(blacklist)
+                    proxy_progress["blacklisted"] = len(blacklist)
     
-    new_blacklist = list(set(blacklist + failed))
-    save_blacklist(new_blacklist)
     save_proxy_list(working)
+    
+    proxy_progress["status"] = "complete"
+    proxy_progress["percent"] = 100
+    add_progress_log(f"🎉 Testing Complete! ✅ {len(working)} working, ❌ {len(failed)} failed")
     
     return jsonify({"working": len(working), "failed": len(failed)})
 
@@ -502,16 +703,45 @@ def proxy_test_single():
         proxies_dict = {"http": proxy, "https": proxy}
         response = http_requests.get("https://httpbin.org/ip", proxies=proxies_dict, timeout=10)
         if response.status_code == 200:
-            return jsonify({"working": True, "response_time": 100})
+            return jsonify({"working": True})
     except:
         pass
     return jsonify({"working": False})
+
+# ==================== Cache API Routes ====================
+
+@app.route('/api/cache/stats', methods=['GET'])
+def api_cache_stats():
+    return jsonify(get_cache_stats())
+
+@app.route('/api/cache/clear', methods=['POST'])
+def api_cache_clear():
+    data = request.json
+    if data.get('expired_only', False):
+        deleted = clear_expired_cache()
+        return jsonify({"success": True, "deleted": deleted, "message": "Cleared expired cache"})
+    else:
+        deleted = clear_all_cache()
+        return jsonify({"success": True, "deleted": deleted, "message": "Cleared all cache"})
+
+@app.route('/api/cache/thumbnail/<video_id>', methods=['GET'])
+def api_get_thumbnail(video_id):
+    thumbnail_data = get_cached_video_thumbnail(video_id)
+    if thumbnail_data:
+        return send_file(io.BytesIO(thumbnail_data), mimetype='image/jpeg')
+    return jsonify({"error": "Thumbnail not found"}), 404
+
+@app.route('/api/cache/logo/<channel_name>', methods=['GET'])
+def api_get_logo(channel_name):
+    logo_data = get_cached_channel_logo(channel_name)
+    if logo_data:
+        return send_file(io.BytesIO(logo_data), mimetype='image/jpeg')
+    return jsonify({"error": "Logo not found"}), 404
 
 # ==================== PO Token API Routes ====================
 
 @app.route('/api/get_po_token', methods=['POST'])
 def api_get_po_token():
-    """Get PO token from selected source"""
     data = request.json
     video_id = data.get('video_id')
     source = data.get('source', 'native')
@@ -537,29 +767,148 @@ def api_get_po_token():
 def dashboard():
     return render_template('dash.html')
 
-@app.route('/api/get_channel_info', methods=['POST'])
-def api_get_channel_info():
-    handle = request.json.get('handle', '')
-    info = get_channel_info_ytdlp(handle)
-    return jsonify({"success": True, **info})
-
 @app.route('/api/save_config', methods=['POST'])
 def api_save_config():
-    save_config(request.json)
+    data = request.json
+    # Ensure channel_name is preserved
+    if 'channel_name' not in data:
+        # Load existing config to preserve channel
+        existing = load_config()
+        if 'channel_name' in existing:
+            data['channel_name'] = existing['channel_name']
+    save_config(data)
     return jsonify({"success": True})
+
+# Add/Update these endpoints in YTDash.py
+
+@app.route('/api/save_channel', methods=['POST'])
+def api_save_channel():
+    channel_name = request.json.get('channel_name', '')
+    print(f"[DEBUG] Saving channel: '{channel_name}'")
+    config = load_config()
+    config['channel_name'] = channel_name
+    save_config(config)
+    # Verify it saved
+    verify = load_config()
+    print(f"[DEBUG] Verified channel in config: '{verify.get('channel_name', '')}'")
+    return jsonify({"success": True, "channel_name": channel_name})
 
 @app.route('/api/load_config')
 def api_load_config():
-    return jsonify(load_config())
+    config = load_config()
+    if 'channel_name' not in config:
+        config['channel_name'] = ''
+    print(f"[DEBUG] Loading config - channel: '{config.get('channel_name', '')}'")
+    return jsonify(config)
+
+@app.route('/api/auto_fetch_channel', methods=['POST'])
+def api_auto_fetch_channel():
+    handle = request.json.get('handle', '')
+    if not handle:
+        return jsonify({'success': False, 'error': 'No handle provided'})
+    
+    clean_handle = handle.lstrip('@')
+    
+    # Try to load from cache first
+    cached = get_cached_channel_info(clean_handle)
+    if cached:
+        print(f"[Cache] Loaded channel for @{clean_handle} from cache")
+        return jsonify({"success": True, **cached})
+    
+    # Fetch from YouTube
+    result = get_channel_info_ytdlp(clean_handle)
+    if result.get('name'):
+        cache_channel_info(clean_handle, result)
+        avatar_url = result.get('avatar_url')
+        if avatar_url:
+            try:
+                cache_channel_logo(clean_handle, avatar_url)
+            except:
+                pass
+        return jsonify({"success": True, **result})
+    
+    return jsonify({"success": False, "error": "Channel not found"})
+
+@app.route('/api/auto_fetch_video', methods=['POST'])
+def api_auto_fetch_video():
+    url = request.json.get('url', '')
+    if not url:
+        return jsonify({'success': False, 'error': 'No URL provided'})
+    
+    video_id = extract_video_id(url)
+    if not video_id:
+        return jsonify({'success': False, 'error': 'Invalid YouTube URL'})
+    
+    cached = get_cached_video_info(video_id)
+    if cached:
+        return jsonify(cached)
+    
+    result = get_video_details_ytdlp(url)
+    if result.get('success'):
+        cache_video_info(video_id, result)
+        thumbnail_url = result.get('thumbnail_url')
+        if thumbnail_url:
+            try:
+                cache_video_thumbnail(video_id, thumbnail_url)
+            except:
+                pass
+    return jsonify(result)
+
 
 @app.route('/api/get_video_details', methods=['POST'])
 def api_get_video_details():
     url = request.json.get('url', '')
+    force_refresh = request.json.get('force_refresh', False)
+    
+    video_id = extract_video_id(url)
+    if not video_id:
+        return jsonify({'success': False, 'error': 'Invalid YouTube URL'})
+    
+    if not force_refresh:
+        cached = get_cached_video_info(video_id)
+        if cached:
+            return jsonify(cached)
+    
     result = get_video_details_ytdlp(url)
+    if result.get('success'):
+        cache_video_info(video_id, result)
+        thumbnail_url = result.get('thumbnail_url')
+        if thumbnail_url:
+            try:
+                cache_video_thumbnail(video_id, thumbnail_url)
+            except:
+                pass
     return jsonify(result)
+
+@app.route('/api/get_channel_info', methods=['POST'])
+def api_get_channel_info():
+    handle = request.json.get('handle', '')
+    force_refresh = request.json.get('force_refresh', False)
+    
+    if not handle:
+        return jsonify({"success": False, "error": "No channel handle provided"})
+    
+    clean_handle = handle.lstrip('@')
+    
+    if not force_refresh:
+        cached = get_cached_channel_info(clean_handle)
+        if cached:
+            return jsonify({"success": True, **cached})
+    
+    result = get_channel_info_ytdlp(clean_handle)
+    cache_channel_info(clean_handle, result)
+    avatar_url = result.get('avatar_url')
+    if avatar_url:
+        try:
+            cache_channel_logo(clean_handle, avatar_url)
+        except:
+            pass
+    
+    return jsonify({"success": True, **result})
 
 @app.route('/api/get_view_types_by_type', methods=['POST'])
 def api_get_view_types_by_type():
+    """Return view types based on is_short flag from yt-dlp."""
     is_short = request.json.get('is_short', False)
     if is_short:
         view_types = ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View"]
@@ -607,9 +956,24 @@ def api_preview():
 
 @app.route('/api/cleanup', methods=['POST'])
 def api_cleanup():
+    """Run full cleanup - handles both JSON and empty requests"""
     try:
-        result = cleanup_all()
-        return jsonify({"success": True, "deleted_files": result["deleted_files"], "deleted_folders": result["deleted_folders"], "freed_space_mb": result.get("freed_space_mb", 0)})
+        # Try to get dry_run from JSON if present, otherwise default to False
+        dry_run = False
+        if request.is_json:
+            data = request.get_json()
+            dry_run = data.get('dry_run', False)
+        
+        results = clean_all(dry_run=dry_run)
+        
+        return jsonify({
+            "success": True,
+            "dry_run": dry_run,
+            "deleted_files": results['total']['deleted'],
+            "deleted_folders": results.get('cache_folders', {}).get('deleted_folders', 0),
+            "freed_space_mb": round(results['total']['size_bytes'] / (1024 * 1024), 2),
+            "freed_space_human": results['total']['size_human']
+        })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
 
@@ -677,15 +1041,20 @@ def api_launch():
         proxies = load_proxy_list()
         blacklist = load_blacklist()
         available_proxies = [p for p in proxies if p not in blacklist]
-        print(f"[PROXY] Using proxy list with {len(available_proxies)} working proxies")
+        print(f"[PROXY] Using rotating proxy list with {len(available_proxies)} available proxies")
     else:
         print(f"[PROXY] No proxy - direct connection")
     
+    # ========== CYCLE LOOP WITH PROPER WAITING ==========
     for cycle in range(1, cycles + 1):
-        print(f"[DEBUG] Starting Cycle {cycle}/{cycles}")
+        print(f"[DEBUG] ========================================")
+        print(f"[DEBUG] Starting Cycle {cycle}/{cycles} at {time.strftime('%H:%M:%S')}")
+        print(f"[DEBUG] ========================================")
+        
         cycle_processes = []
         cycle_configs = []
         
+        # Build configs for this cycle
         for i in range(num_instances):
             instance_id = (cycle - 1) * num_instances + i + 1
             url = data['urls'][i % len(data['urls'])]
@@ -701,10 +1070,26 @@ def api_launch():
             cfg['is_auto_random'] = is_auto_random
             cfg['available_view_types'] = available_types if is_auto_random else []
             cfg['cycle_number'] = cycle
+            cfg['cycles'] = 1
             cfg['traffic_source'] = traffic_source
             cfg['po_token_source'] = po_token_source
             cfg['proxy_mode'] = proxy_mode
             cfg['num_instances'] = num_instances
+            
+            # Assign rotating proxy for 'list' mode
+            if proxy_mode == 'list':
+                rotating_proxy = get_rotating_proxy()
+                if rotating_proxy:
+                    cfg['proxy'] = rotating_proxy
+                    cfg['proxy_mode'] = 'single'
+                    print(f"[PROXY] Instance {instance_id} assigned rotating proxy: {rotating_proxy[:60]}")
+                else:
+                    manual_proxy = get_proxy_for_instance(instance_id, num_instances)
+                    if manual_proxy:
+                        cfg['proxy'] = manual_proxy
+                        print(f"[PROXY] Instance {instance_id} assigned manual proxy (fallback): {manual_proxy[:60]}")
+                    else:
+                        print(f"[PROXY] WARNING: No proxy available for instance {instance_id}")
             
             if use_undetected:
                 cfg['use_undetected'] = True
@@ -715,16 +1100,34 @@ def api_launch():
             
             cycle_configs.append(cfg)
         
+        # Group by script type
         script_groups = defaultdict(list)
         for cfg in cycle_configs:
             script_file = view_to_script.get(cfg['view_type'], "YTDirect.py")
             script_groups[script_file].append(cfg)
         
+        # Launch each script group
         for script_file, group_configs in script_groups.items():
             if group_configs:
-                group_temp_file = DATA_DIR / f"launch_config_cycle{cycle}_{script_file}_{int(time.time())}.json"
-                with open(group_temp_file, 'w') as f:
-                    json.dump(group_configs, f, indent=2)
+                # Create a unique filename with timestamp
+                timestamp = int(time.time())
+                group_temp_file = DATA_DIR / f"launch_config_cycle{cycle}_{script_file}_{timestamp}.json"
+                
+                try:
+                    with open(group_temp_file, 'w', encoding='utf-8') as f:
+                        json.dump(group_configs, f, indent=2, ensure_ascii=False)
+                    
+                    # Verify the file was written correctly
+                    with open(group_temp_file, 'r', encoding='utf-8') as f:
+                        test_read = json.load(f)
+                        if not test_read:
+                            raise ValueError("Config file is empty")
+                    
+                    print(f"[DEBUG] Config file written: {group_temp_file.name}")
+                    
+                except Exception as e:
+                    print(f"[ERROR] Failed to write config file: {e}")
+                    continue
                 
                 if automation_version == 'playwright':
                     script_path = BASE_DIR / "playwright" / "scripts" / script_file
@@ -733,22 +1136,46 @@ def api_launch():
                 
                 if script_path.exists():
                     cmd = [sys.executable, str(script_path), str(group_temp_file)]
+                    
+                    print(f"[LAUNCH] {script_path.name} with {len(group_configs)} instance(s)")
+                    
+                    # Launch the process
                     if sys.platform == "win32":
                         proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
                     else:
                         proc = subprocess.Popen(cmd)
+                    
                     cycle_processes.append(proc)
                     launched_total += len(group_configs)
+                    print(f"[DEBUG] Process launched with PID: {proc.pid}")
                 else:
                     print(f"[WARNING] Script not found: {script_path}")
         
-        for proc in cycle_processes:
-            proc.wait()
+        # ========== CRITICAL: Wait for ALL processes in this cycle ==========
+        if cycle_processes:
+            print(f"[DEBUG] Cycle {cycle}: Waiting for {len(cycle_processes)} process(es) to complete...")
+            
+            for idx, proc in enumerate(cycle_processes):
+                print(f"[DEBUG] Waiting for process {idx+1}/{len(cycle_processes)} (PID: {proc.pid})...")
+                
+                # Poll every 2 seconds to check if process is still running
+                while True:
+                    ret = proc.poll()
+                    if ret is not None:
+                        print(f"[DEBUG] Process {proc.pid} completed with exit code: {ret}")
+                        break
+                    time.sleep(2)
+                    print(f"[DEBUG] Process {proc.pid} still running...")
+            
+            print(f"[DEBUG] Cycle {cycle} completed at {time.strftime('%H:%M:%S')}")
+        else:
+            print(f"[DEBUG] Cycle {cycle}: No processes to wait for")
         
-        print(f"[DEBUG] Cycle {cycle} completed")
-        
+        # Wait between cycles (if more cycles remain)
         if cycle < cycles:
-            time.sleep(random.uniform(5, 10))
+            wait_time = random.uniform(5, 10)
+            print(f"[DEBUG] Waiting {wait_time:.1f}s before starting Cycle {cycle + 1}...")
+            time.sleep(wait_time)
     
     # Build status message
     proxy_msg = ""
@@ -757,8 +1184,7 @@ def api_launch():
     elif proxy_mode == 'tor_browser':
         proxy_msg = " Proxy: Tor Browser (port 9150)"
     elif proxy_mode == 'list':
-        working_count = len([p for p in load_proxy_list() if p not in load_blacklist()])
-        proxy_msg = f" Proxy: Rotating from list ({working_count} proxies available)"
+        proxy_msg = " Proxy: Rotating from dynamic pool"
     else:
         proxy_msg = " Proxy: None (Direct)"
     
@@ -771,25 +1197,37 @@ def api_launch():
     else:
         po_msg = " PO Token: po-token-generator (Node.js)"
     
-    return jsonify({"success": True, "message": f"Completed {cycles} cycle(s) with {num_instances} instance(s) each. Total {launched_total} sessions. Traffic source: {traffic_source}.{po_msg}{proxy_msg}{stealth_msg}"})
-
+    print(f"[DEBUG] ========================================")
+    print(f"[DEBUG] ALL CYCLES COMPLETED at {time.strftime('%H:%M:%S')}")
+    print(f"[DEBUG] Total sessions launched: {launched_total}")
+    print(f"[DEBUG] ========================================")
+    
+    return jsonify({"success": True, "message": f"Completed {cycles} cycle(s) with {num_instances} instance(s) each. Total {launched_total} sessions.{po_msg}{proxy_msg}{stealth_msg}"})
+    
+    
 def open_browser():
     time.sleep(1.5)
     webbrowser.open('http://127.0.0.1:5000')
 
 if __name__ == '__main__':
-    print("Starting YouTube Automation Dashboard at http://127.0.0.1:5000")
+    print("=" * 60)
+    print("YouTube Automation Dashboard")
+    print("=" * 60)
+    print(f"Dashboard URL: http://127.0.0.1:5000")
     print(f"yt-dlp version: {yt_dlp.version.__version__}")
     print(f"Log directory: {LOG_DIR}")
     print(f"Data directory: {DATA_DIR}")
     print("\n🔐 PO Token Sources Available:")
-    print("   🌿 Native Browser - YouTube generates token via embedded player")
-    print("   🖥️ External Server - bgutil on port 4416")
-    print("   🤖 po-token-generator - Node.js service on port 4417")
+    print("   🌿 Native Browser")
+    print("   🖥️ External Server (bgutil, port 4416)")
+    print("   🤖 po-token-generator (Node.js, port 4417)")
     print("\n🔌 Proxy Modes Available:")
-    print("   🚫 No Proxy - Direct connection")
-    print("   🌐 Tor Service - Tor service on port 9050")
-    print("   🌐 Tor Browser - Tor Browser on port 9150")
-    print("   🔄 Proxy List - Rotating proxies from proxy_list.txt")
+    print("   🚫 No Proxy")
+    print("   🌐 Tor Service (port 9050)")
+    print("   🌐 Tor Browser (port 9150)")
+    print("   🔄 Rotating Proxy")
+    print("\n💾 Cache System Active")
+    print("=" * 60)
+    
     threading.Thread(target=open_browser, daemon=True).start()
     app.run(debug=True, host='127.0.0.1', port=5000, use_reloader=False)

@@ -1,9 +1,0 @@
-2026-06-09 19:38:14,737 - INFO - Instance 1: Created profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_channel_cache_1781014094_1_aace1d30ff4b
-2026-06-09 19:38:17,041 - INFO - Instance 1: Loading embedded player for native token generation
-2026-06-09 19:38:24,809 - INFO - Instance 1: Extracted VISITOR_INFO1_LIVE cookie
-2026-06-09 19:38:24,810 - INFO - Instance 1: Native token generated successfully
-2026-06-09 19:38:24,810 - INFO - Instance 1: Using native token (fallback)
-2026-06-09 19:38:25,071 - INFO - Instance 1: Injected VISITOR_INFO1_LIVE cookie
-2026-06-09 19:38:25,071 - INFO - Instance 1: Searching for channel: @rajasthanidesidiaries
-2026-06-09 19:38:25,071 - INFO - Instance 1: Cycle 1/1
-2026-06-09 19:38:53,858 - ERROR - Instance 1: Could not click video result

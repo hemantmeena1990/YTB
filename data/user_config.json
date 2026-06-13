@@ -1,16 +1,19 @@
 {
-  "url": "https://www.youtube.com/watch?v=gYuhqMcoj0k",
+  "urls": [
+    "https://www.youtube.com/watch?v=xUFtnWSQ7W0"
+  ],
+  "automation_version": "selenium",
+  "view_type": "Direct/Unknown",
+  "po_token_source": "external",
+  "proxy_mode": "none",
+  "traffic_source": "direct",
+  "min_watch_time": 5,
+  "max_watch_time": 60,
+  "suggested_chance": 1,
+  "suggested_min": 1,
+  "suggested_max": 5,
   "num_instances": 1,
   "cycles": 1,
   "headless": false,
-  "min_watch_time": 15,
-  "max_watch_time": 164,
-  "suggested_min": 5,
-  "suggested_max": 15,
-  "suggested_chance": 1,
-  "proxy_mode": "tor_service",
-  "channel_name": "@rajasthanidesidiaries",
-  "view_type": "Direct/Unknown",
-  "traffic_source": "direct",
-  "po_token_source": "potgen"
+  "channel_name": "@rajasthanidesidiaries"
 }

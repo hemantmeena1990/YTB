@@ -1,9 +1,0 @@
-2026-06-09 19:24:32,335 - INFO - Instance 1: Created profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_direct_cache_1781013272_1_81168b22a954
-2026-06-09 19:24:34,567 - INFO - Instance 1: Loading embedded player for native token generation
-2026-06-09 19:24:42,571 - INFO - Instance 1: Extracted VISITOR_INFO1_LIVE cookie
-2026-06-09 19:24:42,571 - INFO - Instance 1: Native token generated successfully
-2026-06-09 19:24:42,795 - INFO - Instance 1: Injected VISITOR_INFO1_LIVE cookie
-2026-06-09 19:24:48,571 - INFO - Instance 1: Watching main for 124s
-2026-06-09 19:26:52,575 - INFO - Instance 1: Attempting suggested video
-2026-06-09 19:27:01,233 - INFO - Instance 1: Watching suggested for 10s
-2026-06-09 19:27:11,233 - INFO - Instance 1: Session completed

@@ -1,4 +1,4 @@
-# common/search.py
+# selenium/common/search.py
 """
 Reusable search utilities for YouTube automation.
 Only performs the search (opens homepage, types query, submits).
@@ -15,14 +15,18 @@ from selenium.webdriver.support import expected_conditions as EC
 
 logger = logging.getLogger(__name__)
 
+
 def _natural_typing(element, text, use_fast=False):
+    """Type text naturally with random delays."""
     filtered = ''.join(c for c in text if ord(c) <= 0xFFFF)
     delay = 0.02 if use_fast else 0.05
     for ch in filtered:
         element.send_keys(ch)
         time.sleep(random.uniform(delay, delay * 3))
 
+
 def _wait_for_page_load(driver, timeout=25):
+    """Wait for page to load completely."""
     start = time.time()
     while time.time() - start < timeout:
         try:
@@ -33,7 +37,20 @@ def _wait_for_page_load(driver, timeout=25):
         time.sleep(0.3)
     return False
 
+
+def _wait_for_search_box(driver, timeout=20):
+    """Wait for search box to be present and ready."""
+    try:
+        WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located((By.NAME, "search_query"))
+        )
+        return True
+    except:
+        return False
+
+
 def _handle_cookies(driver, instance_id):
+    """Handle cookie consent popups."""
     cookie_xpaths = [
         "//button[contains(., 'Accept all')]",
         "//button[contains(., 'I agree')]",
@@ -53,15 +70,38 @@ def _handle_cookies(driver, instance_id):
             continue
     return False
 
+
 def _human_delay(min_sec=0.3, max_sec=1.5):
+    """Random human-like delay."""
     time.sleep(random.uniform(min_sec, max_sec))
+
+
+def _has_search_results(driver):
+    """Check if search results page has any video links."""
+    try:
+        video_links = driver.find_elements(By.CSS_SELECTOR, "a[href*='/watch?v=']")
+        return len(video_links) > 0
+    except:
+        return False
+
 
 class DesktopSearch:
     @staticmethod
-    def perform_search(driver, instance_id, search_query, use_fast_typing=False):
-        """Open desktop YouTube, type query, press Enter. Returns True if successful."""
+    def perform_search(driver, instance_id, search_query, use_fast_typing=False, video_id=None):
+        """
+        Open desktop YouTube, type query, press Enter.
+        If title search fails, falls back to video ID search.
+        """
         try:
+            logger.info(f"Instance {instance_id}: Performing desktop search...")
+            
             driver.get("https://www.youtube.com")
+            
+            # Wait for search box to be ready (timeout 20 seconds)
+            if not _wait_for_search_box(driver, timeout=20):
+                logger.error(f"Instance {instance_id}: Search box not found after 20 seconds")
+                return False
+            
             _wait_for_page_load(driver, 20)
             _handle_cookies(driver, instance_id)
             _human_delay(1, 2.5)
@@ -70,34 +110,76 @@ class DesktopSearch:
             search_box.click()
             _human_delay(0.3, 0.8)
             search_box.clear()
+            
+            # Try title search first
             _natural_typing(search_box, search_query, use_fast=use_fast_typing)
             _human_delay(0.5, 1)
             search_box.send_keys(Keys.ENTER)
+            
+            # Wait for results with timeout
             _wait_for_page_load(driver, 20)
             _human_delay(1.5, 3)
-            return True
+            
+            # Check if we got results
+            if _has_search_results(driver):
+                logger.info(f"Instance {instance_id}: Desktop title search successful")
+                return True
+                
+            # If title search failed and we have video_id, fallback to video ID search
+            if video_id:
+                logger.info(f"Instance {instance_id}: Title search failed, falling back to video ID: {video_id}")
+                
+                # Clear and search by video ID
+                search_box = driver.find_element(By.NAME, "search_query")
+                search_box.click()
+                search_box.clear()
+                _natural_typing(search_box, video_id, use_fast=True)
+                _human_delay(0.5, 1)
+                search_box.send_keys(Keys.ENTER)
+                _wait_for_page_load(driver, 20)
+                _human_delay(1.5, 3)
+                
+                if _has_search_results(driver):
+                    logger.info(f"Instance {instance_id}: Desktop video ID search successful")
+                    return True
+                else:
+                    logger.warning(f"Instance {instance_id}: Video ID search also returned no results")
+                    return False
+            else:
+                logger.warning(f"Instance {instance_id}: Title search failed and no video_id provided")
+                return False
+                
         except Exception as e:
             logger.error(f"Instance {instance_id}: Desktop perform_search error - {e}")
             return False
 
+
 class MobileSearch:
     @staticmethod
-    def perform_search(driver, instance_id, search_query, use_fast_typing=False):
-        """Open mobile YouTube, click search button, type query, submit. Returns True if successful."""
+    def perform_search(driver, instance_id, search_query, use_fast_typing=False, video_id=None):
+        """
+        Open mobile YouTube, click search button, type query, submit.
+        If title search fails, falls back to video ID search.
+        """
         try:
+            logger.info(f"Instance {instance_id}: Performing mobile search...")
+            
             driver.get("https://m.youtube.com")
             _wait_for_page_load(driver, 20)
             _handle_cookies(driver, instance_id)
             _human_delay(1, 2.5)
 
-            # Click search button
+            # Click search button - try multiple selectors
             search_btn = None
             selectors = [
                 ".mobile-topbar-header-content button:first-child",
                 "button.ytSearchboxComponentSearchButton",
                 "button[aria-label='Search']",
-                "//button[@aria-label='Search']"
+                "//button[@aria-label='Search']",
+                ".search-icon",
+                "ytm-searchbox button"
             ]
+            
             for sel in selectors:
                 try:
                     if sel.startswith("//"):
@@ -112,9 +194,11 @@ class MobileSearch:
                         break
                 except:
                     continue
+                    
             if not search_btn:
                 logger.error(f"Instance {instance_id}: Could not find mobile search button")
                 return False
+                
             driver.execute_script("arguments[0].click();", search_btn)
             _human_delay(1, 1.5)
 
@@ -123,17 +207,21 @@ class MobileSearch:
             input_selectors = [
                 "input[name='search_query']",
                 "input.ytSearchboxComponentInput",
-                "input[placeholder='Search YouTube']"
+                "input[placeholder='Search YouTube']",
+                "ytm-searchbox input",
+                "input.search-box"
             ]
+            
             for sel in input_selectors:
                 try:
                     search_box = WebDriverWait(driver, 10).until(
-                        EC.element_to_be_clickable((By.CSS_SELECTOR, sel))
+                        EC.presence_of_element_located((By.CSS_SELECTOR, sel))
                     )
                     if search_box:
                         break
                 except:
                     continue
+                    
             if not search_box:
                 logger.error(f"Instance {instance_id}: Could not find mobile search box")
                 return False
@@ -141,12 +229,51 @@ class MobileSearch:
             search_box.click()
             _human_delay(0.5, 1)
             search_box.clear()
+            
+            # Try title search first
             _natural_typing(search_box, search_query, use_fast=use_fast_typing)
             _human_delay(0.5, 1)
             search_box.send_keys(Keys.ENTER)
             _wait_for_page_load(driver, 20)
             _human_delay(1.5, 3)
-            return True
+            
+            # Check if we got results
+            if _has_search_results(driver):
+                logger.info(f"Instance {instance_id}: Mobile title search successful")
+                return True
+                
+            # If title search failed and we have video_id, fallback to video ID search
+            if video_id:
+                logger.info(f"Instance {instance_id}: Title search failed, falling back to video ID: {video_id}")
+                
+                # Find search box again (page may have changed)
+                try:
+                    search_box = driver.find_element(By.CSS_SELECTOR, "input[name='search_query']")
+                except:
+                    try:
+                        search_box = driver.find_element(By.CSS_SELECTOR, "input.ytSearchboxComponentInput")
+                    except:
+                        logger.error(f"Instance {instance_id}: Could not find search box for fallback")
+                        return False
+                
+                search_box.click()
+                search_box.clear()
+                _natural_typing(search_box, video_id, use_fast=True)
+                _human_delay(0.5, 1)
+                search_box.send_keys(Keys.ENTER)
+                _wait_for_page_load(driver, 20)
+                _human_delay(1.5, 3)
+                
+                if _has_search_results(driver):
+                    logger.info(f"Instance {instance_id}: Mobile video ID search successful")
+                    return True
+                else:
+                    logger.warning(f"Instance {instance_id}: Mobile video ID search also returned no results")
+                    return False
+            else:
+                logger.warning(f"Instance {instance_id}: Title search failed and no video_id provided")
+                return False
+                
         except Exception as e:
             logger.error(f"Instance {instance_id}: Mobile perform_search error - {e}")
             return False

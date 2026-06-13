@@ -1,4 +1,4 @@
-# common/find.py
+# selenium/common/find.py
 """
 Functions to find and click specific result types on YouTube search results page,
 and to perform channel internal search.
@@ -7,13 +7,27 @@ All clicking now uses human-like behavior from humanclick module.
 import time
 import random
 import logging
+import sys
+from pathlib import Path
+
+# Add parent paths to handle imports
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+COMMON_ROOT = PROJECT_ROOT / "common"
+
+if str(COMMON_ROOT) not in sys.path:
+    sys.path.insert(0, str(COMMON_ROOT))
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # Import the shared human click utility
-from common.humanclick import human_click
+try:
+    from common.humanclick import human_click
+except ImportError:
+    # Fallback: try direct import
+    from humanclick import human_click
 
 logger = logging.getLogger(__name__)
 
@@ -26,9 +40,11 @@ def _natural_typing(element, text, use_fast=False):
         time.sleep(random.uniform(delay, delay * 3))
 
 # ---------- Find and click video result (general search) ----------
-def find_and_click_video_result(driver, instance_id, video_id, is_mobile=False):
+
+def find_and_click_video_result(driver, instance_id, video_id, is_mobile=False, po_token=None):
     """
     On the search results page, find the video link containing the given video ID and click it.
+    If po_token is provided, injects it into the href BEFORE clicking.
     Uses human-like click with navigation verification.
     """
     try:
@@ -65,13 +81,23 @@ def find_and_click_video_result(driver, instance_id, video_id, is_mobile=False):
             logger.warning(f"Instance {instance_id}: Video result not found for ID {video_id}")
             return False
         
+        # Inject PO token into href BEFORE clicking (if provided)
+        if po_token:
+            original_href = video_link.get_attribute('href')
+            if 'pot=' not in original_href:
+                separator = '&' if '?' in original_href else '?'
+                new_href = f"{original_href}{separator}pot={po_token}"
+                driver.execute_script(f"arguments[0].setAttribute('href', '{new_href}');", video_link)
+                logger.info(f"Instance {instance_id}: Injected PO token into video link href before click")
+        
         # Human-like click with navigation verification
         return human_click(driver, video_link, instance_id, element_type=f"video result (ID: {video_id[:8]})")
         
     except Exception as e:
         logger.error(f"Instance {instance_id}: Error in find_and_click_video_result - {e}")
         return False
-
+        
+        
 # ---------- Find and click channel result ----------
 def find_and_click_channel_result(driver, instance_id, channel_name, is_mobile=False):
     """

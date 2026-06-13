@@ -1,6 +1,0 @@
-2026-06-09 19:10:11,336 - INFO - Starting YTGoogleSearch with 1 instance(s)
-2026-06-09 19:10:11,336 - INFO - Instance 2: Requesting PO token for video gYuhqMcoj0k...
-2026-06-09 19:10:13,363 - WARNING - Instance 2: Cannot connect to PO token server on port 4416
-2026-06-09 19:10:13,364 - INFO - Instance 2: Make sure the server is running: node build/main.js --port 4416
-2026-06-09 19:10:13,365 - INFO - Instance 2: Video title: छोरा में कूदू तू देख काया बल खाय कनिया | Anniversa...
-2026-06-09 19:12:49,116 - INFO - All sessions finished

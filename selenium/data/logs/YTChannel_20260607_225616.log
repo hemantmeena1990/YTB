@@ -1,9 +1,0 @@
-2026-06-07 22:56:16,976 - INFO - Instance 1: Created isolated profile at C:\Users\Hemant\AppData\Local\Temp\yt_automation\yt_channel_cache_1780853176_1_0d871e06a2c3
-2026-06-07 22:56:20,255 - INFO - Instance 1: Searching for channel: @rajasthanidesidiaries
-2026-06-07 22:56:20,266 - INFO - Instance 1: Cycle 1/1
-2026-06-07 22:56:45,452 - INFO - Instance 1: Injected PO token into video link href
-2026-06-07 22:56:45,999 - INFO - Instance 1: Clicked video with pre-injected PO token
-2026-06-07 22:56:49,448 - INFO - Instance 1: Watching main for 51s
-2026-06-07 22:57:40,467 - INFO - Instance 1: Attempting suggested video
-2026-06-07 22:58:10,823 - INFO - Instance 1: Watching suggested for 6s
-2026-06-07 22:58:16,825 - INFO - Instance 1: Completed 1 cycle(s)

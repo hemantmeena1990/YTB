@@ -1,6 +1,0 @@
-2026-06-09 13:30:26,509 - INFO - Starting YTDirect with 2 instance(s)
-2026-06-09 13:30:26,509 - INFO - Instance 5: Requesting PO token for video gYuhqMcoj0k...
-2026-06-09 13:30:38,374 - INFO - Instance 5: PO token received (length: 804)
-2026-06-09 13:30:40,218 - INFO - Instance 6: Requesting PO token for video gYuhqMcoj0k...
-2026-06-09 13:30:55,289 - INFO - Instance 6: PO token received (length: 804)
-2026-06-09 13:33:09,889 - INFO - All sessions finished
