@@ -240,7 +240,7 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
         config['referer'] = REFERER_MAP[traffic_source]
     
     # Add video title for search mode or Google Search
-    if view_type == "Search (Video)" or view_type == "Google Search":
+    if view_type in ["Search (Video)", "Google Search", "Channel View"]:
         raw_title = get_video_title(url)
         config["video_title"] = raw_title if raw_title else ""
     

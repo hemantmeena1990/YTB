@@ -67,6 +67,7 @@ if _human_behavior_path.exists():
     click_suggested_video = _human_behavior_module.click_suggested_video
     ensure_video_playback = _human_behavior_module.ensure_video_playback
     handle_all_popups = _human_behavior_module.handle_all_popups
+    attempt_video_playback_with_retry = _human_behavior_module.attempt_video_playback_with_retry
 else:
     raise ImportError(f"Cannot find human_behavior module at {_human_behavior_path}")
 
@@ -173,28 +174,43 @@ def run_session(cfg: SessionConfig):
             pass
         
         handle_cookies(driver, cfg.instance_id)
-        ensure_video_playback(driver, cfg.instance_id)
-        start_video_with_audio_mute(driver, cfg.instance_id, cfg.is_mobile, is_suggested=False)
-
-        main_watch = get_variable_watch_time(cfg.min_watch_time, cfg.max_watch_time)
-        logger.info(f"Instance {cfg.instance_id}: Watching main for {main_watch}s")
-        watch_with_human_behavior(driver, main_watch, cfg.is_mobile)
+        playback_success = attempt_video_playback_with_retry(
+            driver, 
+            cfg.instance_id, 
+            cfg.is_mobile, 
+            is_suggested=False,
+            max_retries=3
+        )
+        
+        if playback_success:
+            main_watch = get_variable_watch_time(cfg.min_watch_time, cfg.max_watch_time)
+            logger.info(f"Instance {cfg.instance_id}: Watching main for {main_watch}s")
+            watch_with_human_behavior(driver, main_watch, cfg.is_mobile)
+        else:
+            logger.warning(f"Instance {cfg.instance_id}: Main video playback failed after retries, skipping")
 
         if random.random() < cfg.suggested_chance:
             logger.info(f"Instance {cfg.instance_id}: Attempting suggested video")
             if click_suggested_video(driver, cfg.is_mobile):
                 time.sleep(2)
                 wait_for_page_load(driver, 20)
-                try:
-                    handle_all_popups(driver, cfg.instance_id)
-                except:
-                    pass
+                handle_all_popups(driver, cfg.instance_id)
                 handle_cookies(driver, cfg.instance_id)
-                ensure_video_playback(driver, cfg.instance_id)
-                start_video_with_audio_mute(driver, cfg.instance_id, cfg.is_mobile, is_suggested=True)
-                suggested_watch = random.randint(cfg.suggested_min, cfg.suggested_max)
-                logger.info(f"Instance {cfg.instance_id}: Watching suggested for {suggested_watch}s")
-                watch_with_human_behavior(driver, suggested_watch, cfg.is_mobile)
+                
+                suggested_playback = attempt_video_playback_with_retry(
+                    driver,
+                    cfg.instance_id,
+                    cfg.is_mobile,
+                    is_suggested=True,
+                    max_retries=2  # Fewer retries for suggested videos
+                )
+                
+                if suggested_playback:
+                    suggested_watch = random.randint(cfg.suggested_min, cfg.suggested_max)
+                    logger.info(f"Instance {cfg.instance_id}: Watching suggested for {suggested_watch}s")
+                    watch_with_human_behavior(driver, suggested_watch, cfg.is_mobile)
+                else:
+                    logger.warning(f"Instance {cfg.instance_id}: Suggested video playback failed, skipping")
             else:
                 logger.warning(f"Instance {cfg.instance_id}: Could not load suggested video")
         

@@ -20,6 +20,7 @@ from datetime import datetime
 from multiprocessing import Process
 from dataclasses import dataclass
 
+
 # ========== PATH SETUP - PROJECT ROOT BASED ==========
 # Get the absolute path of this script
 _script_path = Path(__file__).resolve()
@@ -36,6 +37,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(COMMON_ROOT))
 sys.path.insert(0, str(SELENIUM_ROOT))
 sys.path.insert(0, str(SELENIUM_COMMON_ROOT))
+
 
 # ========== HELPER FUNCTION FOR DIRECT MODULE LOADING ==========
 def _load_module_from_file(module_name, file_path):
@@ -88,6 +90,7 @@ if _human_behavior_path.exists():
     click_suggested_video = _human_behavior_module.click_suggested_video
     ensure_video_playback = _human_behavior_module.ensure_video_playback
     handle_all_popups = _human_behavior_module.handle_all_popups
+    attempt_video_playback_with_retry = _human_behavior_module.attempt_video_playback_with_retry
 else:
     raise ImportError(f"Cannot find human_behavior module at {_human_behavior_path}")
 
@@ -282,12 +285,22 @@ def run_session(cfg: SessionConfig):
             return
 
         handle_cookies(driver, cfg.instance_id)
-        ensure_video_playback(driver, cfg.instance_id)
-        start_video_with_audio_mute(driver, cfg.instance_id, cfg.is_mobile, is_suggested=False)
-
-        main_watch = get_variable_watch_time(cfg.min_watch_time, cfg.max_watch_time)
-        logger.info(f"Instance {cfg.instance_id}: Watching main for {main_watch}s")
-        watch_with_human_behavior(driver, main_watch, cfg.is_mobile)
+        
+        # Use retry function for playback (replaces ensure_video_playback + start_video_with_audio_mute)
+        playback_success = attempt_video_playback_with_retry(
+            driver, 
+            cfg.instance_id, 
+            cfg.is_mobile, 
+            is_suggested=False,
+            max_retries=3
+        )
+        
+        if playback_success:
+            watch_time = get_variable_watch_time(cfg.min_watch_time, cfg.max_watch_time)
+            logger.info(f"Instance {cfg.instance_id}: Watching for {watch_time}s")
+            watch_with_human_behavior(driver, watch_time, cfg.is_mobile)
+        else:
+            logger.warning(f"Instance {cfg.instance_id}: Playback failed after retries, skipping watch")
 
         if random.random() < cfg.suggested_chance:
             logger.info(f"Instance {cfg.instance_id}: Attempting suggested video")
@@ -295,11 +308,22 @@ def run_session(cfg: SessionConfig):
                 time.sleep(2)
                 wait_for_page_load(driver, 20)
                 handle_cookies(driver, cfg.instance_id)
-                ensure_video_playback(driver, cfg.instance_id)
-                start_video_with_audio_mute(driver, cfg.instance_id, cfg.is_mobile, is_suggested=True)
-                suggested_watch = random.randint(cfg.suggested_min, cfg.suggested_max)
-                logger.info(f"Instance {cfg.instance_id}: Watching suggested for {suggested_watch}s")
-                watch_with_human_behavior(driver, suggested_watch, cfg.is_mobile)
+                
+                # Use retry function for suggested video
+                suggested_playback = attempt_video_playback_with_retry(
+                    driver,
+                    cfg.instance_id,
+                    cfg.is_mobile,
+                    is_suggested=True,
+                    max_retries=2
+                )
+                
+                if suggested_playback:
+                    suggested_watch = random.randint(cfg.suggested_min, cfg.suggested_max)
+                    logger.info(f"Instance {cfg.instance_id}: Watching suggested for {suggested_watch}s")
+                    watch_with_human_behavior(driver, suggested_watch, cfg.is_mobile)
+                else:
+                    logger.warning(f"Instance {cfg.instance_id}: Suggested video playback failed, skipping")
             else:
                 logger.warning(f"Instance {cfg.instance_id}: Could not load suggested video")
         

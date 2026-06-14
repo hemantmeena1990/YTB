@@ -978,6 +978,7 @@ def api_cleanup():
         return jsonify({"success": False, "error": str(e)})
 
 @app.route('/api/launch', methods=['POST'])
+@app.route('/api/launch', methods=['POST'])
 def api_launch():
     data = request.json
     view_type = data['view_type']
@@ -989,20 +990,33 @@ def api_launch():
     proxy_mode = data.get('proxy_mode', 'none')
     po_token_source = data.get('po_token_source', 'native')
     
+    # Determine if it's a short from local cache (no yt-dlp)
+    video_id = extract_video_id(url)
+    is_short = None
+    if video_id:
+        cached = get_cached_video_info(video_id)
+        if cached and cached.get('success'):
+            is_short = cached.get('is_short', False)
+            print(f"[DEBUG] Using cached is_short for {video_id}: {is_short}")
+        else:
+            # Fallback: detect from URL
+            is_short = '/shorts/' in url
+            print(f"[DEBUG] Cache miss, using URL detection for {video_id}: {is_short}")
+    else:
+        # No video ID, fallback to URL detection
+        is_short = '/shorts/' in url
+        print(f"[DEBUG] No video ID, using URL detection: {is_short}")
+    
     if cycles < 1:
         return jsonify({"success": False, "error": "Cycles must be at least 1"})
     
-    details = get_video_details_ytdlp(url)
-    if not details.get('success'):
-        return jsonify({"success": False, "error": f"Could not validate video: {details.get('error', 'Unknown error')}"})
-    
-    is_short = details.get('is_short', False)
-    
+    # Define valid view types based on is_short
     if is_short:
         available_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View"]
     else:
         available_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View"]
     
+    # Validate view_type
     if view_type not in ["Auto/Random", "Google Search"] and view_type not in available_types:
         return jsonify({"success": False, "error": f"View type '{view_type}' not valid for this video"})
     
@@ -1045,7 +1059,7 @@ def api_launch():
     else:
         print(f"[PROXY] No proxy - direct connection")
     
-    # ========== CYCLE LOOP WITH PROPER WAITING ==========
+    # ========== CYCLE LOOP ==========
     for cycle in range(1, cycles + 1):
         print(f"[DEBUG] ========================================")
         print(f"[DEBUG] Starting Cycle {cycle}/{cycles} at {time.strftime('%H:%M:%S')}")
@@ -1054,7 +1068,6 @@ def api_launch():
         cycle_processes = []
         cycle_configs = []
         
-        # Build configs for this cycle
         for i in range(num_instances):
             instance_id = (cycle - 1) * num_instances + i + 1
             url = data['urls'][i % len(data['urls'])]
@@ -1067,6 +1080,8 @@ def api_launch():
                 is_auto_random = False
             
             cfg = build_script_config(instance_id, data, url, selected_view_type)
+            if 'video_title' in data:
+                cfg['video_title'] = data['video_title']
             cfg['is_auto_random'] = is_auto_random
             cfg['available_view_types'] = available_types if is_auto_random else []
             cfg['cycle_number'] = cycle
@@ -1075,8 +1090,8 @@ def api_launch():
             cfg['po_token_source'] = po_token_source
             cfg['proxy_mode'] = proxy_mode
             cfg['num_instances'] = num_instances
+            cfg['is_short'] = is_short   # pass to child scripts if needed
             
-            # Assign rotating proxy for 'list' mode
             if proxy_mode == 'list':
                 rotating_proxy = get_rotating_proxy()
                 if rotating_proxy:
@@ -1100,31 +1115,22 @@ def api_launch():
             
             cycle_configs.append(cfg)
         
-        # Group by script type
         script_groups = defaultdict(list)
         for cfg in cycle_configs:
             script_file = view_to_script.get(cfg['view_type'], "YTDirect.py")
             script_groups[script_file].append(cfg)
         
-        # Launch each script group
         for script_file, group_configs in script_groups.items():
             if group_configs:
-                # Create a unique filename with timestamp
                 timestamp = int(time.time())
                 group_temp_file = DATA_DIR / f"launch_config_cycle{cycle}_{script_file}_{timestamp}.json"
-                
                 try:
                     with open(group_temp_file, 'w', encoding='utf-8') as f:
                         json.dump(group_configs, f, indent=2, ensure_ascii=False)
-                    
-                    # Verify the file was written correctly
                     with open(group_temp_file, 'r', encoding='utf-8') as f:
-                        test_read = json.load(f)
-                        if not test_read:
+                        if not json.load(f):
                             raise ValueError("Config file is empty")
-                    
                     print(f"[DEBUG] Config file written: {group_temp_file.name}")
-                    
                 except Exception as e:
                     print(f"[ERROR] Failed to write config file: {e}")
                     continue
@@ -1136,42 +1142,32 @@ def api_launch():
                 
                 if script_path.exists():
                     cmd = [sys.executable, str(script_path), str(group_temp_file)]
-                    
                     print(f"[LAUNCH] {script_path.name} with {len(group_configs)} instance(s)")
-                    
-                    # Launch the process
                     if sys.platform == "win32":
                         proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
                     else:
                         proc = subprocess.Popen(cmd)
-                    
                     cycle_processes.append(proc)
                     launched_total += len(group_configs)
                     print(f"[DEBUG] Process launched with PID: {proc.pid}")
                 else:
                     print(f"[WARNING] Script not found: {script_path}")
         
-        # ========== CRITICAL: Wait for ALL processes in this cycle ==========
         if cycle_processes:
             print(f"[DEBUG] Cycle {cycle}: Waiting for {len(cycle_processes)} process(es) to complete...")
-            
             for idx, proc in enumerate(cycle_processes):
                 print(f"[DEBUG] Waiting for process {idx+1}/{len(cycle_processes)} (PID: {proc.pid})...")
-                
-                # Poll every 2 seconds to check if process is still running
                 while True:
                     ret = proc.poll()
                     if ret is not None:
                         print(f"[DEBUG] Process {proc.pid} completed with exit code: {ret}")
                         break
                     time.sleep(2)
-                    print(f"[DEBUG] Process {proc.pid} still running...")
-            
+                    # print(f"[DEBUG] Process {proc.pid} still running...")  # Commented out
             print(f"[DEBUG] Cycle {cycle} completed at {time.strftime('%H:%M:%S')}")
         else:
             print(f"[DEBUG] Cycle {cycle}: No processes to wait for")
         
-        # Wait between cycles (if more cycles remain)
         if cycle < cycles:
             wait_time = random.uniform(5, 10)
             print(f"[DEBUG] Waiting {wait_time:.1f}s before starting Cycle {cycle + 1}...")

@@ -177,31 +177,6 @@ def natural_typing(element, text: str, use_fast_only: bool = False) -> str:
                 typed = filtered[:len(typed)]
     return behavior
 
-def random_scroll(driver, is_mobile: bool = False, smooth: bool = True) -> None:
-    amount = random.randint(100, 500) if is_mobile else random.randint(80, 400)
-    behavior = 'smooth' if smooth else 'auto'
-    driver.execute_script(f"window.scrollBy({{top: {amount}, behavior: '{behavior}'}});")
-    if random.random() < 0.3:
-        sleep(random.uniform(0.2, 0.6))
-        additional = random.randint(20, 100) * (1 if random.random() < 0.7 else -1)
-        driver.execute_script(f"window.scrollBy(0, {additional});")
-
-def random_mouse_movement(driver, element=None) -> None:
-    try:
-        actions = ActionChains(driver)
-        if element:
-            x_offset = random.randint(-20, 20)
-            y_offset = random.randint(-20, 20)
-            actions.move_to_element_with_offset(element, x_offset, y_offset)
-        else:
-            viewport = driver.execute_script("return {width: window.innerWidth, height: window.innerHeight};")
-            x = random.randint(50, viewport['width'] - 50)
-            y = random.randint(50, viewport['height'] - 50)
-            actions.move_by_offset(x, y)
-        actions.perform()
-        human_delay(0.1, 0.3)
-    except:
-        pass
 
 # ============================================================================
 # PAGE & VIDEO VERIFICATION
@@ -311,6 +286,21 @@ def get_variable_watch_time(min_time: int, max_time: int) -> int:
         return min_time + int(video_range * random.uniform(0.7, 0.95))
     else:
         return max_time + random.randint(0, 30)
+        
+def wait_for_url_change(driver, old_url: str, timeout: int = 5) -> bool:
+    """
+    Wait until the current URL changes from old_url.
+    Returns True if changed within timeout, else False.
+    """
+    start = time()
+    while time() - start < timeout:
+        try:
+            if driver.current_url != old_url:
+                return True
+        except:
+            pass
+        sleep(0.3)
+    return False
 
 # ============================================================================
 # EXPORTS
@@ -320,8 +310,7 @@ __all__ = [
     'DESKTOP_AGENTS', 'MOBILE_AGENTS', 'DESKTOP_RESOLUTIONS', 'MOBILE_RESOLUTIONS',
     'extract_video_id', 'construct_watch_url', 'get_video_title', 'sanitize_text',
     'get_random_user_agent', 'get_random_resolution',
-    'human_delay', 'natural_typing', 'random_scroll', 'random_mouse_movement',
-    'wait_for_page_load', 'is_video_playing',
-    'handle_cookies', 'is_login_page',
-    'get_system_ram_usage', 'get_variable_watch_time',
+    'human_delay', 'natural_typing', 'wait_for_page_load', 'is_video_playing','handle_cookies', 'is_login_page', 
+    'get_system_ram_usage', 'get_variable_watch_time', 'wait_for_url_change',
 ]
+

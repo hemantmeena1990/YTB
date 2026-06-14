@@ -681,7 +681,9 @@ launchBtn.onclick = async () => {
         suggested_max: parseInt(suggestedMax.value), 
         num_instances: parseInt(numInstances.value), 
         cycles: parseInt(cycles.value), 
-        headless: headlessMode.checked 
+        headless: headlessMode.checked ,
+		is_short: currentVideoIsShort ,
+		channel_name: channelHandle.value
     };
     addLog(`🚀 Launching ${config.num_instances} instance(s) x ${config.cycles} cycle(s)`);
     launchBtn.disabled = true; launchBtn.textContent = 'Launching...';

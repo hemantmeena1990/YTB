@@ -1,17 +1,17 @@
 {
   "urls": [
-    "https://www.youtube.com/watch?v=xUFtnWSQ7W0"
+    "https://www.youtube.com/watch?v=-g-H_hKKTOs"
   ],
-  "automation_version": "selenium",
-  "view_type": "Direct/Unknown",
+  "automation_version": "playwright",
+  "view_type": "Channel View",
   "po_token_source": "external",
-  "proxy_mode": "none",
+  "proxy_mode": "tor_browser",
   "traffic_source": "direct",
-  "min_watch_time": 5,
-  "max_watch_time": 60,
+  "min_watch_time": 150,
+  "max_watch_time": 305,
   "suggested_chance": 1,
-  "suggested_min": 1,
-  "suggested_max": 5,
+  "suggested_min": 5,
+  "suggested_max": 15,
   "num_instances": 1,
   "cycles": 1,
   "headless": false,

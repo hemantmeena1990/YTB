@@ -3,6 +3,7 @@
 Reusable search utilities for YouTube automation.
 Only performs the search (opens homepage, types query, submits).
 Result clicking is handled by common.find.
+All clicks now use human-like behavior.
 """
 
 import time
@@ -12,6 +13,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+# Import human_click
+from common.humanclick import human_click
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +54,7 @@ def _wait_for_search_box(driver, timeout=20):
 
 
 def _handle_cookies(driver, instance_id):
-    """Handle cookie consent popups."""
+    """Handle cookie consent popups using human_click."""
     cookie_xpaths = [
         "//button[contains(., 'Accept all')]",
         "//button[contains(., 'I agree')]",
@@ -63,7 +67,7 @@ def _handle_cookies(driver, instance_id):
             elements = driver.find_elements(By.XPATH, xpath)
             for elem in elements:
                 if elem.is_displayed() and elem.is_enabled():
-                    driver.execute_script("arguments[0].click();", elem)
+                    human_click(driver, elem, instance_id, "cookie accept button")
                     time.sleep(1)
                     return True
         except:
@@ -77,10 +81,22 @@ def _human_delay(min_sec=0.3, max_sec=1.5):
 
 
 def _has_search_results(driver):
-    """Check if search results page has any video links."""
+    """
+    Check if search results page has any results.
+    Works for both video searches AND channel searches.
+    """
     try:
+        # Check for video links (for video searches)
         video_links = driver.find_elements(By.CSS_SELECTOR, "a[href*='/watch?v=']")
-        return len(video_links) > 0
+        
+        # Check for channel links (for channel searches)
+        channel_links = driver.find_elements(By.CSS_SELECTOR, "a[href*='/@']")
+        
+        # Check for any result containers (fallback)
+        result_containers = driver.find_elements(By.CSS_SELECTOR, "ytd-item-section-renderer, ytm-section-list-renderer")
+        
+        # Return True if ANY type of result is found
+        return len(video_links) > 0 or len(channel_links) > 0 or len(result_containers) > 0
     except:
         return False
 
@@ -107,7 +123,7 @@ class DesktopSearch:
             _human_delay(1, 2.5)
 
             search_box = driver.find_element(By.NAME, "search_query")
-            search_box.click()
+            human_click(driver, search_box, instance_id, "desktop search box")
             _human_delay(0.3, 0.8)
             search_box.clear()
             
@@ -131,7 +147,7 @@ class DesktopSearch:
                 
                 # Clear and search by video ID
                 search_box = driver.find_element(By.NAME, "search_query")
-                search_box.click()
+                human_click(driver, search_box, instance_id, "desktop search box (fallback)")
                 search_box.clear()
                 _natural_typing(search_box, video_id, use_fast=True)
                 _human_delay(0.5, 1)
@@ -169,7 +185,7 @@ class MobileSearch:
             _handle_cookies(driver, instance_id)
             _human_delay(1, 2.5)
 
-            # Click search button - try multiple selectors
+            # Click search button using human_click
             search_btn = None
             selectors = [
                 ".mobile-topbar-header-content button:first-child",
@@ -199,7 +215,7 @@ class MobileSearch:
                 logger.error(f"Instance {instance_id}: Could not find mobile search button")
                 return False
                 
-            driver.execute_script("arguments[0].click();", search_btn)
+            human_click(driver, search_btn, instance_id, "mobile search button")
             _human_delay(1, 1.5)
 
             # Find search input box
@@ -226,7 +242,14 @@ class MobileSearch:
                 logger.error(f"Instance {instance_id}: Could not find mobile search box")
                 return False
 
-            search_box.click()
+            # Re-fetch search box to avoid stale reference
+            try:
+                search_box = WebDriverWait(driver, 5).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "input[name='search_query']"))
+                )
+            except:
+                search_box = driver.find_element(By.CSS_SELECTOR, "input[name='search_query']")
+            human_click(driver, search_box, instance_id, "mobile search input")
             _human_delay(0.5, 1)
             search_box.clear()
             
@@ -256,7 +279,7 @@ class MobileSearch:
                         logger.error(f"Instance {instance_id}: Could not find search box for fallback")
                         return False
                 
-                search_box.click()
+                human_click(driver, search_box, instance_id, "mobile search input (fallback)")
                 search_box.clear()
                 _natural_typing(search_box, video_id, use_fast=True)
                 _human_delay(0.5, 1)

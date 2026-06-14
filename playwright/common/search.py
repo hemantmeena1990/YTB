@@ -1,197 +1,181 @@
 # playwright/common/search.py
 """
-Playwright search utilities for YouTube Automation.
-Performs search on desktop or mobile YouTube.
+Playwright search utilities - only custom logic, uses Playwright's built-in methods.
 """
 
 import time
+import random
 import logging
-from typing import Optional
+from playwright.sync_api import Page
 
 logger = logging.getLogger(__name__)
 
 
-class DesktopSearch:
-    """Search on www.youtube.com (desktop layout)."""
+def _natural_typing(element, text: str, use_fast: bool = False):
+    """Type text naturally with random delays"""
+    filtered = ''.join(c for c in text if ord(c) <= 0xFFFF)
+    delay = 0.02 if use_fast else 0.05
+    for ch in filtered:
+        element.type(ch, delay=random.uniform(delay, delay * 3))
 
+
+def _has_search_results(page: Page) -> bool:
+    """Check if search results page has any results"""
+    try:
+        video_links = page.locator("a[href*='/watch?v=']").count()
+        channel_links = page.locator("a[href*='/@']").count()
+        return video_links > 0 or channel_links > 0
+    except:
+        return False
+
+
+class DesktopSearch:
     @staticmethod
-    def perform_search(page, search_query: str, use_fast_typing: bool = False) -> bool:
-        """
-        Open desktop YouTube, type query, press Enter.
-        
-        Args:
-            page: Playwright page object
-            search_query: Text to search for
-            use_fast_typing: Type faster (for retries)
-        
-        Returns:
-            True if successful
-        """
+    def perform_search(page: Page, instance_id: int, search_query: str, use_fast_typing: bool = False, video_id: str = None) -> bool:
+        """Open desktop YouTube, type query, press Enter"""
         try:
-            logger.info(f"Desktop search for: {search_query[:40]}...")
+            logger.info(f"Instance {instance_id}: Performing desktop search...")
             
-            page.goto("https://www.youtube.com", wait_until='domcontentloaded')
-            time.sleep(1.5)
+            page.goto("https://www.youtube.com")
+            page.wait_for_selector("input[name='search_query']", timeout=20000)
+            
+            # Wait for page stability
+            time.sleep(2)
             
             # Handle cookies if present
             try:
-                accept_btn = page.query_selector('button:has-text("Accept all"), button:has-text("Accept"), button:has-text("I agree"), button:has-text("Got it")')
-                if accept_btn and accept_btn.is_visible():
-                    accept_btn.click()
-                    time.sleep(0.5)
+                accept_btn = page.locator("button:has-text('Accept all')")
+                if accept_btn.count() > 0 and accept_btn.first.is_visible():
+                    accept_btn.first.click()
+                    time.sleep(1)
             except:
                 pass
             
-            # Find search box - multiple selectors for robustness
-            search_box = None
-            selectors = [
-                'input[name="search_query"]',
-                'input#search',
-                'ytd-searchbox input',
-                'input[aria-label="Search"]'
-            ]
+            time.sleep(random.uniform(1, 2.5))
             
-            for selector in selectors:
-                try:
-                    search_box = page.query_selector(selector)
-                    if search_box and search_box.is_visible():
-                        logger.info(f"Desktop search box found with selector: {selector}")
-                        break
-                except:
-                    continue
-            
-            if not search_box:
-                logger.error("Desktop search box not found")
-                return False
-            
+            search_box = page.locator("input[name='search_query']").first
             search_box.click()
-            time.sleep(0.3)
+            time.sleep(random.uniform(0.3, 0.8))
             search_box.fill("")
             
-            # Type with natural delay
-            delay = 0.02 if use_fast_typing else 0.05
-            for char in search_query:
-                search_box.type(char, delay=delay)
-                time.sleep(0.01)
-            
-            time.sleep(0.5)
+            # Type search query
+            _natural_typing(search_box, search_query, use_fast=use_fast_typing)
+            time.sleep(random.uniform(0.5, 1))
             search_box.press("Enter")
             
-            # Wait for results to load
-            page.wait_for_load_state('networkidle', timeout=15000)
-            time.sleep(1.5)
+            # Wait for results
+            time.sleep(3)
             
-            return True
+            if _has_search_results(page):
+                logger.info(f"Instance {instance_id}: Desktop search successful")
+                return True
+            
+            # Fallback to video ID search
+            if video_id:
+                logger.info(f"Instance {instance_id}: Falling back to video ID: {video_id}")
+                search_box = page.locator("input[name='search_query']").first
+                search_box.click()
+                search_box.fill("")
+                _natural_typing(search_box, video_id, use_fast=True)
+                time.sleep(random.uniform(0.5, 1))
+                search_box.press("Enter")
+                time.sleep(3)
+                
+                if _has_search_results(page):
+                    logger.info(f"Instance {instance_id}: Video ID search successful")
+                    return True
+            
+            return False
             
         except Exception as e:
-            logger.error(f"Desktop search error: {e}")
+            logger.error(f"Instance {instance_id}: Desktop search error - {e}")
             return False
 
 
 class MobileSearch:
-    """Search on m.youtube.com (mobile layout)."""
-
     @staticmethod
-    def perform_search(page, search_query: str, use_fast_typing: bool = False) -> bool:
-        """
-        Open mobile YouTube, click search button, type query, submit.
-        
-        Args:
-            page: Playwright page object
-            search_query: Text to search for
-            use_fast_typing: Type faster (for retries)
-        
-        Returns:
-            True if successful
-        """
+    def perform_search(page: Page, instance_id: int, search_query: str, use_fast_typing: bool = False, video_id: str = None) -> bool:
+        """Open mobile YouTube, click search button, type query, submit"""
         try:
-            logger.info(f"Mobile search for: {search_query[:40]}...")
+            logger.info(f"Instance {instance_id}: Performing mobile search...")
             
-            page.goto("https://m.youtube.com", wait_until='domcontentloaded')
-            time.sleep(1.5)
+            page.goto("https://m.youtube.com")
+            time.sleep(2)
             
             # Handle cookies if present
             try:
-                accept_btn = page.query_selector('button:has-text("Accept all"), button:has-text("Accept"), button:has-text("I agree")')
-                if accept_btn and accept_btn.is_visible():
-                    accept_btn.click()
-                    time.sleep(0.5)
+                accept_btn = page.locator("button:has-text('Accept all')")
+                if accept_btn.count() > 0 and accept_btn.first.is_visible():
+                    accept_btn.first.click()
+                    time.sleep(1)
             except:
                 pass
             
-            # Click search button - multiple selectors
-            search_btn = None
-            btn_selectors = [
-                'button[aria-label="Search"]',
-                '.ytSearchboxComponentSearchButton',
-                'yt-icon-button#search-icon',
-                '.mobile-topbar-header-content button:first-child'
-            ]
+            time.sleep(random.uniform(1, 2.5))
             
-            for selector in btn_selectors:
-                try:
-                    search_btn = page.query_selector(selector)
-                    if search_btn and search_btn.is_visible():
-                        logger.info(f"Mobile search button found with selector: {selector}")
-                        break
-                except:
-                    continue
+            # Click search button
+            search_btn = page.locator("button[aria-label='Search']")
+            if search_btn.count() == 0:
+                search_btn = page.locator(".search-icon")
+            if search_btn.count() == 0:
+                search_btn = page.locator("ytm-searchbox button")
             
-            if not search_btn:
-                # Try to find any button with search in aria-label
-                try:
-                    search_btn = page.query_selector('button[aria-label*="Search"]')
-                except:
-                    pass
-            
-            if not search_btn:
-                logger.error("Mobile search button not found")
+            if search_btn.count() > 0:
+                search_btn.first.click()
+            else:
+                logger.error(f"Instance {instance_id}: Could not find search button")
                 return False
             
-            search_btn.click()
-            time.sleep(1.5)
+            time.sleep(random.uniform(1, 1.5))
             
-            # Find search input - multiple selectors
-            search_box = None
-            input_selectors = [
-                'input[name="search_query"]',
-                'input.ytSearchboxComponentInput',
-                'input[placeholder="Search YouTube"]',
-                'input[placeholder="Search"]'
-            ]
+            # Find search input
+            search_box = page.locator("input[name='search_query']")
+            if search_box.count() == 0:
+                search_box = page.locator("input[placeholder='Search YouTube']")
+            if search_box.count() == 0:
+                search_box = page.locator("ytm-searchbox input")
             
-            for selector in input_selectors:
-                try:
-                    search_box = page.query_selector(selector)
-                    if search_box and search_box.is_visible():
-                        logger.info(f"Mobile search input found with selector: {selector}")
-                        break
-                except:
-                    continue
-            
-            if not search_box:
-                logger.error("Mobile search input not found")
+            if search_box.count() == 0:
+                logger.error(f"Instance {instance_id}: Could not find search input")
                 return False
             
-            search_box.click()
-            time.sleep(0.3)
-            search_box.fill("")
+            search_box.first.click()
+            time.sleep(random.uniform(0.5, 1))
+            search_box.first.fill("")
             
-            # Type with natural delay
-            delay = 0.02 if use_fast_typing else 0.05
-            for char in search_query:
-                search_box.type(char, delay=delay)
-                time.sleep(0.01)
-            
-            time.sleep(0.5)
-            search_box.press("Enter")
+            # Type search query
+            _natural_typing(search_box.first, search_query, use_fast=use_fast_typing)
+            time.sleep(random.uniform(0.5, 1))
+            search_box.first.press("Enter")
             
             # Wait for results
-            page.wait_for_load_state('networkidle', timeout=15000)
-            time.sleep(2)
+            time.sleep(3)
             
-            return True
+            if _has_search_results(page):
+                logger.info(f"Instance {instance_id}: Mobile search successful")
+                return True
+            
+            # Fallback to video ID search
+            if video_id:
+                logger.info(f"Instance {instance_id}: Falling back to video ID: {video_id}")
+                search_box = page.locator("input[name='search_query']")
+                if search_box.count() == 0:
+                    search_box = page.locator("input[placeholder='Search YouTube']")
+                
+                if search_box.count() > 0:
+                    search_box.first.click()
+                    search_box.first.fill("")
+                    _natural_typing(search_box.first, video_id, use_fast=True)
+                    time.sleep(random.uniform(0.5, 1))
+                    search_box.first.press("Enter")
+                    time.sleep(3)
+                    
+                    if _has_search_results(page):
+                        logger.info(f"Instance {instance_id}: Mobile video ID search successful")
+                        return True
+            
+            return False
             
         except Exception as e:
-            logger.error(f"Mobile search error: {e}")
+            logger.error(f"Instance {instance_id}: Mobile search error - {e}")
             return False
