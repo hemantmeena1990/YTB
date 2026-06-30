@@ -233,6 +233,9 @@ def get_preview_info(url: str, view_type: str):
     if view_type == "Google Search":
         return {"success": True, "constructed_url": f"Via Google Search → {url}", "user_agent": "Random", "is_mobile": "Random", "video_id": video_id}
     
+    if view_type == "External(Embed)":
+        return {"success": True, "constructed_url": f"Embed Player → {url}", "user_agent": "Random", "is_mobile": "Random", "video_id": video_id}
+    
     if view_type in ("Other YouTube features", "Direct/Unknown"):
         is_mobile = True
         ua = random.choice(MOBILE_AGENTS)
@@ -779,8 +782,6 @@ def api_save_config():
     save_config(data)
     return jsonify({"success": True})
 
-# Add/Update these endpoints in YTDash.py
-
 @app.route('/api/save_channel', methods=['POST'])
 def api_save_channel():
     channel_name = request.json.get('channel_name', '')
@@ -854,7 +855,6 @@ def api_auto_fetch_video():
                 pass
     return jsonify(result)
 
-
 @app.route('/api/get_video_details', methods=['POST'])
 def api_get_video_details():
     url = request.json.get('url', '')
@@ -911,9 +911,9 @@ def api_get_view_types_by_type():
     """Return view types based on is_short flag from yt-dlp."""
     is_short = request.json.get('is_short', False)
     if is_short:
-        view_types = ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View"]
+        view_types = ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View", "External(Embed)"]
     else:
-        view_types = ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View"]
+        view_types = ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View", "External(Embed)"]
     return jsonify({"view_types": view_types})
 
 @app.route('/api/detect_view_types', methods=['POST'])
@@ -922,16 +922,16 @@ def api_detect_view_types():
     if not urls:
         return jsonify({"view_types": []})
     if '/shorts/' in urls[0]:
-        return jsonify({"view_types": ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View"]})
+        return jsonify({"view_types": ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View", "External(Embed)"]})
     else:
-        return jsonify({"view_types": ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View"]})
+        return jsonify({"view_types": ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View", "External(Embed)"]})
 
 @app.route('/api/validate_view_type', methods=['POST'])
 def api_validate_view_type():
     url = request.json.get('url', '')
     view_type = request.json.get('view_type', '')
     
-    if view_type in ("Auto/Random", "Google Search"):
+    if view_type in ("Auto/Random", "Google Search", "External(Embed)"):
         return jsonify({"valid": True})
     
     details = get_video_details_ytdlp(url)
@@ -978,7 +978,6 @@ def api_cleanup():
         return jsonify({"success": False, "error": str(e)})
 
 @app.route('/api/launch', methods=['POST'])
-@app.route('/api/launch', methods=['POST'])
 def api_launch():
     data = request.json
     view_type = data['view_type']
@@ -1012,9 +1011,9 @@ def api_launch():
     
     # Define valid view types based on is_short
     if is_short:
-        available_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View"]
+        available_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View", "External(Embed)"]
     else:
-        available_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View"]
+        available_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View", "External(Embed)"]
     
     # Validate view_type
     if view_type not in ["Auto/Random", "Google Search"] and view_type not in available_types:
@@ -1028,6 +1027,7 @@ def api_launch():
         "Search (Video)": "YTSearch.py",
         "Short Feeds": "YTShort.py",
         "Channel View": "YTChannel.py",
+        "External(Embed)": "YTEmbed.py",
     }
     
     referer_map = {
@@ -1042,7 +1042,7 @@ def api_launch():
         'linkedin': 'https://www.linkedin.com/',
     }
     
-    direct_url_view_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds"]
+    direct_url_view_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "External(Embed)"]
     launched_total = 0
     use_undetected = (automation_version == 'selenium_undetected')
     
@@ -1091,6 +1091,11 @@ def api_launch():
             cfg['proxy_mode'] = proxy_mode
             cfg['num_instances'] = num_instances
             cfg['is_short'] = is_short   # pass to child scripts if needed
+            cfg['force_mobile'] = data.get('force_mobile', False)
+            
+            # Make sure traffic source fields are passed
+            if 'traffic_source_type' in cfg:
+                pass  # Already set by build_script_config
             
             if proxy_mode == 'list':
                 rotating_proxy = get_rotating_proxy()
@@ -1106,9 +1111,14 @@ def api_launch():
                     else:
                         print(f"[PROXY] WARNING: No proxy available for instance {instance_id}")
             
+            # ========== FIX: Set automation_version for BOTH cases ==========
             if use_undetected:
                 cfg['use_undetected'] = True
                 cfg['automation_version'] = 'selenium_undetected'
+            else:
+                cfg['use_undetected'] = False
+                cfg['automation_version'] = 'selenium'  # <-- ADD THIS LINE
+            # ===============================================================
             
             if selected_view_type in direct_url_view_types and traffic_source != 'direct' and traffic_source in referer_map:
                 cfg['referer'] = referer_map[traffic_source]
@@ -1163,7 +1173,6 @@ def api_launch():
                         print(f"[DEBUG] Process {proc.pid} completed with exit code: {ret}")
                         break
                     time.sleep(2)
-                    # print(f"[DEBUG] Process {proc.pid} still running...")  # Commented out
             print(f"[DEBUG] Cycle {cycle} completed at {time.strftime('%H:%M:%S')}")
         else:
             print(f"[DEBUG] Cycle {cycle}: No processes to wait for")
@@ -1193,12 +1202,20 @@ def api_launch():
     else:
         po_msg = " PO Token: po-token-generator (Node.js)"
     
+    # Add random traffic source info to message
+    traffic_msg = ""
+    if traffic_source == 'random':
+        traffic_msg = " Traffic Source: Random (per instance)"
+    elif traffic_source != 'direct':
+        traffic_msg = f" Traffic Source: {traffic_source}"
+    
     print(f"[DEBUG] ========================================")
     print(f"[DEBUG] ALL CYCLES COMPLETED at {time.strftime('%H:%M:%S')}")
     print(f"[DEBUG] Total sessions launched: {launched_total}")
     print(f"[DEBUG] ========================================")
     
-    return jsonify({"success": True, "message": f"Completed {cycles} cycle(s) with {num_instances} instance(s) each. Total {launched_total} sessions.{po_msg}{proxy_msg}{stealth_msg}"})
+    return jsonify({"success": True, "message": f"Completed {cycles} cycle(s) with {num_instances} instance(s) each. Total {launched_total} sessions.{po_msg}{proxy_msg}{stealth_msg}{traffic_msg}"})
+
     
     
 def open_browser():

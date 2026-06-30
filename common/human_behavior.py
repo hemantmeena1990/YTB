@@ -3,7 +3,7 @@
 Shared human behavior functions for ALL automation scripts (Selenium + Playwright)
 Includes: random scrolling, mouse movements, key presses, simulated pause,
 watching loop, delayed mute with volume, suggested video clicking (enhanced),
-and consent/cookie popup handling.
+consent/cookie popup handling, NATURAL SESSION FLOW, and COGNITIVE DELAYS.
 """
 
 import random
@@ -29,7 +29,6 @@ def _is_selenium(driver_or_page):
 def human_delay(min_seconds: float = 0.5, max_seconds: float = 1.5):
     """Random human-like delay"""
     time.sleep(random.uniform(min_seconds, max_seconds))
-
 
 
 def random_key_press(driver_or_page):
@@ -59,7 +58,6 @@ def random_key_press(driver_or_page):
                 ActionChains(driver_or_page).send_keys(Keys.SPACE).perform()
 
 
-
 def simulate_pause(driver_or_page):
     """
     Pause the video by clicking on the player, then resume after a random time.
@@ -85,6 +83,132 @@ def simulate_pause(driver_or_page):
     except:
         pass
     return False
+
+
+# ========== NEW: Cognitive Delay (Human-like Timing) ==========
+def cognitive_delay(action_type="read"):
+    """
+    Simulate human cognitive processing time.
+    
+    Args:
+        action_type: Type of action (read, process, decide, move, click, scroll, navigate, watch)
+    """
+    base_delays = {
+        "read": (1.0, 3.0),           # Reading text
+        "process": (0.5, 2.0),         # Processing information
+        "decide": (0.8, 1.8),          # Making a decision
+        "move": (0.3, 0.8),            # Moving cursor
+        "click": (0.1, 0.4),           # Clicking
+        "scroll": (0.5, 1.5),          # Scrolling
+        "navigate": (0.8, 2.5),        # Navigation
+        "watch": (5.0, 30.0),          # Watching video
+    }
+    
+    min_delay, max_delay = base_delays.get(action_type, (0.5, 2.0))
+    
+    # Use exponential distribution for natural human timing
+    import numpy as np
+    mu = np.log(min_delay)
+    sigma = 0.5
+    delay = np.random.lognormal(mu, sigma)
+    delay = max(min_delay, min(delay, max_delay))
+    
+    time.sleep(delay)
+
+
+# ========== NEW: Natural Session Flow ==========
+def natural_session_flow(driver, video_id, instance_id, search_term=None, view_type=None):
+    """
+    Simulate a natural browsing session before watching.
+    This creates session consistency that YouTube expects.
+    
+    Args:
+        driver: Selenium WebDriver instance
+        video_id: Target video ID
+        instance_id: Instance identifier for logging
+        search_term: Search term (if None, uses video_id)
+        view_type: Type of view (for different flows)
+    
+    Returns:
+        bool: True if session flow completed successfully
+    """
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.common.keys import Keys
+    
+    try:
+        logger.info(f"Instance {instance_id}: Starting natural session flow")
+        
+        # 1. Start at YouTube homepage
+        driver.get("https://www.youtube.com")
+        cognitive_delay("read")
+        
+        # 2. Random scrolling (exploring homepage)
+        for _ in range(random.randint(1, 3)):
+            from .human_behavior import random_scroll
+            random_scroll(driver, is_mobile=False)
+            cognitive_delay("scroll")
+        
+        # 3. Random pause (reading, looking at thumbnails)
+        cognitive_delay("process")
+        
+        # 4. If search term provided, perform natural search
+        if search_term:
+            # Find search box
+            search_box = driver.find_element(By.NAME, "search_query")
+            
+            # Natural typing
+            for char in search_term[:60]:
+                search_box.send_keys(char)
+                time.sleep(random.uniform(0.08, 0.25))
+            
+            cognitive_delay("decide")
+            search_box.send_keys(Keys.RETURN)
+            
+            # Scroll through results
+            cognitive_delay("read")
+            from .human_behavior import random_scroll
+            random_scroll(driver, is_mobile=False)
+            cognitive_delay("process")
+            
+            # Find video in results
+            video_link = None
+            links = driver.find_elements(By.CSS_SELECTOR, f"a[href*='{video_id}']")
+            if links:
+                video_link = links[0]
+            else:
+                # Fallback: look for any video link
+                links = driver.find_elements(By.CSS_SELECTOR, "a[href*='/watch?v=']")
+                for link in links:
+                    href = link.get_attribute('href')
+                    if href and video_id in href:
+                        video_link = link
+                        break
+            
+            if video_link:
+                # Use natural click (import from humanclick)
+                from .humanclick import human_click
+                human_click(driver, video_link, instance_id, "search result video")
+                cognitive_delay("navigate")
+            else:
+                # If not found, go direct
+                driver.get(f"https://www.youtube.com/watch?v={video_id}")
+                cognitive_delay("navigate")
+        else:
+            # Direct navigation to video (but after homepage session)
+            driver.get(f"https://www.youtube.com/watch?v={video_id}")
+            cognitive_delay("navigate")
+        
+        logger.info(f"Instance {instance_id}: Natural session flow completed")
+        return True
+        
+    except Exception as e:
+        logger.warning(f"Instance {instance_id}: Natural session flow failed: {e}")
+        # Fallback: direct navigation
+        try:
+            driver.get(f"https://www.youtube.com/watch?v={video_id}")
+        except:
+            pass
+        return False
 
 
 # ========== Watching loop (Unified) ==========
@@ -282,7 +406,6 @@ def start_video_with_audio_mute(driver_or_page, instance_id: int, is_mobile: boo
         logger.error(f"Instance {instance_id}: Video start error - {e}")
         return False
         
-
 
 
 def attempt_video_playback_with_retry(driver_or_page, instance_id: int, is_mobile: bool = False, is_suggested: bool = False, max_retries: int = 3) -> bool:
@@ -524,14 +647,17 @@ def handle_all_popups(driver_or_page, instance_id: int = 0) -> int:
 
 
 # ========== Suggested video click (enhanced) ==========
-def click_suggested_video(driver_or_page, is_mobile: bool = False) -> bool:
+def click_suggested_video(driver_or_page, is_mobile: bool = False, instance_id: int = 0) -> bool:
     """
     Click a suggested video from the sidebar (desktop) or after scrolling (mobile).
+    Uses human_click for natural interaction.
     Works with both Selenium and Playwright.
     Returns True if navigation succeeded.
     """
     try:
         if _is_playwright(driver_or_page):
+            # ... Playwright implementation using human_click equivalent ...
+            # For simplicity, keep Playwright as is for now
             current_url = driver_or_page.url
             current_vid = None
             if 'v=' in current_url:
@@ -588,13 +714,19 @@ def click_suggested_video(driver_or_page, is_mobile: bool = False) -> bool:
 
             idx = random.randint(0, min(len(candidates) - 1, 5))
             link = candidates[idx]
+            
+            # Human-like hover before click
+            link.hover()
+            time.sleep(random.uniform(0.3, 0.8))
             link.click()
             time.sleep(2)
             return True
             
         else:
+            # ========== SELENIUM IMPLEMENTATION ==========
             from selenium.webdriver.common.by import By
             from selenium.webdriver.common.action_chains import ActionChains
+            from .humanclick import human_click
             
             current_url = driver_or_page.current_url
             current_vid = None
@@ -649,16 +781,18 @@ def click_suggested_video(driver_or_page, is_mobile: bool = False) -> bool:
             idx = random.randint(0, min(len(candidates) - 1, 5))
             link = candidates[idx]
             
-            driver_or_page.execute_script("arguments[0].scrollIntoView(true);", link)
-            time.sleep(0.5)
-            driver_or_page.execute_script("arguments[0].click();", link)
-            time.sleep(2)
-            return True
+            # ========== NATURAL CLICK WITH HUMAN_CLICK ==========
+            # Scroll into view
+            driver_or_page.execute_script("arguments[0].scrollIntoView({block: 'center', behavior: 'smooth'});", link)
+            time.sleep(random.uniform(0.3, 0.8))
+            
+            # Use human_click for natural interaction with random offset
+            return human_click(driver_or_page, link, instance_id, "suggested video")
+            # =====================================================
 
     except Exception as e:
         logger.error(f"Error in click_suggested_video: {e}")
         return False
-
 
 # ========== Utility functions ==========
 def get_variable_watch_time(min_seconds: int, max_seconds: int) -> int:
@@ -666,11 +800,7 @@ def get_variable_watch_time(min_seconds: int, max_seconds: int) -> int:
     return random.randint(min_seconds, max_seconds)
 
 
-# ========== SHORTS-SPECIFIC FUNCTIONS (ADDED FOR YTShort.py) ==========
-# These are new functions - no existing functions were modified
-
-
-
+# ========== SHORTS-SPECIFIC FUNCTIONS ==========
 def shorts_next_video(driver, direction='down'):
     """
     Navigate to next/previous short using mouse wheel
@@ -981,9 +1111,9 @@ def _hover_random_shorts_button(driver):
             pass
     
     return False
-    
-    
-    # ========== URL change detection (unified) ==========
+
+
+# ========== URL change detection (unified) ==========
 def wait_for_url_change(driver_or_page, old_url, timeout=5):
     """
     Wait for URL to change from old_url.
@@ -1111,7 +1241,6 @@ def find_shorts_navigation_button(driver_or_page, direction='next'):
     return None
 
 
-
 def click_shorts_navigation_button(driver_or_page, direction='next'):
     """
     Click the next/previous short navigation button using human_click.
@@ -1124,15 +1253,14 @@ def click_shorts_navigation_button(driver_or_page, direction='next'):
                 button.click()
                 time.sleep(random.uniform(0.2, 0.5))
             else:
-                from humanclick import human_click
-                human_click(driver_or_page, button)
+                from .humanclick import human_click
+                human_click(driver_or_page, button, 0, f"shorts {direction} button")
             logger.debug(f"Clicked {direction} shorts navigation button")
             time.sleep(0.5)
             return True
         except Exception as e:
             logger.debug(f"Failed to click {direction} button: {e}")
     return False
-
 
 
 def navigate_shorts_with_fallback(driver_or_page, direction='next', max_attempts=3):
@@ -1206,9 +1334,7 @@ def navigate_shorts_with_fallback(driver_or_page, direction='next', max_attempts
     return current_url != old_url
 
 
-    
-        
-# ========== Unified human behaviors (moved from utils.py) ==========
+# ========== Unified human behaviors ==========
 def random_scroll(driver_or_page, is_mobile: bool = False, smooth: bool = True):
     """
     Random scroll using mouse wheel simulation - works with Selenium driver or Playwright page.

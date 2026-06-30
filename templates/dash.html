@@ -165,14 +165,26 @@ input:checked + .slider:before {
                     <button id="addUrlBtn" class="btn-secondary" style="margin-top:10px;">+ Add URL</button>
                 </div>
 
-                <div class="row">
+                <div class="row" style="align-items: center;">
                     <div class="col"><div class="form-group"><label>🤖 Automation Version</label><select id="automationVersion"><option value="selenium">Selenium (Standard)</option><option value="selenium_undetected">Selenium (Undetected Stealth)</option><option value="playwright">Playwright</option></select></div></div>
                     <div class="col"><div class="form-group"><label>🔐 PO Token Source</label><select id="poTokenSource"><option value="native">🌿 Native Browser</option><option value="external">🖥️ External Server (bgutil, port 4416)</option><option value="potgen">🤖 po-token-generator (Node.js, port 4417)</option></select></div></div>
                 </div>
                 
-                <div class="row">
-                    <div class="col"><div class="form-group"><label>🎯 View Type</label><select id="viewType"></select></div></div>
-                    <div class="col"><div class="form-group"><label>📊 Traffic Source</label><select id="trafficSource"><option value="direct">Direct</option><option value="google_search">Google Search</option><option value="whatsapp_web">WhatsApp Web</option><option value="instagram">Instagram</option><option value="telegram_web">Telegram Web</option><option value="github">GitHub</option><option value="bing">Bing</option><option value="twitter">Twitter</option><option value="reddit">Reddit</option><option value="facebook">Facebook</option><option value="linkedin">LinkedIn</option></select></div></div>
+                <div class="row" style="align-items: center;">
+                    <div class="col" style="flex: 1; min-width: 0;"><div class="form-group"><label>🎯 View Type</label><select id="viewType"></select></div></div>
+                    <div class="col" style="flex: 1; min-width: 0;"><div class="form-group"><label>📊 Traffic Source</label><select id="trafficSource"><option value="random">🎲 Random</option><option value="direct">Direct</option><option value="google_search">Google Search</option><option value="whatsapp_web">WhatsApp Web</option><option value="instagram">Instagram</option><option value="telegram_web">Telegram Web</option><option value="github">GitHub</option><option value="bing">Bing</option><option value="twitter">Twitter</option><option value="reddit">Reddit</option><option value="facebook">Facebook</option><option value="linkedin">LinkedIn</option></select></div></div>
+					<div class="col" style="flex: 1; min-width: 0;">
+						<div class="form-group">
+							<label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 0; margin-bottom: 0;">
+								<input type="checkbox" id="forceMobile" style="width: 18px; height: 18px; margin: 0; cursor: pointer; accent-color: #667eea;">
+								<span style="display: flex; align-items: center; gap: 6px;">
+									<span style="font-size: 1.1rem;">📱</span>
+									<span style="font-weight: 500;">Force Mobile</span>
+									<span style="font-size: 0.65rem; color: #888; font-weight: normal;">(Use mobile for all)</span>
+								</span>
+							</label>
+						</div>
+					</div>
                 </div>
                 
                 <div class="form-group">
@@ -192,17 +204,17 @@ input:checked + .slider:before {
                     </div>
                 </div>
                 
-                <div class="row">
+                <div class="row" style="align-items: center;">
                     <div class="col"><div class="form-group"><label>⏱️ Min Watch Time (s)</label><input type="number" id="minWatchTime" value="30"></div></div>
                     <div class="col"><div class="form-group"><label>⏱️ Max Watch Time (s)</label><input type="number" id="maxWatchTime" value="180"></div></div>
                 </div>
                 
-                <div class="row">
+                <div class="row" style="align-items: center;">
                     <div class="col"><div class="form-group"><label>📊 Suggested Min Watch (s)</label><input type="number" id="suggestedMin" value="15"></div></div>
 					<div class="col"><div class="form-group"><label>📊 Suggested Max Watch (s)</label><input type="number" id="suggestedMax" value="35"></div></div>
                 </div>
 				
-				<div class="row">	
+				<div class="row" style="align-items: center;">	
 					<div class="col"><div class="form-group">
 										<label>🎲 Suggested Chance (%) <span id="suggestedChanceValue" style="color:#667eea; font-weight:bold;">40%</span></label>
 										<input type="range" id="suggestedChance" min="0" max="100" value="40" step="1" style="width:100%;">
@@ -221,7 +233,7 @@ input:checked + .slider:before {
 </div></div>
                 </div>
                 
-                <div class="row">
+                <div class="row" style="align-items: center;">
                     <div class="col"><div class="form-group"><label>🖥️ Number of Instances</label><input type="number" id="numInstances" value="1" min="1"></div></div>
                     <div class="col"><div class="form-group"><label>🔄 Cycles</label><input type="number" id="cycles" value="1" min="1"></div></div>
                 </div>
@@ -303,7 +315,7 @@ let channelDebounceTimer = null;
 let currentVideoIsShort = false;
 
 // View types that support traffic sources (referer headers)
-const TRAFFIC_SOURCE_VIEW_TYPES = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds"];
+const TRAFFIC_SOURCE_VIEW_TYPES = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "External(Embed)"];
 
 function addLog(message, type = 'info') {
     const logEntry = document.createElement('div');
@@ -328,7 +340,6 @@ function updateTrafficSourceState() {
     } else {
         trafficSource.disabled = true;
         trafficSource.style.opacity = '0.5';
-        trafficSource.value = 'direct';
     }
 }
 
@@ -342,6 +353,11 @@ async function updateViewTypesByType(isShort) {
         });
         const data = await response.json();
         const availableTypes = data.view_types || [];
+		
+		// Ensure "External(Embed)" is always available
+			if (!availableTypes.includes("External(Embed)")) {
+				availableTypes.push("External(Embed)");
+			}
         
         // Save current selection if any
         const currentSelection = viewType.value;
@@ -570,6 +586,7 @@ saveConfigBtn.onclick = async () => {
         po_token_source: poTokenSource.value, 
         proxy_mode: proxyMode.value, 
         traffic_source: trafficSourceValue,
+		force_mobile: document.getElementById('forceMobile').checked,
         min_watch_time: parseInt(minWatchTime.value), 
         max_watch_time: parseInt(maxWatchTime.value), 
         suggested_chance: parseInt(suggestedChance.value)/100, 
@@ -614,6 +631,9 @@ loadConfigBtn.onclick = async () => {
     if (config.suggested_chance) {
 		suggestedChance.value = config.suggested_chance * 100;
 		suggestedChanceValue.innerText = Math.round(config.suggested_chance * 100) + '%';
+	}
+	if (config.force_mobile !== undefined) {
+		document.getElementById('forceMobile').checked = config.force_mobile;
 	}
     if (config.suggested_min) suggestedMin.value = config.suggested_min;
     if (config.suggested_max) suggestedMax.value = config.suggested_max;
@@ -674,6 +694,7 @@ launchBtn.onclick = async () => {
         po_token_source: poTokenSource.value, 
         proxy_mode: proxyMode.value, 
         traffic_source: trafficSourceValue,
+		force_mobile: document.getElementById('forceMobile').checked,
         min_watch_time: parseInt(minWatchTime.value), 
         max_watch_time: parseInt(maxWatchTime.value), 
         suggested_chance: parseInt(suggestedChance.value)/100, 

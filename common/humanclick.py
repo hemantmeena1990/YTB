@@ -22,6 +22,87 @@ from selenium.webdriver.common.action_chains import ActionChains
 logger = logging.getLogger(__name__)
 
 
+# ========== NEW: Natural Human Click (Enhanced) ==========
+def natural_human_click(driver, element, instance_id, element_type="element"):
+    """
+    Simulate a natural human click with:
+    - Mouse movement to element with random offset
+    - Hover/pause
+    - Full event chain
+    - No navigation verification (for non-navigation clicks)
+    
+    Args:
+        driver: Selenium WebDriver
+        element: WebElement to click
+        instance_id: Instance identifier for logging
+        element_type: Type of element for logging
+    
+    Returns:
+        bool: True if click successful
+    """
+    try:
+        # Check if element is stale
+        try:
+            element.is_enabled()
+        except:
+            logger.warning(f"Instance {instance_id}: Element {element_type} is stale")
+            return False
+        
+        # Smooth scroll into view
+        driver.execute_script(
+            "arguments[0].scrollIntoView({block: 'center', behavior: 'smooth'});",
+            element
+        )
+        time.sleep(random.uniform(0.1, 0.3))
+        
+        # Get element dimensions for random offset
+        rect = element.rect
+        element_width = rect['width']
+        element_height = rect['height']
+        
+        # Calculate random offset within element (20-80% range to avoid edges)
+        min_offset_x = max(5, element_width * 0.2)
+        max_offset_x = min(element_width - 5, element_width * 0.8)
+        min_offset_y = max(5, element_height * 0.2)
+        max_offset_y = min(element_height - 5, element_height * 0.8)
+        
+        if max_offset_x <= min_offset_x:
+            offset_x = element_width // 2
+        else:
+            offset_x = random.randint(int(min_offset_x), int(max_offset_x))
+        if max_offset_y <= min_offset_y:
+            offset_y = element_height // 2
+        else:
+            offset_y = random.randint(int(min_offset_y), int(max_offset_y))
+        
+        # Calculate offset from center for ActionChains
+        center_x = element_width // 2
+        center_y = element_height // 2
+        move_x = offset_x - center_x
+        move_y = offset_y - center_y
+        
+        # Natural movement to element with slight randomness
+        actions = ActionChains(driver)
+        actions.move_to_element_with_offset(element, move_x, move_y)
+        actions.pause(random.uniform(0.1, 0.3))
+        actions.click()
+        actions.perform()
+        
+        logger.info(f"Instance {instance_id}: Natural click on {element_type} at offset ({offset_x}, {offset_y})")
+        return True
+        
+    except Exception as e:
+        # Fallback: direct click
+        try:
+            element.click()
+            logger.info(f"Instance {instance_id}: Fallback click on {element_type}")
+            return True
+        except:
+            logger.warning(f"Instance {instance_id}: Failed to click {element_type}")
+            return False
+
+
+# ========== Original human_click (with navigation verification) ==========
 def human_click(driver, element, instance_id, element_type="element"):
     """
     Perform a human-like click on an element with stale element recovery and navigation verification.

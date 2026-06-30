@@ -8,6 +8,7 @@ import json
 import re
 import random
 import unicodedata
+from urllib.parse import quote_plus
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 
@@ -46,19 +47,140 @@ DEFAULT_CONFIG = {
 
 # User agent lists
 DESKTOP_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 OPR/129.0.0.0",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:151.0) Gecko/20100101 Firefox/151.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 OPR/132.0.0.0",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.132 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3.1 Safari/605.1.15",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Safari/605.1.15",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) obsidian/1.8.10 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0",
+  "Mozilla/5.0 (X11; Linux x86_64; rv:151.0) Gecko/20100101 Firefox/151.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64; rv:137.0) Gecko/20100101 Firefox/137.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 OPR/117.0.0.0",
+  "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0",
+  "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) obsidian/1.8.9 Chrome/132.0.6834.210 Electron/34.3.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) obsidian/1.8.3 Chrome/130.0.6723.191 Electron/33.3.2 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) obsidian/1.8.10 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:138.0) Gecko/20100101 Firefox/138.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0"
 ]
 
 MOBILE_AGENTS = [
     "Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.113 Mobile Safari/537.36",
     "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1",
     "Mozilla/5.0 (Linux; Android 13; SM-A546B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6301.2 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/30.0 Chrome/143.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 26_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/149.0.7827.137 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.3 Mobile/15E148 Safari/604.1"
+    "Mozilla/5.0 (Linux; Android 13; M2101K7BNY Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 12; SM-G970U1 Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.58 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 11; SM-A405FN Build/RP1A.200720.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 12; itel A662L Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 10; VOG-L29 Build/HUAWEIVOG-L29; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 12; SM-A115F Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 11; 220333QNY Build/RKQ1.211001.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 13; SM-A145F Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.58 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 11; Infinix X688B Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 9; POT-LX1A Build/HUAWEIPOT-L41B; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 14; SM-S918B Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.58 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 14; SM-A536B Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 14; TB370FU Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.58 Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 14; 2109119DG Build/UKQ1.231108.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.58 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 13; SM-G985F Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.102 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 13; SM-G781B Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.102 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 11; TECNO CH9 Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 14; SM-S921B Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.58 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 14; SM-F711N Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.58 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 13; SM-G780F Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.58 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 12; M2101K6G Build/SKQ1.210908.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.102 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 13; CPH2211 Build/TP1A.220905.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/129.0.6668.100 Mobile Safari/537.36;",
+    "Mozilla/5.0 (Linux; Android 14; SM-A725F Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.58 Mobile Safari/537.36;"
 ]
 
-# Referer mapping for traffic sources
+# ========== TRAFFIC SOURCE MAPPING ==========
+
+# For referer headers (used in driver creation and embed widget_referrer)
 REFERER_MAP = {
     'whatsapp_web': 'https://web.whatsapp.com/',
     'instagram': 'https://www.instagram.com/',
@@ -69,8 +191,132 @@ REFERER_MAP = {
     'reddit': 'https://www.reddit.com/',
     'facebook': 'https://www.facebook.com/',
     'linkedin': 'https://www.linkedin.com/',
+    'google_search': 'https://www.google.com/',
+    'discord': 'https://discord.com/',
+    'snapchat': 'https://www.snapchat.com/',
+    'random': None,  # Handled separately
 }
 
+# Available traffic sources for random selection
+AVAILABLE_TRAFFIC_SOURCES = [
+    'google_search',
+    'whatsapp_web',
+    'instagram',
+    'telegram_web',
+    'github',
+    'bing',
+    'twitter',
+    'reddit',
+    'facebook',
+    'linkedin'
+]
+
+
+# Add to the imports section
+from urllib.parse import urlparse
+
+# Add after REFERER_MAP
+ORIGIN_MAP = {
+    'google_search': 'https://www.google.com',
+    'whatsapp_web': 'https://web.whatsapp.com',
+    'instagram': 'https://www.instagram.com',
+    'telegram_web': 'https://web.telegram.org',
+    'github': 'https://github.com',
+    'bing': 'https://www.bing.com',
+    'twitter': 'https://twitter.com',
+    'reddit': 'https://www.reddit.com',
+    'facebook': 'https://www.facebook.com',
+    'linkedin': 'https://www.linkedin.com',
+    'discord': 'https://discord.com',
+    'snapchat': 'https://www.snapchat.com',
+}
+
+def get_origin_for_traffic_source(traffic_source: str) -> str:
+    """Get origin URL based on traffic source."""
+    if traffic_source and traffic_source in ORIGIN_MAP:
+        return ORIGIN_MAP[traffic_source]
+    return 'https://www.google.com'
+
+
+def build_embed_origins(traffic_source: str, widget_referrer: str = None) -> dict:
+    """
+    Build origin, forigin, and gporigin parameters based on traffic source.
+    """
+    if traffic_source and traffic_source in ORIGIN_MAP:
+        base_url = ORIGIN_MAP[traffic_source]
+    elif widget_referrer:
+        parsed = urlparse(widget_referrer)
+        base_url = f"{parsed.scheme}://{parsed.netloc}"
+    else:
+        base_url = 'https://www.google.com'
+    
+    return {
+        'origin': base_url,
+        'forigin': f"{base_url}/multi-browser.html",
+        'gporigin': base_url,
+    }
+
+
+def resolve_traffic_source(traffic_source: str) -> tuple:
+    """
+    Resolve traffic source, handling 'random' option.
+    
+    Args:
+        traffic_source: Raw traffic source from dashboard
+    
+    Returns:
+        tuple: (resolved_source, referrer_url, source_type)
+    """
+    if traffic_source == 'random':
+        # Pick a random source from available options
+        selected = random.choice(AVAILABLE_TRAFFIC_SOURCES)
+        referrer = REFERER_MAP.get(selected)
+        return selected, referrer, 'random'
+    else:
+        referrer = REFERER_MAP.get(traffic_source)
+        return traffic_source, referrer, 'fixed'
+
+
+def get_widget_referrer(traffic_source: str) -> str:
+    """Get widget_referrer URL for embed player."""
+    if traffic_source == 'random':
+        # This should not happen since random is resolved before
+        return None
+    return REFERER_MAP.get(traffic_source)
+
+
+def build_platform_redirect_url(traffic_source: str, destination_url: str) -> str:
+    """
+    Build a platform-specific redirect URL.
+    
+    Args:
+        traffic_source: Platform name (facebook, instagram, etc.)
+        destination_url: The final URL to redirect to (e.g., YouTube video URL)
+    
+    Returns:
+        Redirect URL with encoded destination, or None if platform doesn't support redirects
+    """
+    if not traffic_source or traffic_source == 'direct' or traffic_source == 'random':
+        return destination_url
+    
+    encoded_dest = quote_plus(destination_url)
+    
+    redirect_formats = {
+        'facebook': f'https://www.facebook.com/l.php?u={encoded_dest}',
+        'instagram': f'https://l.instagram.com/?u={encoded_dest}',
+        'google_search': f'https://www.google.com/url?q={encoded_dest}',
+        'linkedin': f'https://www.linkedin.com/checkpoint/lg/redirect?url={encoded_dest}',
+        'reddit': f'https://www.reddit.com/outbound?url={encoded_dest}',
+    }
+    
+    if traffic_source in redirect_formats:
+        return redirect_formats[traffic_source]
+    
+    # For platforms without redirect wrappers
+    return destination_url
+
+
+# ========== HELPER FUNCTIONS ==========
 
 def sanitize_text(text):
     """
@@ -131,9 +377,9 @@ def detect_url_type(url: str) -> str:
 def get_applicable_view_types(url: str) -> List[str]:
     """Return list of view types applicable for the given URL."""
     if '/shorts/' in url:
-        return ["Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View"]
+        return ["Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View", "External(Embed)"]
     else:
-        return ["Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View"]
+        return ["Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View", "External(Embed)"]
 
 
 def get_video_title(url: str) -> Optional[str]:
@@ -166,37 +412,51 @@ def get_video_title(url: str) -> Optional[str]:
 def build_script_config(instance_id: int, data: dict, url: str, view_type: str) -> dict:
     """
     Build configuration dictionary for a script instance.
-    
-    Args:
-        instance_id: Instance number (1-based)
-        data: Dashboard configuration data
-        url: Target YouTube URL
-        view_type: Selected view type for this instance
-    
-    Returns:
-        Dictionary with all configuration needed by the script
+    Uses Intoli fingerprints for complete, consistent browser profiles.
     """
     video_id = extract_video_id(url)
-    traffic_source = data.get('traffic_source', 'direct')
+    raw_traffic_source = data.get('traffic_source', 'direct')
     po_token_source = data.get('po_token_source', 'native')
     proxy_mode = data.get('proxy_mode', 'none')
     
-    # Determine user agent and mobile status based on view type
-    if view_type == "Google Search":
-        is_mobile = random.choice([True, False])
-        user_agent = random.choice(MOBILE_AGENTS if is_mobile else DESKTOP_AGENTS)
-    elif view_type in ("Other YouTube features", "Direct/Unknown"):
-        is_mobile = True
-        user_agent = random.choice(MOBILE_AGENTS)
-    elif view_type == "Suggested":
-        is_mobile = False
-        user_agent = random.choice(DESKTOP_AGENTS)
-    elif view_type == "Short Feeds":
-        is_mobile = random.choice([True, False])
-        user_agent = random.choice(MOBILE_AGENTS if is_mobile else DESKTOP_AGENTS)
+    # Resolve traffic source (handles 'random')
+    resolved_source, referrer_url, source_type = resolve_traffic_source(raw_traffic_source)
+    
+    # ========== USE INTOLI FINGERPRINTS ==========
+    from common.fingerprint_manager import get_fingerprint_for_view_type, get_random_mobile_fingerprint
+    
+    # Get force_mobile from data
+    force_mobile = data.get('force_mobile', False)
+    
+    if force_mobile:
+        # Force mobile fingerprint for ALL view types
+        fingerprint = get_random_mobile_fingerprint()
+        print(f"[DEBUG] Mobile fingerprint: {fingerprint}")
+        if fingerprint:
+            print(f"[DEBUG] Mobile UA: {fingerprint.get('userAgent', '')[:80]}...")
+        else:
+            print(f"[DEBUG] WARNING: No mobile fingerprint returned!")
     else:
-        is_mobile = random.choice([True, False])
-        user_agent = random.choice(MOBILE_AGENTS if is_mobile else DESKTOP_AGENTS)
+        # Normal fingerprint selection based on view type
+        fingerprint = get_fingerprint_for_view_type(view_type)
+    
+    # Extract all signals from fingerprint
+    user_agent = fingerprint.get('userAgent', '')
+    platform = fingerprint.get('platform', 'Win32')
+    screen_width = fingerprint.get('screenWidth', 1920)
+    screen_height = fingerprint.get('screenHeight', 1080)
+    viewport_width = fingerprint.get('viewportWidth', screen_width)
+    viewport_height = fingerprint.get('viewportHeight', screen_height - 100)
+    plugins_length = fingerprint.get('pluginsLength', 5)
+    device_category = fingerprint.get('deviceCategory', 'desktop')
+    vendor = fingerprint.get('vendor', 'Google Inc.')
+    connection = fingerprint.get('connection', {})
+    fp_type = fingerprint.get('_type', device_category)
+    
+    is_mobile = (device_category == 'mobile')
+    
+    print(f"[FINGERPRINT] Instance {instance_id}: Using {device_category} fingerprint")
+    # ============================================
     
     # Build constructed URL based on view type
     if view_type == "Other YouTube features":
@@ -224,20 +484,50 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
         "is_mobile": is_mobile,
         "cycles": data.get("cycles", 1),
         "channel_name": data.get("channel_name", ""),
-        "traffic_source": traffic_source,
+        "traffic_source": resolved_source,
+        "traffic_source_raw": raw_traffic_source,
+        "traffic_source_type": source_type,
         "po_token_source": po_token_source,
         "proxy_mode": proxy_mode,
         "num_instances": data.get("num_instances", 1),
+        "force_mobile": force_mobile,
+        
+        
+        # ========== FINGERPRINT SIGNALS ==========
+        "platform": platform,
+        "screen_width": screen_width,
+        "screen_height": screen_height,
+        "viewport_width": viewport_width,
+        "viewport_height": viewport_height,
+        "plugins_length": plugins_length,
+        "device_category": device_category,
+        "vendor": vendor,
+        "connection": connection,
+        "fingerprint_type": fp_type,
+        # ===========================================
     }
     
-    # Add undetected mode flag (for stealth Selenium)
+    # Add undetected mode flag
     if data.get('automation_version') == 'selenium_undetected' or data.get('use_undetected'):
         config['use_undetected'] = True
     
-    # Add referer for direct URL view types and non-direct traffic sources
-    direct_url_view_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds"]
-    if view_type in direct_url_view_types and traffic_source != 'direct' and traffic_source in REFERER_MAP:
-        config['referer'] = REFERER_MAP[traffic_source]
+    # Add referer for direct URL view types
+    direct_url_view_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "External(Embed)"]
+    if view_type in direct_url_view_types and referrer_url:
+        config['referer'] = referrer_url
+    
+    # For External(Embed) view type, also add widget_referrer
+    if view_type == "External(Embed)" and referrer_url:
+        config['widget_referrer'] = referrer_url
+    
+    # For Google Search view type, add redirect info
+    if view_type == "Google Search":
+        config['platform_redirect'] = True
+        watch_url = f"https://www.youtube.com/watch?v={video_id}"
+        if data.get('po_token'):
+            separator = '&' if '?' in watch_url else '?'
+            watch_url = f"{watch_url}{separator}pot={data.get('po_token')}"
+        config['redirect_url'] = build_platform_redirect_url(resolved_source, watch_url)
     
     # Add video title for search mode or Google Search
     if view_type in ["Search (Video)", "Google Search", "Channel View"]:
@@ -250,8 +540,8 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
         config["available_view_types"] = data.get("available_view_types", [])
     
     return config
-
-
+    
+    
 def get_preview_info(url: str, view_type: str) -> dict:
     """Generate preview info for a given URL and view type."""
     video_id = extract_video_id(url)
@@ -274,6 +564,15 @@ def get_preview_info(url: str, view_type: str) -> dict:
         return {
             "success": True,
             "constructed_url": f"Via Google Search → https://www.youtube.com/watch?v={video_id}",
+            "user_agent": "Random",
+            "is_mobile": "Random",
+            "video_id": video_id
+        }
+    
+    if view_type == "External(Embed)":
+        return {
+            "success": True,
+            "constructed_url": f"Embed Player → https://www.youtube.com/watch?v={video_id}",
             "user_agent": "Random",
             "is_mobile": "Random",
             "video_id": video_id
@@ -320,6 +619,10 @@ __all__ = [
     'get_preview_info',
     'sanitize_text',
     'REFERER_MAP',
+    'resolve_traffic_source',
+    'build_platform_redirect_url',
+    'get_widget_referrer',
+    'AVAILABLE_TRAFFIC_SOURCES',
     'DESKTOP_AGENTS',
     'MOBILE_AGENTS',
 ]

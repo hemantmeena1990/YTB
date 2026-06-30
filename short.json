@@ -1,0 +1,26 @@
+[
+  {
+    "instance_id": 1,
+    "url": "https://www.youtube.com/watch?v=jlFL8bwZd4I",
+    "video_id": "jlFL8bwZd4I",
+    "constructed_url": "https://www.youtube.com/shorts/jlFL8bwZd4I",
+    "view_type": "Short Feeds",
+    "min_watch_time": 5,
+    "max_watch_time": 60,
+    "suggested_min": 1,
+    "suggested_max": 5,
+    "suggested_chance": 1,
+    "headless": false,
+    "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1",
+    "is_mobile": true,
+    "cycles": 1,
+    "channel_name": "",
+    "traffic_source": "direct",
+    "po_token_source": "external",
+    "proxy_mode": "none",
+    "num_instances": 1,
+    "is_auto_random": false,
+    "available_view_types": [],
+    "cycle_number": 1
+  }
+]

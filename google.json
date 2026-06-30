@@ -1,0 +1,34 @@
+[
+  {
+    "instance_id": 2,
+    "url": "https://www.youtube.com/watch?v=GteOxsuzPrY",
+    "video_id": "GteOxsuzPrY",
+    "constructed_url": "https://www.youtube.com/watch?v=GteOxsuzPrY",
+    "view_type": "Google Search",
+    "min_watch_time": 60,
+    "max_watch_time": 180,
+    "suggested_min": 5,
+    "suggested_max": 15,
+    "suggested_chance": 1,
+    "headless": false,
+    "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "is_mobile": false,
+    "cycles": 1,
+    "channel_name": "@rajasthanidesidiaries",
+    "traffic_source": "direct",
+    "po_token_source": "external",
+    "proxy_mode": "tor_browser",
+    "num_instances": 4,
+    "video_title": "ऊंची मेडी पर रह बाड़ी झालों देर बुला ले रे | New Rajasthani Song 2025 | Marwadi Song | DJ Remix",
+    "is_auto_random": true,
+    "available_view_types": [
+      "Other YouTube features",
+      "Direct/Unknown",
+      "Suggested",
+      "Search (Video)",
+      "Channel View"
+    ],
+    "cycle_number": 1,
+    "is_short": false
+  }
+]
