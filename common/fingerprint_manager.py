@@ -59,7 +59,10 @@ def load_fingerprints():
     
     _LOADED = True
     
-    # Fallback if files are empty
+    # ========== FALLBACK FINGERPRINTS ==========
+    # These are used if JSON files are missing or empty
+    # CRITICAL: Mobile must have pluginsLength = 0
+    
     if not _DESKTOP_FINGERPRINTS:
         _DESKTOP_FINGERPRINTS = [{
             "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
@@ -70,7 +73,9 @@ def load_fingerprints():
             "viewportWidth": 1920,
             "pluginsLength": 5,
             "deviceCategory": "desktop",
-            "weight": 1.0
+            "weight": 1.0,
+            "vendor": "Google Inc.",
+            "language": "en-US"
         }]
     
     if not _MOBILE_FINGERPRINTS:
@@ -81,9 +86,11 @@ def load_fingerprints():
             "screenWidth": 390,
             "viewportHeight": 699,
             "viewportWidth": 390,
-            "pluginsLength": 5,
+            "pluginsLength": 0,
             "deviceCategory": "mobile",
-            "weight": 1.0
+            "weight": 1.0,
+            "vendor": "Apple Computer, Inc.",
+            "language": "en-US"
         }]
 
 
@@ -105,7 +112,6 @@ def get_random_desktop_fingerprint():
     if not fingerprints:
         return None
     
-    # Use weight for weighted random selection
     weights = [fp.get('weight', 0.0001) for fp in fingerprints]
     total_weight = sum(weights)
     if total_weight == 0:
@@ -119,7 +125,6 @@ def get_random_mobile_fingerprint():
     if not fingerprints:
         return None
     
-    # Use weight for weighted random selection
     weights = [fp.get('weight', 0.0001) for fp in fingerprints]
     total_weight = sum(weights)
     if total_weight == 0:
@@ -127,44 +132,106 @@ def get_random_mobile_fingerprint():
     return random.choices(fingerprints, weights=weights, k=1)[0]
 
 
-def get_fingerprint_for_view_type(view_type):
-    """Get appropriate fingerprint based on view type"""
-    if view_type == "Suggested":
-        # Desktop only for Suggested
-        fp = get_random_desktop_fingerprint()
-        if fp:
-            fp['_type'] = 'desktop'
-        return fp
-    elif view_type in ("Other YouTube features", "Direct/Unknown"):
-        # Mobile only for these
+def get_fingerprint_for_view_type(view_type, force_mobile=False):
+    """
+    Get appropriate fingerprint based on view type
+    
+    Args:
+        view_type: String view type
+        force_mobile: If True, always return mobile fingerprint
+    
+    Returns:
+        Dictionary with fingerprint data, or None if unavailable
+    """
+    if force_mobile:
         fp = get_random_mobile_fingerprint()
         if fp:
             fp['_type'] = 'mobile'
+            fp['deviceCategory'] = 'mobile'
+        return fp
+    
+    if view_type == "Suggested":
+        fp = get_random_desktop_fingerprint()
+        if fp:
+            fp['_type'] = 'desktop'
+            fp['deviceCategory'] = 'desktop'
+        return fp
+    elif view_type in ("Other YouTube features", "Direct/Unknown", "External(Embed)"):
+        fp = get_random_mobile_fingerprint()
+        if fp:
+            fp['_type'] = 'mobile'
+            fp['deviceCategory'] = 'mobile'
         return fp
     elif view_type == "Google Search":
-        # Random for search
         if random.random() < 0.5:
             fp = get_random_desktop_fingerprint()
             if fp:
                 fp['_type'] = 'desktop'
+                fp['deviceCategory'] = 'desktop'
             return fp
         else:
             fp = get_random_mobile_fingerprint()
             if fp:
                 fp['_type'] = 'mobile'
+                fp['deviceCategory'] = 'mobile'
             return fp
     else:
-        # Random for others
         if random.random() < 0.5:
             fp = get_random_desktop_fingerprint()
             if fp:
                 fp['_type'] = 'desktop'
+                fp['deviceCategory'] = 'desktop'
             return fp
         else:
             fp = get_random_mobile_fingerprint()
             if fp:
                 fp['_type'] = 'mobile'
+                fp['deviceCategory'] = 'mobile'
             return fp
+
+
+def get_fingerprint_with_platform(platform_type='desktop'):
+    """Get fingerprint for specific platform type"""
+    if platform_type == 'mobile':
+        return get_random_mobile_fingerprint()
+    else:
+        return get_random_desktop_fingerprint()
+
+
+def validate_fingerprint(fp):
+    """Validate fingerprint has all required fields"""
+    required_fields = [
+        'userAgent', 'platform', 'screenHeight', 'screenWidth',
+        'viewportHeight', 'viewportWidth', 'pluginsLength', 'deviceCategory'
+    ]
+    
+    if not fp:
+        return False
+    
+    for field in required_fields:
+        if field not in fp:
+            return False
+    
+    # Validate mobile fingerprints have pluginsLength = 0
+    if fp.get('deviceCategory') == 'mobile' and fp.get('pluginsLength', 5) != 0:
+        print(f"[FINGERPRINT] WARNING: Mobile fingerprint has pluginsLength={fp.get('pluginsLength')}, should be 0")
+        fp['pluginsLength'] = 0
+        return True
+    
+    return True
+
+
+def get_fingerprint_summary(fp):
+    """Get a human-readable summary of the fingerprint"""
+    if not fp:
+        return "No fingerprint"
+    
+    return (f"Device: {fp.get('deviceCategory', 'unknown')}, "
+            f"UA: {fp.get('userAgent', 'unknown')[:50]}..., "
+            f"Screen: {fp.get('screenWidth', 0)}x{fp.get('screenHeight', 0)}, "
+            f"Viewport: {fp.get('viewportWidth', 0)}x{fp.get('viewportHeight', 0)}, "
+            f"Plugins: {fp.get('pluginsLength', 0)}, "
+            f"Platform: {fp.get('platform', 'unknown')}")
 
 
 # Export public functions
@@ -175,6 +242,9 @@ __all__ = [
     'get_random_desktop_fingerprint',
     'get_random_mobile_fingerprint',
     'get_fingerprint_for_view_type',
+    'get_fingerprint_with_platform',
+    'validate_fingerprint',
+    'get_fingerprint_summary',
     'DESKTOP_FILE',
     'MOBILE_FILE'
 ]

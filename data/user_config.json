@@ -1,0 +1,22 @@
+{
+  "urls": [
+    "https://www.youtube.com/watch?v=l07pozKpx1w"
+  ],
+  "automation_version": "pydoll",
+  "view_type": "Direct/Unknown",
+  "po_token_source": "external",
+  "proxy_mode": "tor_browser",
+  "traffic_source": "random",
+  "force_mobile": false,
+  "force_desktop": false,
+  "force_platform": "none",
+  "min_watch_time": 30,
+  "max_watch_time": 60,
+  "suggested_chance": 1,
+  "suggested_min": 5,
+  "suggested_max": 15,
+  "num_instances": 1,
+  "cycles": 1,
+  "headless": false,
+  "channel_name": "@rajasthanidesidiaries"
+}

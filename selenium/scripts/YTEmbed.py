@@ -69,6 +69,8 @@ _po_driver_path = SELENIUM_COMMON_ROOT / "po_driver.py"
 _po_driver_module = _load_module_from_file("po_driver", _po_driver_path)
 create_driver_with_po_token = _po_driver_module.create_driver_with_po_token
 set_driver_logger = _po_driver_module.set_logger
+apply_fingerprint_overrides = _po_driver_module.apply_fingerprint_overrides  # ✅ IMPORT THE NEW FUNCTION
+inject_fingerprint_into_iframes = _po_driver_module.inject_fingerprint_into_iframes
 
 # Utils
 _utils_path = SELENIUM_COMMON_ROOT / "utils.py"
@@ -184,6 +186,20 @@ class SessionConfig:
     chrome_args: list = None
     automation_version: str = "selenium"
     use_undetected: bool = False
+    # ========== ✅ ADD FINGERPRINT FIELDS ==========
+    platform: str = "Win32"
+    screen_width: int = 1920
+    screen_height: int = 1080
+    viewport_width: int = 1920
+    viewport_height: int = 950
+    plugins_length: int = 5
+    device_category: str = "desktop"
+    vendor: str = "Google Inc."
+    connection: dict = None
+    language: str = "en-US"
+    force_mobile: bool = False
+    fingerprint_type: str = "desktop"
+    # ===============================================
 
 
 # ========== DYNAMIC DOMAIN FUNCTIONS ==========
@@ -427,13 +443,30 @@ def watch_embed(driver, cfg: SessionConfig):
         page_url = f"http://127.0.0.1:{port}/{html_file.name}"
         logger.info(f"Instance {cfg.instance_id}: Loading: {page_url} (using 127.0.0.1 - bypasses DNS/proxy/HSTS)")
         
+        # ========== ✅ INJECT FINGERPRINT SCRIPTS BEFORE NAVIGATION ==========
+        # CRITICAL: These scripts must be registered BEFORE the iframe loads
+        try:
+            inject_fingerprint_into_iframes(driver, cfg, cfg.instance_id)
+            logger.info(f"Instance {cfg.instance_id}: ✅ Fingerprint scripts registered for iframes")
+        except Exception as e:
+            logger.warning(f"Instance {cfg.instance_id}: Could not register fingerprint scripts: {e}")
+        # =====================================================================
+        
         driver.get(page_url)
+        
+        # ========== ✅ RE-APPLY FINGERPRINT AFTER NAVIGATION ==========
+        use_undetected = getattr(cfg, 'use_undetected', False)
+        apply_fingerprint_overrides(driver, cfg, cfg.instance_id, is_undetected=use_undetected)
+        logger.info(f"Instance {cfg.instance_id}: 🔄 Fingerprint re-applied after embed navigation")
+        # =============================================================
+        
         wait_for_page_load(driver, 20)
         time.sleep(5)
 
         # Handle popups
         handle_all_popups(driver, cfg.instance_id)
         handle_cookies(driver, cfg.instance_id)
+        # =========================================================
 
         # ========== Wait for video to start ==========
         playback_success = False
@@ -619,9 +652,23 @@ def main():
             num_instances=d.get("num_instances", 1),
             current_proxy=d.get("proxy", None),
             cycle_number=d.get("cycle_number", 1),
-            referer=d.get("referer", None)
+            referer=d.get("referer", None),  # ✅ Fixed: Added missing comma
             automation_version=d.get("automation_version", "selenium"),
-            use_undetected=d.get("use_undetected", False)
+            use_undetected=d.get("use_undetected", False),
+            # ========== ✅ ADD FINGERPRINT FIELDS ==========
+            platform=d.get("platform", "Win32"),
+            screen_width=d.get("screen_width", 1920),
+            screen_height=d.get("screen_height", 1080),
+            viewport_width=d.get("viewport_width", 1920),
+            viewport_height=d.get("viewport_height", 950),
+            plugins_length=d.get("plugins_length", 5),
+            device_category=d.get("device_category", "desktop"),
+            vendor=d.get("vendor", "Google Inc."),
+            connection=d.get("connection", None),
+            language=d.get("language", "en-US"),
+            force_mobile=d.get("force_mobile", False),
+            fingerprint_type=d.get("fingerprint_type", "desktop")
+            # ===============================================
         )
         
         p = Process(target=run_session, args=(cfg,))

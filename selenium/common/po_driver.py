@@ -18,6 +18,8 @@ import socket
 import subprocess
 import re
 from pathlib import Path
+from selenium.webdriver.common.by import By
+from common.fingerprint_manager import get_fingerprint_with_platform, validate_fingerprint
 
 # ========== PATH SETUP ==========
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -330,33 +332,343 @@ def create_undetected_options(cfg, profile_dir):
     
     return options
 
-def apply_fingerprint_overrides(driver, cfg, instance_id):
+
+def apply_fingerprint_overrides(driver, cfg, instance_id, is_undetected=False):
     """
-    Apply all fingerprint CDP overrides to the driver.
-    This should be called after driver creation in all scripts.
+    Apply ALL fingerprint CDP overrides to the driver.
+    Uses prototype-based overrides to avoid own properties.
     """
     if not _script_logger:
-        return
+        return False
     
     try:
+        user_agent = getattr(cfg, 'user_agent', None)
+        viewport_width = getattr(cfg, 'viewport_width', None)
+        viewport_height = getattr(cfg, 'viewport_height', None)
+        plugins_length = getattr(cfg, 'plugins_length', None)
+        connection = getattr(cfg, 'connection', {})
+        device_category = getattr(cfg, 'device_category', None)
+        fingerprint_platform = getattr(cfg, 'platform', 'Win32')
+        language = getattr(cfg, 'language', 'en-US')
+        vendor = getattr(cfg, 'vendor', 'Google Inc.')
+        
+        _script_logger.info(f"Instance {instance_id}: 🔧 Applying fingerprint overrides (undetected={is_undetected})")
+        _script_logger.info(f"Instance {instance_id}: 📱 Platform: {fingerprint_platform}, Device: {device_category}")
+        
         # 1. User Agent
-        if hasattr(cfg, 'user_agent') and cfg.user_agent:
-            driver.execute_cdp_cmd('Network.setUserAgentOverride', {
-                'userAgent': cfg.user_agent
-            })
-            _script_logger.info(f"Instance {instance_id}: User agent set via CDP")
+        if user_agent:
+            try:
+                driver.execute_cdp_cmd('Network.setUserAgentOverride', {
+                    'userAgent': user_agent
+                })
+                _script_logger.info(f"Instance {instance_id}: ✅ User agent set: {user_agent[:80]}...")
+            except Exception as e:
+                _script_logger.warning(f"Instance {instance_id}: User agent CDP failed: {e}")
         
         # 2. Window Size
-        if hasattr(cfg, 'viewport_width') and hasattr(cfg, 'viewport_height'):
-            driver.set_window_size(cfg.viewport_width, cfg.viewport_height)
-            _script_logger.info(f"Instance {instance_id}: Window size set to {cfg.viewport_width}x{cfg.viewport_height}")
+        if viewport_width and viewport_height:
+            try:
+                driver.set_window_size(viewport_width, viewport_height)
+                _script_logger.info(f"Instance {instance_id}: ✅ Window size set to {viewport_width}x{viewport_height}")
+            except Exception as e:
+                _script_logger.warning(f"Instance {instance_id}: Window size failed: {e}")
         
-        # 3. Mobile Viewport Emulation
-        if hasattr(cfg, 'device_category') and cfg.device_category == 'mobile':
-            if hasattr(cfg, 'viewport_width') and hasattr(cfg, 'viewport_height'):
+        # ========== USE FINGERPRINT DATA ==========
+        import re
+        
+        # Extract Chrome version from user agent
+        chrome_version = '138'
+        if user_agent:
+            chrome_match = re.search(r'Chrome/(\d+)\.', user_agent)
+            if chrome_match:
+                chrome_version = chrome_match.group(1)
+        
+        platform_value = fingerprint_platform
+        user_agent_data_platform = fingerprint_platform
+        
+        # Extract appVersion platform from user agent
+        if user_agent:
+            match = re.search(r'^Mozilla/5\.0 \(([^)]+)\)', user_agent)
+            if match:
+                app_version_platform = match.group(1)
+            else:
+                if fingerprint_platform == 'MacIntel':
+                    app_version_platform = 'Macintosh; Intel Mac OS X 10_15_7'
+                elif fingerprint_platform == 'iPhone':
+                    app_version_platform = 'iPhone; CPU iPhone OS 18_5 like Mac OS X'
+                elif fingerprint_platform == 'iPad':
+                    app_version_platform = 'iPad; CPU OS 18_5 like Mac OS X'
+                elif fingerprint_platform in ['Linux armv8l', 'Linux x86_64']:
+                    if 'Android' in user_agent:
+                        app_version_platform = 'Linux; Android 10; K'
+                    else:
+                        app_version_platform = 'X11; Linux x86_64'
+                else:
+                    app_version_platform = 'Windows NT 10.0; Win64; x64'
+        else:
+            if fingerprint_platform == 'MacIntel':
+                app_version_platform = 'Macintosh; Intel Mac OS X 10_15_7'
+            elif fingerprint_platform == 'iPhone':
+                app_version_platform = 'iPhone; CPU iPhone OS 18_5 like Mac OS X'
+            elif fingerprint_platform == 'iPad':
+                app_version_platform = 'iPad; CPU OS 18_5 like Mac OS X'
+            elif fingerprint_platform in ['Linux armv8l', 'Linux x86_64']:
+                app_version_platform = 'X11; Linux x86_64'
+            else:
+                app_version_platform = 'Windows NT 10.0; Win64; x64'
+        
+        # Build appVersion
+        if user_agent and 'Chrome/' in user_agent:
+            app_version = f'5.0 ({app_version_platform}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
+        elif user_agent and 'Firefox/' in user_agent:
+            app_version = f'5.0 ({app_version_platform}) Gecko/20100101 Firefox/{chrome_version}.0'
+        elif user_agent and 'Safari/' in user_agent and 'Version/' in user_agent:
+            app_version = f'5.0 ({app_version_platform}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15'
+        else:
+            app_version = f'5.0 ({app_version_platform}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
+        
+        _script_logger.info(f"Instance {instance_id}: 📱 Platform: {platform_value}")
+        _script_logger.info(f"Instance {instance_id}: 🔍 Chrome version from fingerprint: {chrome_version}")
+        # ===========================================================
+        
+        # 3. PROPER Navigator overrides
+        script_source = f'''
+            (function() {{
+                // Get the prototype of navigator
+                const navProto = Object.getPrototypeOf(navigator);
+                
+                // ========== webdriver ONLY on prototype ==========
+                if (navigator.hasOwnProperty('webdriver')) {{
+                    delete navigator.webdriver;
+                }}
+                Object.defineProperty(navProto, 'webdriver', {{
+                    value: false,
+                    writable: false,
+                    configurable: false,
+                    enumerable: false
+                }});
+                // =================================================
+                
+                // ========== PLUGINS: Simple array with PluginArray methods ==========
+                Object.defineProperty(navProto, 'plugins', {{
+                    get: function() {{
+                        const pluginCount = {plugins_length if plugins_length is not None else 4};
+                        const plugins = [];
+                        
+                        for (let i = 0; i < pluginCount; i++) {{
+                            plugins[i] = {{
+                                name: 'PDF Viewer',
+                                filename: 'internal-pdf-viewer',
+                                description: 'Portable Document Format',
+                                length: 1,
+                                item: function(index) {{ return this; }},
+                                namedItem: function(name) {{ return this; }}
+                            }};
+                        }}
+                        plugins.length = pluginCount;
+                        plugins.item = function(index) {{ return this[index] || null; }};
+                        plugins.namedItem = function(name) {{
+                            for (let i = 0; i < this.length; i++) {{
+                                if (this[i].name === name) return this[i];
+                            }}
+                            return null;
+                        }};
+                        plugins.refresh = function() {{}};
+                        // This is the key - set toStringTag to pass type checks
+                        Object.defineProperty(plugins, Symbol.toStringTag, {{
+                            value: 'PluginArray',
+                            enumerable: false
+                        }});
+                        return plugins;
+                    }},
+                    configurable: true
+                }});
+                // =================================================
+                
+                // ========== MIME TYPES ==========
+                Object.defineProperty(navProto, 'mimeTypes', {{
+                    get: function() {{
+                        const mimeTypes = [];
+                        mimeTypes.length = 0;
+                        mimeTypes.item = function(index) {{ return null; }};
+                        mimeTypes.namedItem = function(name) {{ return null; }};
+                        Object.defineProperty(mimeTypes, Symbol.toStringTag, {{
+                            value: 'MimeTypeArray',
+                            enumerable: false
+                        }});
+                        return mimeTypes;
+                    }},
+                    configurable: true
+                }});
+                // =================================================
+                
+                // ========== LANGUAGE ==========
+                Object.defineProperty(navProto, 'language', {{
+                    get: function() {{ return '{language}'; }},
+                    configurable: true
+                }});
+                Object.defineProperty(navProto, 'languages', {{
+                    get: function() {{ return ['{language}']; }},
+                    configurable: true
+                }});
+                
+                // ========== USER AGENT ==========
+                Object.defineProperty(navProto, 'userAgent', {{
+                    get: function() {{ return '{user_agent}'; }},
+                    configurable: true
+                }});
+                
+                // ========== PLATFORM ==========
+                Object.defineProperty(navProto, 'platform', {{
+                    get: function() {{ return '{platform_value}'; }},
+                    configurable: true
+                }});
+                
+                // ========== APP VERSION ==========
+                Object.defineProperty(navProto, 'appVersion', {{
+                    get: function() {{ 
+                        return '{app_version}';
+                    }},
+                    configurable: true
+                }});
+                
+                // ========== VENDOR ==========
+                Object.defineProperty(navProto, 'vendor', {{
+                    get: function() {{ return '{vendor}'; }},
+                    configurable: true
+                }});
+                
+                // ========== userAgentData (ONLY on prototype, NEVER on navigator) ==========
+                Object.defineProperty(navProto, 'userAgentData', {{
+                    get: function() {{
+                        return {{
+                            brands: [
+                                {{ brand: 'Google Chrome', version: '{chrome_version}' }},
+                                {{ brand: 'Chromium', version: '{chrome_version}' }},
+                                {{ brand: 'Not?A_Brand', version: '99' }}
+                            ],
+                            mobile: {str(device_category == 'mobile').lower()},
+                            platform: '{user_agent_data_platform}',
+                            getHighEntropyValues: function(hints) {{
+                                return Promise.resolve({{
+                                    platform: '{user_agent_data_platform}',
+                                    platformVersion: '10.0',
+                                    architecture: 'x64',
+                                    model: '',
+                                    uaFullVersion: '{chrome_version}.0.0.0'
+                                }});
+                            }}
+                        }};
+                    }},
+                    configurable: true
+                }});
+                // DO NOT define userAgentData on navigator directly
+                // =============================================================
+                
+                // ========== DEVICE MEMORY & HARDWARE ==========
+                Object.defineProperty(navProto, 'deviceMemory', {{
+                    get: function() {{ return 8; }},
+                    configurable: true
+                }});
+                Object.defineProperty(navProto, 'hardwareConcurrency', {{
+                    get: function() {{ return 8; }},
+                    configurable: true
+                }});
+                
+                // ========== WINDOW.CHROME ==========
+                if (typeof window.chrome === 'undefined' || !window.chrome) {{
+                    window.chrome = {{}};
+                }}
+                if (!window.chrome.runtime) {{
+                    window.chrome.runtime = {{}};
+                }}
+                if (!window.chrome.runtime.connect) {{
+                    window.chrome.runtime.connect = function() {{ return {{}}; }};
+                }}
+                if (!window.chrome.runtime.sendMessage) {{
+                    window.chrome.runtime.sendMessage = function() {{}};
+                }}
+                if (!window.chrome.memory) {{
+                    Object.defineProperty(window.chrome, 'memory', {{
+                        get: function() {{
+                            return {{
+                                getInfo: function() {{
+                                    return {{
+                                        totalJSHeapSize: 100000000,
+                                        usedJSHeapSize: 50000000,
+                                        jsHeapSizeLimit: 200000000
+                                    }};
+                                }}
+                            }};
+                        }},
+                        configurable: true
+                    }});
+                }}
+                if (!window.chrome.loadTimes) {{
+                    window.chrome.loadTimes = function() {{
+                        return {{
+                            requestTime: Date.now() / 1000,
+                            startLoadTime: Date.now() / 1000,
+                            commitLoadTime: Date.now() / 1000,
+                            finishDocumentLoadTime: Date.now() / 1000,
+                            finishLoadTime: Date.now() / 1000,
+                            navigationType: 'Other',
+                            wasFetchedViaSpdy: false,
+                            wasNpnNegotiated: false,
+                            npnNegotiatedProtocol: 'unknown',
+                            wasAlternateProtocolAvailable: false,
+                            connectionInfo: 'unknown'
+                        }};
+                    }};
+                }}
+                if (!window.chrome.csi) {{
+                    window.chrome.csi = function() {{
+                        return {{
+                            startE: Date.now(),
+                            onloadT: Date.now(),
+                            pageT: Date.now() - 1000,
+                            tran: 15
+                        }};
+                    }};
+                }}
+                if (!window.chrome.app) {{
+                    window.chrome.app = {{}};
+                }}
+                
+                console.log('✅ Fingerprint overrides applied');
+                console.log('📱 Platform:', navigator.platform);
+                console.log('📱 appVersion:', navigator.appVersion);
+                console.log('📱 plugins length:', navigator.plugins.length);
+                console.log('📱 userAgentData brands:', navigator.userAgentData.brands);
+            }})();
+        '''
+        
+        driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
+            'source': script_source
+        })
+        _script_logger.info(f"Instance {instance_id}: ✅ Navigator prototype overrides applied")
+        
+        # 4. Network Emulation
+        if connection and connection.get('downlink'):
+            try:
+                downlink = connection.get('downlink', 10)
+                rtt = connection.get('rtt', 100)
+                driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
+                    'offline': False,
+                    'latency': rtt,
+                    'downloadThroughput': downlink * 1024 * 1024 / 8,
+                    'uploadThroughput': downlink * 1024 * 1024 / 8,
+                })
+                _script_logger.info(f"Instance {instance_id}: ✅ Network emulated: {downlink}Mbps, {rtt}ms RTT")
+            except Exception as e:
+                _script_logger.warning(f"Instance {instance_id}: Network CDP failed: {e}")
+        
+        # 5. Mobile Viewport Emulation
+        if device_category == 'mobile' and viewport_width and viewport_height:
+            try:
                 driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {
-                    'width': cfg.viewport_width,
-                    'height': cfg.viewport_height,
+                    'width': viewport_width,
+                    'height': viewport_height,
                     'deviceScaleFactor': 1,
                     'mobile': True,
                     'screenOrientation': {
@@ -364,82 +676,331 @@ def apply_fingerprint_overrides(driver, cfg, instance_id):
                         'angle': 0
                     }
                 })
-                _script_logger.info(f"Instance {instance_id}: Mobile viewport emulated: {cfg.viewport_width}x{cfg.viewport_height}")
-            
-            # Override screen object for JavaScript checks
-            driver.execute_script(f"""
-                Object.defineProperty(screen, 'width', {{
-                    get: function() {{ return {cfg.viewport_width}; }}
-                }});
-                Object.defineProperty(screen, 'height', {{
-                    get: function() {{ return {cfg.viewport_height}; }}
-                }});
-            """)
+                _script_logger.info(f"Instance {instance_id}: ✅ Mobile viewport emulated: {viewport_width}x{viewport_height}")
+                
+                driver.execute_script(f"""
+                    var meta = document.querySelector('meta[name=viewport]');
+                    if (!meta) {{
+                        meta = document.createElement('meta');
+                        meta.name = 'viewport';
+                        document.head.appendChild(meta);
+                    }}
+                    meta.content = 'width={viewport_width}, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+                    window.dispatchEvent(new Event('resize'));
+                """)
+                
+            except Exception as e:
+                _script_logger.warning(f"Instance {instance_id}: Mobile emulation failed: {e}")
         
-        # 4. Plugins Length
-        if hasattr(cfg, 'plugins_length'):
-            driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-                'source': f'''
-                    Object.defineProperty(navigator, 'plugins', {{
-                        get: function() {{
-                            return {{
-                                length: {cfg.plugins_length},
-                                item: function(i) {{ return null; }},
-                                namedItem: function(name) {{ return null; }},
-                                refresh: function() {{}}
-                            }};
-                        }}
-                    }});
-                    Object.defineProperty(navigator, 'mimeTypes', {{
-                        get: function() {{
-                            return {{
-                                length: 0,
-                                item: function(i) {{ return null; }},
-                                namedItem: function(name) {{ return null; }}
-                            }};
-                        }}
-                    }});
-                '''
-            })
-            _script_logger.info(f"Instance {instance_id}: Plugins length set to {cfg.plugins_length}")
+        # 6. Verify actual viewport
+        try:
+            actual_width = driver.execute_script("return window.innerWidth")
+            actual_height = driver.execute_script("return window.innerHeight")
+            _script_logger.info(f"Instance {instance_id}: 🔍 Actual viewport: {actual_width}x{actual_height}")
+            if viewport_width and viewport_height:
+                if actual_width != viewport_width or actual_height != viewport_height:
+                    _script_logger.warning(f"Instance {instance_id}: ⚠️ Viewport mismatch! Expected {viewport_width}x{viewport_height}, got {actual_width}x{actual_height}")
+        except:
+            pass
         
-        # 5. Network Emulation
-        if hasattr(cfg, 'connection') and cfg.connection and cfg.connection.get('downlink'):
-            downlink = cfg.connection.get('downlink', 10)
-            rtt = cfg.connection.get('rtt', 100)
-            driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
-                'offline': False,
-                'latency': rtt,
-                'downloadThroughput': downlink * 1024 * 1024 / 8,
-                'uploadThroughput': downlink * 1024 * 1024 / 8,
-            })
-            _script_logger.info(f"Instance {instance_id}: Network emulated: {downlink}Mbps, {rtt}ms RTT")
-        
-        # 6. Language
-        if hasattr(cfg, 'language') and cfg.language:
-            driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-                'source': f'''
-                    Object.defineProperty(navigator, 'language', {{
-                        get: function() {{ return '{cfg.language}'; }}
-                    }});
-                    Object.defineProperty(navigator, 'languages', {{
-                        get: function() {{ return ['{cfg.language}']; }}
-                    }});
-                '''
-            })
-            _script_logger.info(f"Instance {instance_id}: Language set to {cfg.language}")
-        
-        # 7. Verify
-        actual_width = driver.execute_script("return window.innerWidth")
-        actual_height = driver.execute_script("return window.innerHeight")
-        _script_logger.info(f"Instance {instance_id}: 🔍 Actual viewport: {actual_width}x{actual_height}")
-        
+        _script_logger.info(f"Instance {instance_id}: ✅ Fingerprint overrides applied successfully")
         return True
         
     except Exception as e:
-        _script_logger.warning(f"Instance {instance_id}: Fingerprint overrides failed: {e}")
+        _script_logger.error(f"Instance {instance_id}: ❌ Fingerprint overrides failed: {e}")
         return False
 
+def inject_fingerprint_into_iframes(driver, cfg, instance_id):
+    """
+    Inject fingerprint overrides into iframes using the SAME logic as apply_fingerprint_overrides.
+    This ensures consistency between main page and iframe fingerprints.
+    """
+    if not _script_logger:
+        return False
+    
+    try:
+        # Extract fingerprint data from cfg (same as apply_fingerprint_overrides)
+        user_agent = getattr(cfg, 'user_agent', None)
+        viewport_width = getattr(cfg, 'viewport_width', None)
+        viewport_height = getattr(cfg, 'viewport_height', None)
+        plugins_length = getattr(cfg, 'plugins_length', None)
+        device_category = getattr(cfg, 'device_category', None)
+        fingerprint_platform = getattr(cfg, 'platform', 'Win32')
+        language = getattr(cfg, 'language', 'en-US')
+        vendor = getattr(cfg, 'vendor', 'Google Inc.')
+        
+        # Check if mobile
+        if device_category != 'mobile':
+            _script_logger.info(f"Instance {instance_id}: ⏭️ Skipping iframe injection (not mobile)")
+            return True
+        
+        # Extract Chrome version from user agent (same as apply_fingerprint_overrides)
+        import re
+        chrome_version = '149'
+        if user_agent:
+            chrome_match = re.search(r'Chrome/(\d+)\.', user_agent)
+            if chrome_match:
+                chrome_version = chrome_match.group(1)
+        
+        # Use platform from fingerprint
+        platform_value = fingerprint_platform
+        user_agent_data_platform = fingerprint_platform
+        
+        # Extract appVersion platform from user agent (same as apply_fingerprint_overrides)
+        if user_agent:
+            match = re.search(r'^Mozilla/5\.0 \(([^)]+)\)', user_agent)
+            if match:
+                app_version_platform = match.group(1)
+            else:
+                if fingerprint_platform == 'MacIntel':
+                    app_version_platform = 'Macintosh; Intel Mac OS X 10_15_7'
+                elif fingerprint_platform == 'iPhone':
+                    app_version_platform = 'iPhone; CPU iPhone OS 18_5 like Mac OS X'
+                elif fingerprint_platform == 'iPad':
+                    app_version_platform = 'iPad; CPU OS 18_5 like Mac OS X'
+                elif fingerprint_platform in ['Linux armv8l', 'Linux x86_64']:
+                    if 'Android' in user_agent:
+                        app_version_platform = 'Linux; Android 10; K'
+                    else:
+                        app_version_platform = 'X11; Linux x86_64'
+                else:
+                    app_version_platform = 'Windows NT 10.0; Win64; x64'
+        else:
+            if fingerprint_platform == 'MacIntel':
+                app_version_platform = 'Macintosh; Intel Mac OS X 10_15_7'
+            elif fingerprint_platform == 'iPhone':
+                app_version_platform = 'iPhone; CPU iPhone OS 18_5 like Mac OS X'
+            elif fingerprint_platform == 'iPad':
+                app_version_platform = 'iPad; CPU OS 18_5 like Mac OS X'
+            elif fingerprint_platform in ['Linux armv8l', 'Linux x86_64']:
+                app_version_platform = 'X11; Linux x86_64'
+            else:
+                app_version_platform = 'Windows NT 10.0; Win64; x64'
+        
+        # Build appVersion (same as apply_fingerprint_overrides)
+        if user_agent and 'Chrome/' in user_agent:
+            app_version = f'5.0 ({app_version_platform}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
+        elif user_agent and 'Firefox/' in user_agent:
+            app_version = f'5.0 ({app_version_platform}) Gecko/20100101 Firefox/{chrome_version}.0'
+        elif user_agent and 'Safari/' in user_agent and 'Version/' in user_agent:
+            app_version = f'5.0 ({app_version_platform}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15'
+        else:
+            app_version = f'5.0 ({app_version_platform}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
+        
+        _script_logger.info(f"Instance {instance_id}: 🔍 Injecting fingerprint into iframes...")
+        
+        # Find all iframes
+        try:
+            iframes = driver.find_elements(By.TAG_NAME, "iframe")
+            _script_logger.info(f"Instance {instance_id}: Found {len(iframes)} iframe(s)")
+        except Exception as e:
+            _script_logger.warning(f"Instance {instance_id}: Could not find iframes: {e}")
+            return False
+        
+        if not iframes:
+            _script_logger.warning(f"Instance {instance_id}: No iframes found")
+            return False
+        
+        # Build the fingerprint script (SAME as apply_fingerprint_overrides)
+        script_source = f'''
+            (function() {{
+                // Get the prototype of navigator
+                const navProto = Object.getPrototypeOf(navigator);
+                
+                // ========== webdriver ONLY on prototype ==========
+                if (navigator.hasOwnProperty('webdriver')) {{
+                    delete navigator.webdriver;
+                }}
+                Object.defineProperty(navProto, 'webdriver', {{
+                    value: false,
+                    writable: false,
+                    configurable: false,
+                    enumerable: false
+                }});
+                // =================================================
+                
+                // ========== PLUGINS ==========
+                Object.defineProperty(navProto, 'plugins', {{
+                    get: function() {{
+                        const pluginCount = {plugins_length if plugins_length is not None else 0};
+                        const plugins = [];
+                        for (let i = 0; i < pluginCount; i++) {{
+                            plugins[i] = {{
+                                name: 'PDF Viewer',
+                                filename: 'internal-pdf-viewer',
+                                description: 'Portable Document Format',
+                                length: 1,
+                                item: function(index) {{ return this; }},
+                                namedItem: function(name) {{ return this; }}
+                            }};
+                        }}
+                        plugins.length = pluginCount;
+                        plugins.item = function(index) {{ return this[index] || null; }};
+                        plugins.namedItem = function(name) {{
+                            for (let i = 0; i < this.length; i++) {{
+                                if (this[i].name === name) return this[i];
+                            }}
+                            return null;
+                        }};
+                        plugins.refresh = function() {{}};
+                        Object.defineProperty(plugins, Symbol.toStringTag, {{
+                            value: 'PluginArray',
+                            enumerable: false
+                        }});
+                        return plugins;
+                    }},
+                    configurable: true
+                }});
+                // =================================================
+                
+                // ========== MIME TYPES ==========
+                Object.defineProperty(navProto, 'mimeTypes', {{
+                    get: function() {{
+                        const mimeTypes = [];
+                        mimeTypes.length = 0;
+                        mimeTypes.item = function(index) {{ return null; }};
+                        mimeTypes.namedItem = function(name) {{ return null; }};
+                        Object.defineProperty(mimeTypes, Symbol.toStringTag, {{
+                            value: 'MimeTypeArray',
+                            enumerable: false
+                        }});
+                        return mimeTypes;
+                    }},
+                    configurable: true
+                }});
+                // =================================================
+                
+                // ========== LANGUAGE ==========
+                Object.defineProperty(navProto, 'language', {{
+                    get: function() {{ return '{language}'; }},
+                    configurable: true
+                }});
+                Object.defineProperty(navProto, 'languages', {{
+                    get: function() {{ return ['{language}']; }},
+                    configurable: true
+                }});
+                
+                // ========== USER AGENT ==========
+                Object.defineProperty(navProto, 'userAgent', {{
+                    get: function() {{ return '{user_agent}'; }},
+                    configurable: true
+                }});
+                
+                // ========== PLATFORM ==========
+                Object.defineProperty(navProto, 'platform', {{
+                    get: function() {{ return '{platform_value}'; }},
+                    configurable: true
+                }});
+                
+                // ========== APP VERSION ==========
+                Object.defineProperty(navProto, 'appVersion', {{
+                    get: function() {{ 
+                        return '{app_version}';
+                    }},
+                    configurable: true
+                }});
+                
+                // ========== VENDOR ==========
+                Object.defineProperty(navProto, 'vendor', {{
+                    get: function() {{ return '{vendor}'; }},
+                    configurable: true
+                }});
+                
+                // ========== userAgentData ==========
+                Object.defineProperty(navProto, 'userAgentData', {{
+                    get: function() {{
+                        return {{
+                            brands: [
+                                {{ brand: 'Google Chrome', version: '{chrome_version}' }},
+                                {{ brand: 'Chromium', version: '{chrome_version}' }},
+                                {{ brand: 'Not?A_Brand', version: '99' }}
+                            ],
+                            mobile: {str(device_category == 'mobile').lower()},
+                            platform: '{user_agent_data_platform}',
+                            getHighEntropyValues: function(hints) {{
+                                return Promise.resolve({{
+                                    platform: '{user_agent_data_platform}',
+                                    platformVersion: '10.0',
+                                    architecture: 'x64',
+                                    model: '',
+                                    uaFullVersion: '{chrome_version}.0.0.0'
+                                }});
+                            }}
+                        }};
+                    }},
+                    configurable: true
+                }});
+                
+                // ========== DEVICE MEMORY & HARDWARE ==========
+                Object.defineProperty(navProto, 'deviceMemory', {{
+                    get: function() {{ return 8; }},
+                    configurable: true
+                }});
+                Object.defineProperty(navProto, 'hardwareConcurrency', {{
+                    get: function() {{ return 8; }},
+                    configurable: true
+                }});
+                
+                // ========== SCREEN & VIEWPORT ==========
+                Object.defineProperty(screen, 'width', {{
+                    get: function() {{ return {viewport_width}; }},
+                    configurable: true
+                }});
+                Object.defineProperty(screen, 'height', {{
+                    get: function() {{ return {viewport_height}; }},
+                    configurable: true
+                }});
+                Object.defineProperty(window, 'innerWidth', {{
+                    get: function() {{ return {viewport_width}; }},
+                    configurable: true
+                }});
+                Object.defineProperty(window, 'innerHeight', {{
+                    get: function() {{ return {viewport_height}; }},
+                    configurable: true
+                }});
+                Object.defineProperty(window, 'devicePixelRatio', {{
+                    get: function() {{ return 1; }},
+                    configurable: true
+                }});
+                
+                console.log('✅ Fingerprint injected into iframe');
+                console.log('📱 Platform:', navigator.platform);
+                console.log('📱 plugins length:', navigator.plugins.length);
+                console.log('📱 viewport:', window.innerWidth + 'x' + window.innerHeight);
+            }})();
+        '''
+        
+        # Inject script into each iframe
+        injected_count = 0
+        for i, iframe in enumerate(iframes):
+            try:
+                # Switch to iframe
+                driver.switch_to.frame(iframe)
+                
+                # Execute the fingerprint script in iframe context
+                driver.execute_script(script_source)
+                
+                # Switch back to main page
+                driver.switch_to.default_content()
+                injected_count += 1
+                _script_logger.info(f"Instance {instance_id}: ✅ Injected fingerprint into iframe {i+1}")
+                
+            except Exception as e:
+                driver.switch_to.default_content()
+                _script_logger.warning(f"Instance {instance_id}: Could not inject into iframe {i+1}: {e}")
+        
+        _script_logger.info(f"Instance {instance_id}: ✅ Injected fingerprint into {injected_count}/{len(iframes)} iframe(s)")
+        return injected_count > 0
+        
+    except Exception as e:
+        try:
+            driver.switch_to.default_content()
+        except:
+            pass
+        _script_logger.error(f"Instance {instance_id}: Iframe injection failed: {e}")
+        return False        
+        
+        
 def create_driver_with_po_token(cfg, profile_prefix):
     """
     Create Chrome driver with PO token and proxy support.
@@ -558,7 +1119,6 @@ def create_driver_with_po_token(cfg, profile_prefix):
                 proxy_host = http_proxy.split('://', 1)[1] if '://' in http_proxy else http_proxy
                 if '@' in proxy_host:
                     proxy_host = proxy_host.split('@', 1)[1]
-                options.add_argument(f'--proxy-server={proxy_host}')
                 if _script_logger:
                     _script_logger.info(f"Instance {cfg.instance_id}: [PROXY] Using proxy from list")
         else:
@@ -568,14 +1128,10 @@ def create_driver_with_po_token(cfg, profile_prefix):
         if _script_logger:
             _script_logger.info(f"Instance {cfg.instance_id}: [PROXY] Direct connection")
     
-    
-   
-    
     # ========== CREATE DRIVER ==========
     driver = None
     driver_type = "unknown"
     
-    # Try undetected-chromedriver if explicitly enabled
     # Try undetected-chromedriver if explicitly enabled
     if use_undetected and UNDETECTED_AVAILABLE:
         if _script_logger:
@@ -602,19 +1158,6 @@ def create_driver_with_po_token(cfg, profile_prefix):
                 if _script_logger:
                     _script_logger.warning(f"Instance {cfg.instance_id}: No user agent found in config!")
             
-            # ========== WINDOW SIZE - DEBUG ==========
-            if hasattr(cfg, 'viewport_width') and hasattr(cfg, 'viewport_height'):
-                window_size = f"{cfg.viewport_width},{cfg.viewport_height}"
-                options.add_argument(f"--window-size={window_size}")
-                if _script_logger:
-                    _script_logger.info(f"Instance {cfg.instance_id}: 🔍 WINDOW SIZE SET TO: {window_size}")
-            else:
-                if _script_logger:
-                    _script_logger.warning(f"Instance {cfg.instance_id}: ⚠️ No viewport size in config!")
-            # =============================================
-            
-            
-            
             # ========== WINDOW SIZE - CRITICAL FOR FINGERPRINT ==========
             # Use viewport size for visible window
             if not cfg.headless:
@@ -631,7 +1174,6 @@ def create_driver_with_po_token(cfg, profile_prefix):
                 else:
                     options.add_argument("--window-size=1920,1080")
             # =========================================================
-            
             
             # ========== FASTER STARTUP OPTIONS ==========
             options.add_argument("--disable-extensions")
@@ -664,15 +1206,10 @@ def create_driver_with_po_token(cfg, profile_prefix):
             # NO options.add_experimental_option('useAutomationExtension', False)
             # =============================================================
             
-            
-            
             # ========== DEBUG: Print all options ==========
             if _script_logger:
                 _script_logger.info(f"Instance {cfg.instance_id}: 🔍 Chrome options: {options.arguments}")
             # =============================================
-        
-        
-        
         
             # Try with version forcing
             try:
@@ -695,125 +1232,18 @@ def create_driver_with_po_token(cfg, profile_prefix):
                     if _script_logger:
                         _script_logger.info(f"Instance {cfg.instance_id}: Using default (no version forcing)")
             
-            # ========== FORCE ALL FINGERPRINT SIGNALS VIA CDP ==========
-            if _script_logger:
-                _script_logger.info(f"Instance {cfg.instance_id}: Applying fingerprint signals via CDP")
-            
-            # 1. User Agent
-            if hasattr(cfg, 'user_agent') and cfg.user_agent:
-                try:
-                    driver.execute_cdp_cmd('Network.setUserAgentOverride', {
-                        'userAgent': cfg.user_agent
-                    })
-                    if _script_logger:
-                        _script_logger.info(f"Instance {cfg.instance_id}: User agent set via CDP: {cfg.user_agent[:80]}...")
-                except Exception as e:
-                    if _script_logger:
-                        _script_logger.warning(f"Instance {cfg.instance_id}: User agent CDP failed: {e}")
-            
-            # 2. Window Size
-            if hasattr(cfg, 'viewport_width') and hasattr(cfg, 'viewport_height'):
-                try:
-                    driver.set_window_size(cfg.viewport_width, cfg.viewport_height)
-                    if _script_logger:
-                        _script_logger.info(f"Instance {cfg.instance_id}: Window size set to {cfg.viewport_width}x{cfg.viewport_height}")
-                except Exception as e:
-                    if _script_logger:
-                        _script_logger.warning(f"Instance {cfg.instance_id}: Window size CDP failed: {e}")
-            
-            # 3. Plugins Length
-            if hasattr(cfg, 'plugins_length'):
-                try:
-                    driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-                        'source': f'''
-                            Object.defineProperty(navigator, 'plugins', {{
-                                get: function() {{
-                                    return {{
-                                        length: {cfg.plugins_length},
-                                        item: function(i) {{ return null; }},
-                                        namedItem: function(name) {{ return null; }},
-                                        refresh: function() {{}}
-                                    }};
-                                }}
-                            }});
-                        '''
-                    })
-                    if _script_logger:
-                        _script_logger.info(f"Instance {cfg.instance_id}: Plugins length set to {cfg.plugins_length}")
-                except Exception as e:
-                    if _script_logger:
-                        _script_logger.warning(f"Instance {cfg.instance_id}: Plugins CDP failed: {e}")
-            
-            # 4. Network Emulation
-            if connection and connection.get('downlink'):
-                try:
-                    downlink = connection.get('downlink', 10)
-                    rtt = connection.get('rtt', 100)
-                    driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
-                        'offline': False,
-                        'latency': rtt,
-                        'downloadThroughput': downlink * 1024 * 1024 / 8,
-                        'uploadThroughput': downlink * 1024 * 1024 / 8,
-                    })
-                    if _script_logger:
-                        _script_logger.info(f"Instance {cfg.instance_id}: Network emulated: {downlink}Mbps, {rtt}ms RTT")
-                except Exception as e:
-                    if _script_logger:
-                        _script_logger.warning(f"Instance {cfg.instance_id}: Network CDP failed: {e}")
-                        
-            # ========== FORCE MOBILE VIEWPORT VIA CDP ==========
-            # Apply whenever device_category is 'mobile'
-            if hasattr(cfg, 'device_category') and cfg.device_category == 'mobile':
-                if hasattr(cfg, 'viewport_width') and hasattr(cfg, 'viewport_height'):
-                    try:
-                        driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {
-                            'width': cfg.viewport_width,
-                            'height': cfg.viewport_height,
-                            'deviceScaleFactor': 1,
-                            'mobile': True,
-                            'screenOrientation': {
-                                'type': 'portraitPrimary',
-                                'angle': 0
-                            }
-                        })
-                        if _script_logger:
-                            _script_logger.info(f"Instance {cfg.instance_id}: Mobile viewport emulated: {cfg.viewport_width}x{cfg.viewport_height}")
-                        
-                        # Override screen object
-                        driver.execute_script(f"""
-                            Object.defineProperty(screen, 'width', {{
-                                get: function() {{ return {cfg.viewport_width}; }}
-                            }});
-                            Object.defineProperty(screen, 'height', {{
-                                get: function() {{ return {cfg.viewport_height}; }}
-                            }});
-                        """)
-                        if _script_logger:
-                            _script_logger.info(f"Instance {cfg.instance_id}: Screen object overridden")
-                    except Exception as e:
-                        if _script_logger:
-                            _script_logger.warning(f"Instance {cfg.instance_id}: Mobile emulation failed: {e}")
-            # =========================================================
-
-            
-            
-            # 5. Platform (log only - cannot be changed)
-            if platform:
-                if _script_logger:
-                    _script_logger.info(f"Instance {cfg.instance_id}: Platform (read-only): {platform}")
-            # =============================================================
+            # ========== APPLY FINGERPRINT OVERRIDES (UNIFIED) ==========
+            apply_fingerprint_overrides(driver, cfg, cfg.instance_id, is_undetected=True)
+            # ============================================================
             
             driver_type = "undetected"
             if _script_logger:
                 _script_logger.info(f"Instance {cfg.instance_id}: ✅ Created profile at {profile_dir} (undetected)")
 
-
         except Exception as e:
             if _script_logger:
                 _script_logger.warning(f"Instance {cfg.instance_id}: undetected-chromedriver failed: {e}, falling back to standard")
             driver = None
-
-  
 
     # ========== STANDARD SELENIUM (FALLBACK) ==========
     if driver is None:
@@ -864,7 +1294,6 @@ def create_driver_with_po_token(cfg, profile_prefix):
                     options.add_argument("--window-size=1920,1080")
             # =============================================================
             
-            
             options.add_argument(f"--remote-debugging-port={random_port}")
             options.add_argument(f"--user-data-dir={profile_dir}")
             
@@ -886,114 +1315,9 @@ def create_driver_with_po_token(cfg, profile_prefix):
             service.creation_flags = 0x08000000
             driver = webdriver.Chrome(service=service, options=options)
             
-            # ========== FORCE ALL FINGERPRINT SIGNALS VIA CDP (STANDARD) ==========
-            if _script_logger:
-                _script_logger.info(f"Instance {cfg.instance_id}: Applying fingerprint signals via CDP (standard)")
-            
-            # 1. User Agent
-            if hasattr(cfg, 'user_agent') and cfg.user_agent:
-                try:
-                    driver.execute_cdp_cmd('Network.setUserAgentOverride', {
-                        'userAgent': cfg.user_agent
-                    })
-                    if _script_logger:
-                        _script_logger.info(f"Instance {cfg.instance_id}: User agent set via CDP (standard): {cfg.user_agent[:80]}...")
-                except Exception as e:
-                    if _script_logger:
-                        _script_logger.warning(f"Instance {cfg.instance_id}: User agent CDP failed (standard): {e}")
-            
-            # 2. Window Size
-            if hasattr(cfg, 'viewport_width') and hasattr(cfg, 'viewport_height'):
-                try:
-                    driver.set_window_size(cfg.viewport_width, cfg.viewport_height)
-                    if _script_logger:
-                        _script_logger.info(f"Instance {cfg.instance_id}: Window size set to {cfg.viewport_width}x{cfg.viewport_height} (standard)")
-                except Exception as e:
-                    if _script_logger:
-                        _script_logger.warning(f"Instance {cfg.instance_id}: Window size CDP failed (standard): {e}")
-            
-            # 3. Plugins Length
-            if hasattr(cfg, 'plugins_length'):
-                try:
-                    driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-                        'source': f'''
-                            Object.defineProperty(navigator, 'plugins', {{
-                                get: function() {{
-                                    return {{
-                                        length: {cfg.plugins_length},
-                                        item: function(i) {{ return null; }},
-                                        namedItem: function(name) {{ return null; }},
-                                        refresh: function() {{}}
-                                    }};
-                                }}
-                            }});
-                        '''
-                    })
-                    if _script_logger:
-                        _script_logger.info(f"Instance {cfg.instance_id}: Plugins length set to {cfg.plugins_length} (standard)")
-                except Exception as e:
-                    if _script_logger:
-                        _script_logger.warning(f"Instance {cfg.instance_id}: Plugins CDP failed (standard): {e}")
-            
-            # 4. Network Emulation
-            if connection and connection.get('downlink'):
-                try:
-                    downlink = connection.get('downlink', 10)
-                    rtt = connection.get('rtt', 100)
-                    driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
-                        'offline': False,
-                        'latency': rtt,
-                        'downloadThroughput': downlink * 1024 * 1024 / 8,
-                        'uploadThroughput': downlink * 1024 * 1024 / 8,
-                    })
-                    if _script_logger:
-                        _script_logger.info(f"Instance {cfg.instance_id}: Network emulated: {downlink}Mbps, {rtt}ms RTT (standard)")
-                except Exception as e:
-                    if _script_logger:
-                        _script_logger.warning(f"Instance {cfg.instance_id}: Network CDP failed (standard): {e}")
-
-
-            # ========== FORCE MOBILE VIEWPORT VIA CDP ==========
-            # Apply whenever device_category is 'mobile'
-            if hasattr(cfg, 'device_category') and cfg.device_category == 'mobile':
-                if hasattr(cfg, 'viewport_width') and hasattr(cfg, 'viewport_height'):
-                    try:
-                        driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {
-                            'width': cfg.viewport_width,
-                            'height': cfg.viewport_height,
-                            'deviceScaleFactor': 1,
-                            'mobile': True,
-                            'screenOrientation': {
-                                'type': 'portraitPrimary',
-                                'angle': 0
-                            }
-                        })
-                        if _script_logger:
-                            _script_logger.info(f"Instance {cfg.instance_id}: Mobile viewport emulated: {cfg.viewport_width}x{cfg.viewport_height}")
-                        
-                        # Override screen object
-                        driver.execute_script(f"""
-                            Object.defineProperty(screen, 'width', {{
-                                get: function() {{ return {cfg.viewport_width}; }}
-                            }});
-                            Object.defineProperty(screen, 'height', {{
-                                get: function() {{ return {cfg.viewport_height}; }}
-                            }});
-                        """)
-                        if _script_logger:
-                            _script_logger.info(f"Instance {cfg.instance_id}: Screen object overridden")
-                    except Exception as e:
-                        if _script_logger:
-                            _script_logger.warning(f"Instance {cfg.instance_id}: Mobile emulation failed: {e}")
-
-            # =========================================================
-            
-            
-            # 5. Platform (log only - cannot be changed)
-            if platform:
-                if _script_logger:
-                    _script_logger.info(f"Instance {cfg.instance_id}: Platform (read-only): {platform}")
-            # =============================================================
+            # ========== APPLY FINGERPRINT OVERRIDES (UNIFIED) ==========
+            apply_fingerprint_overrides(driver, cfg, cfg.instance_id, is_undetected=False)
+            # ============================================================
             
             driver_type = "standard"
             
@@ -1037,7 +1361,6 @@ def create_driver_with_po_token(cfg, profile_prefix):
         if connection:
             f.write(f"Connection: {connection}\n")
 
-    
     # ========== SET CDP REFERER ==========
     if hasattr(cfg, 'referer') and cfg.referer:
         try:

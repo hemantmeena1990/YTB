@@ -1,6 +1,7 @@
+#!/usr/bin/env python3
 """
-Shared Utilities for YouTube Automation Suite
-Common functions used across all scripts.
+Pydoll-specific Shared Utilities
+Async-first utilities for Pydoll automation.
 """
 
 import os
@@ -8,16 +9,11 @@ import re
 import json
 import random
 import logging
+import asyncio
 import subprocess
-import urllib.request
 import unicodedata
 from time import sleep, time
-from typing import Optional, Tuple, List, Dict, Any
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from typing import Optional, Tuple, List, Dict, Any, Union
 
 # Try to import psutil for RAM monitoring
 try:
@@ -26,8 +22,11 @@ try:
 except ImportError:
     HAS_PSUTIL = False
 
+logger = logging.getLogger(__name__)
+
+
 # ============================================================================
-# USER AGENT DATABASES
+# USER AGENT DATABASES (Shared with Selenium)
 # ============================================================================
 
 DESKTOP_AGENTS = [
@@ -56,15 +55,13 @@ MOBILE_AGENTS = [
 DESKTOP_RESOLUTIONS = [(1366, 768), (1920, 1080), (1536, 864), (1440, 900), (1280, 720)]
 MOBILE_RESOLUTIONS = [(375, 667), (390, 844), (393, 852), (412, 915), (360, 800)]
 
-# Typing behaviors
-TYPING_BEHAVIORS = ['slow', 'fast', 'mixed', 'corrections']
-TYPING_WEIGHTS = [0.25, 0.30, 0.30, 0.15]
 
 # ============================================================================
 # URL & VIDEO ID FUNCTIONS
 # ============================================================================
 
 def extract_video_id(url: str) -> Optional[str]:
+    """Extract YouTube video ID from various URL formats."""
     patterns = [
         r'youtube\.com/watch\?v=([a-zA-Z0-9_-]{11})',
         r'youtu\.be/([a-zA-Z0-9_-]{11})',
@@ -78,50 +75,40 @@ def extract_video_id(url: str) -> Optional[str]:
             return match.group(1)
     return None
 
+
 def construct_watch_url(video_id: str, use_short_link: bool = False) -> str:
-    """Construct a watch URL from video ID (useful for view type matching)."""
+    """Construct a watch URL from video ID."""
     if use_short_link:
         return f"https://youtu.be/{video_id}"
-    else:
-        return f"https://www.youtube.com/watch?v={video_id}"
+    return f"https://www.youtube.com/watch?v={video_id}"
+
 
 def get_video_title(video_url: str) -> Optional[str]:
-    try:
-        video_id = extract_video_id(video_url)
-        if not video_id:
-            return None
-        api_url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={video_id}&format=json"
-        req = urllib.request.Request(api_url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req, timeout=10) as response:
-            data = json.loads(response.read().decode('utf-8'))
-            title = data.get('title', '')
-            if title:
-                title = ' '.join(title.split())
-                return title
-    except Exception:
-        pass
-    return None
-    # Fallback: try yt-dlp
+    """Fetch video title using yt-dlp."""
     try:
         import yt_dlp
         ydl_opts = {'quiet': True, 'no_warnings': True, 'extract_flat': True}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video_url, download=False)
             return info.get('title')
-    except:
+    except Exception:
         return None
 
+
 def sanitize_text(text: str) -> str:
+    """Remove emoji and non-BMP characters."""
     text = unicodedata.normalize('NFKD', text)
     text = text.encode('ascii', 'ignore').decode('ascii')
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
+
 
 # ============================================================================
 # USER AGENT FUNCTIONS
 # ============================================================================
 
 def get_random_user_agent(force_mobile: bool = None) -> Tuple[str, bool]:
+    """Get random user agent based on force_mobile flag."""
     if force_mobile is True:
         return random.choice(MOBILE_AGENTS), True
     elif force_mobile is False:
@@ -129,84 +116,34 @@ def get_random_user_agent(force_mobile: bool = None) -> Tuple[str, bool]:
     else:
         if random.random() < 0.5:
             return random.choice(DESKTOP_AGENTS), False
-        else:
-            return random.choice(MOBILE_AGENTS), True
+        return random.choice(MOBILE_AGENTS), True
+
 
 def get_random_resolution(is_mobile: bool) -> Tuple[int, int]:
+    """Get random resolution based on device type."""
     if is_mobile:
         return random.choice(MOBILE_RESOLUTIONS)
-    else:
-        return random.choice(DESKTOP_RESOLUTIONS)
-
-# ============================================================================
-# HUMAN BEHAVIOR SIMULATION
-# ============================================================================
-
-def human_delay(min_seconds: float = 0.3, max_seconds: float = 1.5) -> None:
-    delay = random.expovariate(1.5) + random.uniform(min_seconds, max_seconds)
-    delay = min(max(delay, min_seconds), max_seconds * 2)
-    sleep(delay)
-
-def natural_typing(element, text: str, use_fast_only: bool = False) -> str:
-    filtered = ''.join(c for c in text if ord(c) <= 0xFFFF)
-    if len(filtered) < len(text):
-        logging.debug(f"Filtered {len(text) - len(filtered)} non-BMP characters")
-    if use_fast_only:
-        for ch in filtered:
-            element.send_keys(ch)
-            sleep(random.uniform(0.02, 0.05))
-        return 'fast'
-    
-    behavior = random.choices(TYPING_BEHAVIORS, weights=TYPING_WEIGHTS, k=1)[0]
-    if behavior == 'slow':
-        for ch in filtered:
-            element.send_keys(ch)
-            sleep(random.uniform(0.08, 0.2))
-    elif behavior == 'fast':
-        for ch in filtered:
-            element.send_keys(ch)
-            sleep(random.uniform(0.03, 0.08))
-    elif behavior == 'mixed':
-        for ch in filtered:
-            element.send_keys(ch)
-            sleep(random.uniform(0.04, 0.15))
-    elif behavior == 'corrections':
-        typed = ""
-        for ch in filtered:
-            element.send_keys(ch)
-            typed += ch
-            sleep(random.uniform(0.05, 0.12))
-            if len(typed) > 3 and random.random() < 0.08:
-                backspace_count = random.randint(1, 2)
-                for _ in range(backspace_count):
-                    element.send_keys(Keys.BACKSPACE)
-                    sleep(random.uniform(0.1, 0.2))
-                typed = typed[:-backspace_count]
-                for c in filtered[len(typed):len(typed) + backspace_count]:
-                    element.send_keys(c)
-                    sleep(random.uniform(0.05, 0.12))
-                typed = filtered[:len(typed)]
-    return behavior
+    return random.choice(DESKTOP_RESOLUTIONS)
 
 
 # ============================================================================
-# PAGE & VIDEO VERIFICATION
+# PAGE & VIDEO VERIFICATION (Async)
 # ============================================================================
 
-def wait_for_page_load(driver, timeout: int = 25) -> bool:
+async def wait_for_page_load(page, timeout: int = 25) -> bool:
+    """Wait for page to finish loading (Pydoll async)."""
     try:
-        WebDriverWait(driver, timeout).until(
-            lambda d: d.execute_script("return document.readyState;") == "complete"
-        )
-        sleep(0.5)  # Extra time for dynamic content
+        await page.wait_for_load_state("networkidle", timeout=timeout)
+        await asyncio.sleep(0.5)  # Extra time for dynamic content
         return True
     except Exception:
         return False
-        
 
-def is_video_playing(driver) -> bool:
+
+async def is_video_playing_async(page) -> bool:
+    """Check if any video is playing (Pydoll async)."""
     try:
-        return driver.execute_script("""
+        return await page.evaluate("""
             var videos = document.querySelectorAll('video');
             for (var i = 0; i < videos.length; i++) {
                 var v = videos[i];
@@ -219,62 +156,76 @@ def is_video_playing(driver) -> bool:
     except:
         return False
 
+
 # ============================================================================
-# COOKIE & LOGIN HANDLING
+# COOKIE & LOGIN HANDLING (Async)
 # ============================================================================
 
-def handle_cookies(driver, instance_id: int = 0) -> bool:
-    cookie_xpaths = [
-        "//button[contains(., 'Accept all')]",
-        "//button[contains(., 'I agree')]",
-        "//button[contains(@aria-label, 'Accept')]",
-        "//button[contains(., 'Accept')]",
-        "//button[contains(., 'Got it')]"
-    ]
-    for xpath in cookie_xpaths:
-        try:
-            elements = driver.find_elements(By.XPATH, xpath)
-            for elem in elements:
-                try:
-                    if elem.is_displayed() and elem.is_enabled():
-                        driver.execute_script("arguments[0].click();", elem)
-                        sleep(1)
-                        return True
-                except Exception:
-                    continue
-        except Exception:
-            continue
-    return False
-
-def is_login_page(driver) -> bool:
+async def handle_cookies_async(page, instance_id: int = 0) -> bool:
+    """Handle cookie consent popups (Pydoll async)."""
+    consent_texts = ['Accept all', 'I agree', 'Accept', 'Got it', 'OK']
     try:
-        current_url = driver.current_url.lower()
+        for text in consent_texts:
+            try:
+                button = await page.find(text=text)
+                if button and await button.is_visible():
+                    await button.click(humanize=True)
+                    await asyncio.sleep(1)
+                    return True
+            except:
+                continue
+        
+        # Try by aria-label
+        try:
+            button = await page.find(aria_label='Accept')
+            if button and await button.is_visible():
+                await button.click(humanize=True)
+                await asyncio.sleep(1)
+                return True
+        except:
+            pass
+        
+        return False
+    except:
+        return False
+
+
+async def is_login_page_async(page) -> bool:
+    """Check if current page is a login page (Pydoll async)."""
+    try:
+        current_url = await page.evaluate("window.location.href")
+        current_url = current_url.lower()
         login_patterns = ['accounts.google.com', 'accounts.youtube.com', 'signin', 'servicelogin', 'login']
         for pattern in login_patterns:
             if pattern in current_url:
                 return True
-        page_source = driver.page_source.lower()
-        text_patterns = ['sign in to continue', 'sign in - google accounts', 'use your google account']
-        for pattern in text_patterns:
-            if pattern in page_source:
+        
+        # Check for login form elements
+        try:
+            email_input = await page.find(name='email') or await page.find(id='email') or await page.find(type='email')
+            if email_input and await email_input.is_visible():
                 return True
-        login_selectors = ["form#gaia_loginform", "input[type='email']", "input[type='password']"]
-        for selector in login_selectors:
-            elements = driver.find_elements(By.CSS_SELECTOR, selector)
-            for elem in elements:
-                if elem.is_displayed():
-                    size = elem.size
-                    if size.get('height', 0) > 50:
-                        return True
+        except:
+            pass
+        
+        try:
+            password_input = await page.find(type='password')
+            if password_input and await password_input.is_visible():
+                return True
+        except:
+            pass
+        
         return False
     except:
         return False
+
 
 # ============================================================================
 # SYSTEM MONITORING
 # ============================================================================
 
 def get_system_ram_usage() -> float:
+    """Get system RAM usage percentage."""
     if HAS_PSUTIL:
         return psutil.virtual_memory().percent
     if os.name == 'nt':
@@ -293,13 +244,16 @@ def get_system_ram_usage() -> float:
             pass
     return 50.0
 
+
 def get_variable_watch_time(min_time: int, max_time: int) -> int:
+    """Get variable watch time based on human-like distribution."""
     distribution = random.choices(
         population=['short', 'medium', 'long', 'full'],
         weights=[0.3, 0.4, 0.2, 0.1],
         k=1
     )[0]
     video_range = max_time - min_time
+    
     if distribution == 'short':
         return min_time + int(video_range * random.uniform(0.2, 0.4))
     elif distribution == 'medium':
@@ -307,33 +261,59 @@ def get_variable_watch_time(min_time: int, max_time: int) -> int:
     elif distribution == 'long':
         return min_time + int(video_range * random.uniform(0.7, 0.95))
     else:  # 'full'
-        # Use the actual video duration or a realistic max
-        return max_time + random.randint(-10, 10)  # Keep it reasonable
-        
-def wait_for_url_change(driver, old_url: str, timeout: int = 5) -> bool:
-    """
-    Wait until the current URL changes from old_url.
-    Returns True if changed within timeout, else False.
-    """
-    start = time()
-    while time() - start < timeout:
-        try:
-            if driver.current_url != old_url:
-                return True
-        except:
-            pass
-        sleep(0.3)
-    return False
+        return max_time + random.randint(-10, 10)
+
+
+# ============================================================================
+# COMPATIBILITY WRAPPERS (Sync)
+# ============================================================================
+
+def wait_for_page_load_sync(page, timeout: int = 25) -> bool:
+    """Sync wrapper for wait_for_page_load."""
+    return asyncio.run(wait_for_page_load(page, timeout))
+
+
+def is_video_playing_sync(page) -> bool:
+    """Sync wrapper for is_video_playing_async."""
+    return asyncio.run(is_video_playing_async(page))
+
+
+def handle_cookies_sync(page, instance_id: int = 0) -> bool:
+    """Sync wrapper for handle_cookies_async."""
+    return asyncio.run(handle_cookies_async(page, instance_id))
+
+
+def is_login_page_sync(page) -> bool:
+    """Sync wrapper for is_login_page_async."""
+    return asyncio.run(is_login_page_async(page))
+
 
 # ============================================================================
 # EXPORTS
 # ============================================================================
 
 __all__ = [
+    # User agent databases
     'DESKTOP_AGENTS', 'MOBILE_AGENTS', 'DESKTOP_RESOLUTIONS', 'MOBILE_RESOLUTIONS',
+    
+    # URL functions
     'extract_video_id', 'construct_watch_url', 'get_video_title', 'sanitize_text',
+    
+    # User agent functions
     'get_random_user_agent', 'get_random_resolution',
-    'human_delay', 'natural_typing', 'wait_for_page_load', 'is_video_playing','handle_cookies', 'is_login_page', 
-    'get_system_ram_usage', 'get_variable_watch_time', 'wait_for_url_change',
+    
+    # Page verification (async)
+    'wait_for_page_load', 'is_video_playing_async',
+    
+    # Cookie handling (async)
+    'handle_cookies_async', 'is_login_page_async',
+    
+    # Page verification (sync wrappers)
+    'wait_for_page_load_sync', 'is_video_playing_sync',
+    
+    # Cookie handling (sync wrappers)
+    'handle_cookies_sync', 'is_login_page_sync',
+    
+    # System
+    'get_system_ram_usage', 'get_variable_watch_time',
 ]
-

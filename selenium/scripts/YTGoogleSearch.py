@@ -83,6 +83,7 @@ _po_driver_path = SELENIUM_COMMON_ROOT / "po_driver.py"
 _po_driver_module = _load_module_from_file("po_driver", _po_driver_path)
 create_driver_with_po_token = _po_driver_module.create_driver_with_po_token
 set_driver_logger = _po_driver_module.set_logger
+apply_fingerprint_overrides = _po_driver_module.apply_fingerprint_overrides
 
 # Utils
 _utils_path = SELENIUM_COMMON_ROOT / "utils.py"
@@ -336,6 +337,12 @@ def _find_and_click_video_by_id(driver, instance_id, video_id, po_token):
             wait_for_page_load(driver, 15)
             time.sleep(2)
             
+            # ✅ RE-APPLY FINGERPRINT AFTER NEW TAB
+            if cfg:
+                use_undetected = getattr(cfg, 'use_undetected', False)
+                apply_fingerprint_overrides(driver, cfg, instance_id, is_undetected=use_undetected)
+                logger.info(f"Instance {instance_id}: 🔄 Fingerprint re-applied in new tab")
+            
             # Get final URL after redirect
             current_url = driver.current_url
             logger.info(f"Instance {instance_id}: Final URL after redirect: {current_url[:150]}")
@@ -429,7 +436,7 @@ def _find_and_click_video_by_id_redirect(driver, instance_id, video_id, po_token
 
 # ========== GOOGLE SEARCH NAVIGATION ==========
 
-def simulate_google_search_entry(driver, instance_id, video_title, video_id, po_token, is_mobile):
+def simulate_google_search_entry(driver, instance_id, video_title, video_id, po_token, is_mobile, cfg=None):
     """
     Simulate coming from Google Search.
     Three-tier fallback with CTRL+Click to preserve referrer.
@@ -469,7 +476,7 @@ def simulate_google_search_entry(driver, instance_id, video_title, video_id, po_
         time.sleep(1)
         
         # Find and open video (CTRL+Click preserves referrer)
-        clicked = _find_and_click_video_by_id(driver, instance_id, video_id, po_token)
+        clicked = _find_and_click_video_by_id(driver, instance_id, video_id, po_token, cfg)
         if clicked:
             logger.info(f"Instance {instance_id}: TIER 1 succeeded")
             return True
@@ -487,7 +494,7 @@ def simulate_google_search_entry(driver, instance_id, video_title, video_id, po_
                 simulate_mouse_wheel(driver, 400)
                 time.sleep(1)
                 
-                clicked = _find_and_click_video_by_id(driver, instance_id, video_id, po_token)
+                clicked = _find_and_click_video_by_id(driver, instance_id, video_id, po_token, cfg=None)
                 if clicked:
                     logger.info(f"Instance {instance_id}: TIER 2 succeeded")
                     return True
@@ -546,7 +553,7 @@ def simulate_google_search_entry(driver, instance_id, video_title, video_id, po_
             simulate_mouse_wheel(driver, 300)
             time.sleep(1)
             
-            clicked = _find_and_click_video_by_id(driver, instance_id, video_id, po_token)
+            clicked = _find_and_click_video_by_id(driver, instance_id, video_id, po_token, cfg)
             if clicked:
                 logger.info(f"Instance {instance_id}: TIER 3 succeeded")
                 return True
@@ -592,6 +599,28 @@ class SessionConfig:
     cycle_number: int = 1
     redirect_url: str = None
     traffic_source: str = "google_search"
+    
+    # ========== ✅ ADD THESE MISSING FIELDS ==========
+    automation_version: str = "selenium"
+    use_undetected: bool = False
+    referer: str = None
+    chrome_args: list = None
+    # ===============================================
+    
+    # ========== ✅ ADD FINGERPRINT FIELDS ==========
+    platform: str = "Win32"
+    screen_width: int = 1920
+    screen_height: int = 1080
+    viewport_width: int = 1920
+    viewport_height: int = 950
+    plugins_length: int = 5
+    device_category: str = "desktop"
+    vendor: str = "Google Inc."
+    connection: dict = None
+    language: str = "en-US"
+    force_mobile: bool = False
+    fingerprint_type: str = "desktop"
+    # ===============================================
 
 
 # ========== SESSION RUNNER ==========
@@ -621,7 +650,8 @@ def run_session(cfg: SessionConfig):
                 cfg.video_title, 
                 cfg.video_id, 
                 cfg.po_token, 
-                cfg.is_mobile
+                cfg.is_mobile,
+                cfg
             )
             
             if not search_success:
@@ -770,7 +800,25 @@ def main():
             current_proxy=assigned_proxy,
             cycle_number=d.get("cycle_number", 1),
             redirect_url=redirect_url,
-            traffic_source=d.get("traffic_source", "google_search")
+            traffic_source=d.get("traffic_source", "google_search"),
+            # ========== ✅ ADD FINGERPRINT FIELDS ==========
+            platform=d.get("platform", "Win32"),
+            screen_width=d.get("screen_width", 1920),
+            screen_height=d.get("screen_height", 1080),
+            viewport_width=d.get("viewport_width", 1920),
+            viewport_height=d.get("viewport_height", 950),
+            plugins_length=d.get("plugins_length", 5),
+            device_category=d.get("device_category", "desktop"),
+            vendor=d.get("vendor", "Google Inc."),
+            connection=d.get("connection", None),
+            language=d.get("language", "en-US"),
+            force_mobile=d.get("force_mobile", False),
+            fingerprint_type=d.get("fingerprint_type", "desktop"),
+            automation_version=d.get("automation_version", "selenium"),
+            use_undetected=d.get("use_undetected", False),
+            referer=d.get("referer", None),
+            chrome_args=d.get("chrome_args", None)
+            # ===============================================
         )
         
         p = Process(target=run_session, args=(cfg,))

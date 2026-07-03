@@ -423,19 +423,30 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
     resolved_source, referrer_url, source_type = resolve_traffic_source(raw_traffic_source)
     
     # ========== USE INTOLI FINGERPRINTS ==========
-    from common.fingerprint_manager import get_fingerprint_for_view_type, get_random_mobile_fingerprint
+    from common.fingerprint_manager import get_fingerprint_for_view_type, get_random_mobile_fingerprint, get_random_desktop_fingerprint
     
-    # Get force_mobile from data
+    # Get force flags from data
     force_mobile = data.get('force_mobile', False)
+    force_desktop = data.get('force_desktop', False)
+    force_platform = data.get('force_platform', 'none')  # 'mobile', 'desktop', or 'none'
     
-    if force_mobile:
-        # Force mobile fingerprint for ALL view types
+    # Force Mobile takes precedence over Force Desktop
+    if force_mobile or force_platform == 'mobile':
+        # Force mobile fingerprint
         fingerprint = get_random_mobile_fingerprint()
-        print(f"[DEBUG] Mobile fingerprint: {fingerprint}")
+        print(f"[DEBUG] Force Mobile fingerprint selected")
         if fingerprint:
             print(f"[DEBUG] Mobile UA: {fingerprint.get('userAgent', '')[:80]}...")
         else:
             print(f"[DEBUG] WARNING: No mobile fingerprint returned!")
+    elif force_desktop or force_platform == 'desktop':
+        # Force desktop fingerprint
+        fingerprint = get_random_desktop_fingerprint()
+        print(f"[DEBUG] Force Desktop fingerprint selected")
+        if fingerprint:
+            print(f"[DEBUG] Desktop UA: {fingerprint.get('userAgent', '')[:80]}...")
+        else:
+            print(f"[DEBUG] WARNING: No desktop fingerprint returned!")
     else:
         # Normal fingerprint selection based on view type
         fingerprint = get_fingerprint_for_view_type(view_type)

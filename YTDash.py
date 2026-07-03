@@ -989,6 +989,11 @@ def api_launch():
     proxy_mode = data.get('proxy_mode', 'none')
     po_token_source = data.get('po_token_source', 'native')
     
+    # Get force flags
+    force_mobile = data.get('force_mobile', False)
+    force_desktop = data.get('force_desktop', False)
+    force_platform = data.get('force_platform', 'none')
+    
     # Determine if it's a short from local cache (no yt-dlp)
     video_id = extract_video_id(url)
     is_short = None
@@ -1091,7 +1096,9 @@ def api_launch():
             cfg['proxy_mode'] = proxy_mode
             cfg['num_instances'] = num_instances
             cfg['is_short'] = is_short   # pass to child scripts if needed
-            cfg['force_mobile'] = data.get('force_mobile', False)
+            cfg['force_mobile'] = force_mobile
+            cfg['force_desktop'] = force_desktop
+            cfg['force_platform'] = force_platform
             
             # Make sure traffic source fields are passed
             if 'traffic_source_type' in cfg:
@@ -1111,14 +1118,17 @@ def api_launch():
                     else:
                         print(f"[PROXY] WARNING: No proxy available for instance {instance_id}")
             
-            # ========== FIX: Set automation_version for BOTH cases ==========
-            if use_undetected:
+            # ========== FIX: Set automation_version for ALL cases ==========
+            if automation_version == 'pydoll':
+                cfg['use_undetected'] = True
+                cfg['automation_version'] = 'pydoll'
+            elif use_undetected:
                 cfg['use_undetected'] = True
                 cfg['automation_version'] = 'selenium_undetected'
             else:
                 cfg['use_undetected'] = False
-                cfg['automation_version'] = 'selenium'  # <-- ADD THIS LINE
-            # ===============================================================
+                cfg['automation_version'] = 'selenium'
+            # =============================================================
             
             if selected_view_type in direct_url_view_types and traffic_source != 'direct' and traffic_source in referer_map:
                 cfg['referer'] = referer_map[traffic_source]
@@ -1147,6 +1157,8 @@ def api_launch():
                 
                 if automation_version == 'playwright':
                     script_path = BASE_DIR / "playwright" / "scripts" / script_file
+                elif automation_version == 'pydoll':
+                    script_path = BASE_DIR / "pydoll" / "scripts" / script_file
                 else:
                     script_path = BASE_DIR / "selenium" / "scripts" / script_file
                 
@@ -1193,7 +1205,19 @@ def api_launch():
     else:
         proxy_msg = " Proxy: None (Direct)"
     
-    stealth_msg = " (Undetected Stealth Mode)" if use_undetected else ""
+    # Add force platform info to message
+    force_msg = ""
+    if force_mobile or force_platform == 'mobile':
+        force_msg = " 📱 Force Mobile"
+    elif force_desktop or force_platform == 'desktop':
+        force_msg = " 💻 Force Desktop"
+    
+    if automation_version == 'pydoll':
+        stealth_msg = " (Pydoll Async Stealth Mode)"
+    elif use_undetected:
+        stealth_msg = " (Undetected Stealth Mode)"
+    else:
+        stealth_msg = " (Standard Selenium)"
     
     if po_token_source == 'native':
         po_msg = " PO Token: Native Browser"
@@ -1214,8 +1238,8 @@ def api_launch():
     print(f"[DEBUG] Total sessions launched: {launched_total}")
     print(f"[DEBUG] ========================================")
     
-    return jsonify({"success": True, "message": f"Completed {cycles} cycle(s) with {num_instances} instance(s) each. Total {launched_total} sessions.{po_msg}{proxy_msg}{stealth_msg}{traffic_msg}"})
-
+    return jsonify({"success": True, "message": f"Completed {cycles} cycle(s) with {num_instances} instance(s) each. Total {launched_total} sessions.{po_msg}{proxy_msg}{stealth_msg}{traffic_msg}{force_msg}"})
+    
     
     
 def open_browser():

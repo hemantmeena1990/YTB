@@ -1,0 +1,1992 @@
+{
+  "http://84.239.49.186:9002": {
+    "proxy": "http://84.239.49.186:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.4633343,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.173:9002": {
+    "proxy": "http://84.239.49.173:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.469886,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.234:9002": {
+    "proxy": "http://84.239.49.234:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.4745326,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.207:9002": {
+    "proxy": "http://84.239.49.207:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.532491,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://89.124.8.86:443": {
+    "proxy": "http://89.124.8.86:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.5431328,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://31.31.78.117:443": {
+    "proxy": "http://31.31.78.117:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.5551708,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://193.176.84.27:9002": {
+    "proxy": "http://193.176.84.27:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.564447,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://185.145.4.165:443": {
+    "proxy": "http://185.145.4.165:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.6604722,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.187:9002": {
+    "proxy": "http://84.239.49.187:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.6641371,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://138.199.35.219:9002": {
+    "proxy": "http://138.199.35.219:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.6673667,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://156.146.59.6:9002": {
+    "proxy": "http://156.146.59.6:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.6716092,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://89.124.8.78:443": {
+    "proxy": "http://89.124.8.78:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.6743574,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.243:9002": {
+    "proxy": "http://84.239.49.243:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.6775856,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://37.203.37.5:443": {
+    "proxy": "http://37.203.37.5:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.680694,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://193.176.84.22:9002": {
+    "proxy": "http://193.176.84.22:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.6848445,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.231:9002": {
+    "proxy": "http://84.239.49.231:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.694744,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://138.199.35.207:9002": {
+    "proxy": "http://138.199.35.207:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.731435,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://37.203.37.83:443": {
+    "proxy": "http://37.203.37.83:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.7443128,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://37.203.37.188:443": {
+    "proxy": "http://37.203.37.188:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.7722902,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://23.106.56.43:19881": {
+    "proxy": "http://23.106.56.43:19881",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.8008244,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://89.124.11.7:443": {
+    "proxy": "http://89.124.11.7:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.8041863,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://66.70.170.84:443": {
+    "proxy": "http://66.70.170.84:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.807457,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://138.199.35.203:9002": {
+    "proxy": "http://138.199.35.203:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.8112156,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://173.13.157.60:443": {
+    "proxy": "http://173.13.157.60:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.8166628,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://156.146.59.49:9002": {
+    "proxy": "http://156.146.59.49:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.820424,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.162:9002": {
+    "proxy": "http://84.239.49.162:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.8989358,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://193.29.224.20:1080": {
+    "proxy": "socks4://193.29.224.20:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162246.9126213,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://89.111.28.74:443": {
+    "proxy": "http://89.111.28.74:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162247.1382504,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://178.115.238.253:443": {
+    "proxy": "http://178.115.238.253:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162247.1792228,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.59:9002": {
+    "proxy": "http://84.239.49.59:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162247.2641857,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://37.203.35.5:443": {
+    "proxy": "http://37.203.35.5:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162247.352409,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://23.106.56.54:6157": {
+    "proxy": "http://23.106.56.54:6157",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162247.3827827,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://178.237.108.214:443": {
+    "proxy": "http://178.237.108.214:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162247.664225,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://68.183.204.195:3128": {
+    "proxy": "http://68.183.204.195:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162248.018602,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://195.158.8.123:3128": {
+    "proxy": "http://195.158.8.123:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162248.9927278,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.165.107:1080": {
+    "proxy": "socks4://47.82.165.107:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.0012326,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.79.255.1:1080": {
+    "proxy": "socks4://47.79.255.1:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.0061505,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.176.248:1080": {
+    "proxy": "socks4://47.82.176.248:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.0232515,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.155.53:1080": {
+    "proxy": "socks4://47.82.155.53:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.0408542,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.178.113:1080": {
+    "proxy": "socks5://47.82.178.113:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.0528698,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://47.82.155.4:1080": {
+    "proxy": "socks5://47.82.155.4:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.0629952,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://47.82.144.61:1080": {
+    "proxy": "socks5://47.82.144.61:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.1652114,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://147.45.75.124:8080": {
+    "proxy": "http://147.45.75.124:8080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.2179127,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://106.10.55.212:1121": {
+    "proxy": "http://106.10.55.212:1121",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.2249072,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.151.206:1080": {
+    "proxy": "socks4://47.82.151.206:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.2298365,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.145.158:1080": {
+    "proxy": "socks4://47.82.145.158:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.235127,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.79.255.193:1080": {
+    "proxy": "socks5://47.79.255.193:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.2407014,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://47.79.255.220:1080": {
+    "proxy": "socks5://47.79.255.220:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.2647216,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://2.27.50.150:8080": {
+    "proxy": "http://2.27.50.150:8080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.272522,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.147.120:1080": {
+    "proxy": "socks4://47.82.147.120:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.2778761,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.147.252:1080": {
+    "proxy": "socks4://47.82.147.252:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.2827013,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://43.128.145.26:1080": {
+    "proxy": "http://43.128.145.26:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.3331332,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.183.237:1080": {
+    "proxy": "socks4://47.82.183.237:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.3383768,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://86.104.74.110:1081": {
+    "proxy": "http://86.104.74.110:1081",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.3443623,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://94.158.244.245:1080": {
+    "proxy": "http://94.158.244.245:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.431637,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.145.183:1080": {
+    "proxy": "socks4://47.82.145.183:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.4396493,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.145.247:1080": {
+    "proxy": "socks5://47.82.145.247:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.444581,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://47.82.180.19:1080": {
+    "proxy": "socks5://47.82.180.19:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.449111,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://47.82.151.5:1080": {
+    "proxy": "socks4://47.82.151.5:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.4555578,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.79.253.66:1080": {
+    "proxy": "socks4://47.79.253.66:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.4621196,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.152.70:1080": {
+    "proxy": "socks5://47.82.152.70:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.474882,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://195.25.20.155:3128": {
+    "proxy": "http://195.25.20.155:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.4801667,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.145.157:1080": {
+    "proxy": "socks4://47.82.145.157:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.488079,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.179.4:1080": {
+    "proxy": "socks4://47.82.179.4:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.4941142,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.79.253.158:1080": {
+    "proxy": "socks4://47.79.253.158:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.5001523,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.146.243:1080": {
+    "proxy": "socks4://47.82.146.243:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.5411603,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.147.26:1080": {
+    "proxy": "socks5://47.82.147.26:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.5474846,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://47.82.154.216:1080": {
+    "proxy": "socks4://47.82.154.216:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.5535822,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.148.135:1080": {
+    "proxy": "socks4://47.82.148.135:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.5608933,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.79.255.193:1080": {
+    "proxy": "socks4://47.79.255.193:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.5676239,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://190.212.131.238:3128": {
+    "proxy": "http://190.212.131.238:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.6093946,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://161.153.62.49:1080": {
+    "proxy": "http://161.153.62.49:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.6158304,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://47.82.147.252:1080": {
+    "proxy": "socks5://47.82.147.252:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.6235006,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://109.71.246.44:1080": {
+    "proxy": "socks4://109.71.246.44:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.6298227,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://192.99.8.15:8850": {
+    "proxy": "http://192.99.8.15:8850",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.6381693,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://72.56.90.169:3128": {
+    "proxy": "http://72.56.90.169:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.690578,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.154.103:1080": {
+    "proxy": "socks4://47.82.154.103:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.6982784,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://94.176.3.223:8080": {
+    "proxy": "http://94.176.3.223:8080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.7074397,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.178.136:1080": {
+    "proxy": "socks4://47.82.178.136:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.7150455,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://45.8.98.142:30010": {
+    "proxy": "socks5://45.8.98.142:30010",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.7688878,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://47.82.155.4:1080": {
+    "proxy": "socks4://47.82.155.4:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.778032,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://185.234.64.65:1082": {
+    "proxy": "http://185.234.64.65:1082",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.785666,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://137.31.47.79:80": {
+    "proxy": "http://137.31.47.79:80",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.7936082,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://47.82.165.107:1080": {
+    "proxy": "socks5://47.82.165.107:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.8007917,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://8.217.214.66:50001": {
+    "proxy": "http://8.217.214.66:50001",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.8512669,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://137.31.47.73:80": {
+    "proxy": "http://137.31.47.73:80",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.8587728,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.147.26:1080": {
+    "proxy": "socks4://47.82.147.26:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.8658466,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.162.6:1080": {
+    "proxy": "socks4://47.82.162.6:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.873678,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.183.237:1080": {
+    "proxy": "socks5://47.82.183.237:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.924783,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://47.82.0.163:3128": {
+    "proxy": "http://47.82.0.163:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.9316525,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://47.82.154.76:1080": {
+    "proxy": "socks5://47.82.154.76:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.9397678,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://47.82.148.163:1080": {
+    "proxy": "socks4://47.82.148.163:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162249.94718,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.179.4:1080": {
+    "proxy": "socks5://47.82.179.4:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.0143425,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://47.79.253.158:1080": {
+    "proxy": "socks5://47.79.253.158:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.0225196,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://37.187.109.70:10111": {
+    "proxy": "http://37.187.109.70:10111",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.0303717,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://23.176.40.194:1080": {
+    "proxy": "http://23.176.40.194:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.0383122,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://103.17.140.87:8080": {
+    "proxy": "http://103.17.140.87:8080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.0896356,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://16.62.123.236:3000": {
+    "proxy": "socks5://16.62.123.236:3000",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.095793,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://192.241.132.92:443": {
+    "proxy": "http://192.241.132.92:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.103729,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://167.86.95.198:3128": {
+    "proxy": "http://167.86.95.198:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.1120703,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.48:9002": {
+    "proxy": "http://84.239.49.48:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.121783,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://51.159.225.197:19362": {
+    "proxy": "http://51.159.225.197:19362",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.1733804,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://186.5.94.206:999": {
+    "proxy": "http://186.5.94.206:999",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.1819413,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.151.27:1080": {
+    "proxy": "socks4://47.82.151.27:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.2063386,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.146.243:1080": {
+    "proxy": "socks5://47.82.146.243:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162250.679748,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://51.159.225.196:23856": {
+    "proxy": "http://51.159.225.196:23856",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.3026614,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.154:9002": {
+    "proxy": "http://84.239.49.154:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.4046783,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://47.82.176.180:1080": {
+    "proxy": "socks5://47.82.176.180:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.4129333,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://185.244.40.32:1080": {
+    "proxy": "socks5://185.244.40.32:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.8725536,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://47.82.161.171:1080": {
+    "proxy": "socks4://47.82.161.171:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.8800855,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.149.220:1080": {
+    "proxy": "socks4://47.82.149.220:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.8895683,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://77.93.42.198:1080": {
+    "proxy": "socks5://77.93.42.198:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.8979506,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://138.199.35.195:9002": {
+    "proxy": "http://138.199.35.195:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.933978,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.183.171:1080": {
+    "proxy": "socks4://47.82.183.171:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.9428318,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.178.33:1080": {
+    "proxy": "socks4://47.82.178.33:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.951687,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.150.58:1080": {
+    "proxy": "socks5://47.82.150.58:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.960858,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://185.234.64.66:1081": {
+    "proxy": "socks4://185.234.64.66:1081",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.9780295,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.179.85:1080": {
+    "proxy": "socks4://47.82.179.85:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.987036,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://74.208.84.191:443": {
+    "proxy": "http://74.208.84.191:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162251.9956179,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.153.218:1080": {
+    "proxy": "socks4://47.82.153.218:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.012669,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://84.239.14.147:9002": {
+    "proxy": "http://84.239.14.147:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.0223007,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.178.113:1080": {
+    "proxy": "socks4://47.82.178.113:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.0312054,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://84.239.49.251:9002": {
+    "proxy": "http://84.239.49.251:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.0404618,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://185.15.75.140:443": {
+    "proxy": "http://185.15.75.140:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.0501087,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://89.124.8.87:443": {
+    "proxy": "http://89.124.8.87:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.0600398,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.247:9002": {
+    "proxy": "http://84.239.49.247:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.0696237,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://84.239.49.172:9002": {
+    "proxy": "http://84.239.49.172:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.079875,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://47.82.145.124:1080": {
+    "proxy": "socks5://47.82.145.124:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.1076696,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://89.208.248.61:8443": {
+    "proxy": "http://89.208.248.61:8443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.117177,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://147.75.34.105:443": {
+    "proxy": "http://147.75.34.105:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.1276655,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://209.63.239.148:443": {
+    "proxy": "http://209.63.239.148:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.157177,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://20.7.147.69:443": {
+    "proxy": "http://20.7.147.69:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.1681213,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://89.124.8.77:443": {
+    "proxy": "http://89.124.8.77:443",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.178245,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://156.146.59.39:9002": {
+    "proxy": "http://156.146.59.39:9002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.2106166,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.144.213:1080": {
+    "proxy": "socks4://47.82.144.213:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.2255132,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.165.33:1080": {
+    "proxy": "socks4://47.82.165.33:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.2377932,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.156.69:1080": {
+    "proxy": "socks5://47.82.156.69:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.2634294,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://85.192.29.229:8888": {
+    "proxy": "http://85.192.29.229:8888",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.2741683,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://77.232.142.77:31336": {
+    "proxy": "socks4://77.232.142.77:31336",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.2844596,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://16.26.154.68:41658": {
+    "proxy": "socks5://16.26.154.68:41658",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.3191943,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://157.245.143.65:7890": {
+    "proxy": "http://157.245.143.65:7890",
+    "latency_ms": 4883.376836776733,
+    "success_count": 1,
+    "fail_count": 1,
+    "last_tested": 1781162264.4623036,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://212.58.132.5:1080": {
+    "proxy": "socks5://212.58.132.5:1080",
+    "latency_ms": 5048.1409549713135,
+    "success_count": 2,
+    "fail_count": 0,
+    "last_tested": 1781162260.17772,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://47.79.254.41:1080": {
+    "proxy": "socks5://47.79.254.41:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.3516946,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://2.26.87.216:1080": {
+    "proxy": "http://2.26.87.216:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.362703,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://193.233.137.130:1081": {
+    "proxy": "http://193.233.137.130:1081",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.3785973,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.176.233:1080": {
+    "proxy": "socks4://47.82.176.233:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.3984303,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.149.220:1080": {
+    "proxy": "socks5://47.82.149.220:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.4098964,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://47.79.255.1:1080": {
+    "proxy": "socks5://47.79.255.1:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.4208245,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://173.212.246.157:3128": {
+    "proxy": "http://173.212.246.157:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.4544494,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.162.150:1080": {
+    "proxy": "socks4://47.82.162.150:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.4658747,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://13.51.196.44:49023": {
+    "proxy": "socks5://13.51.196.44:49023",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.4760492,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://47.82.144.140:1080": {
+    "proxy": "socks4://47.82.144.140:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.4957867,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.153.68:1080": {
+    "proxy": "socks4://47.82.153.68:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.5077586,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.79.254.41:1080": {
+    "proxy": "socks4://47.79.254.41:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.520186,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://45.89.106.12:8080": {
+    "proxy": "http://45.89.106.12:8080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.5383692,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://47.82.178.33:1080": {
+    "proxy": "socks5://47.82.178.33:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.549927,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://47.82.181.121:1080": {
+    "proxy": "socks4://47.82.181.121:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.5634432,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.79.252.64:1080": {
+    "proxy": "socks5://47.79.252.64:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.5765982,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://42.96.17.77:3128": {
+    "proxy": "http://42.96.17.77:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.5904098,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://47.82.151.5:1080": {
+    "proxy": "socks5://47.82.151.5:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.6059856,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://47.79.252.64:1080": {
+    "proxy": "socks4://47.79.252.64:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.6232119,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.151.247:1080": {
+    "proxy": "socks5://47.82.151.247:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.6382391,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://176.111.37.5:39811": {
+    "proxy": "http://176.111.37.5:39811",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.6541607,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.151.247:1080": {
+    "proxy": "socks4://47.82.151.247:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.6694365,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://47.82.161.225:1080": {
+    "proxy": "socks5://47.82.161.225:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.6828027,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://89.124.110.21:1080": {
+    "proxy": "socks5://89.124.110.21:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.696651,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://185.200.188.234:10001": {
+    "proxy": "http://185.200.188.234:10001",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.7130554,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://45.15.178.39:1080": {
+    "proxy": "socks5://45.15.178.39:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.7300565,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://134.122.1.61:11679": {
+    "proxy": "socks5://134.122.1.61:11679",
+    "latency_ms": 5382.035064697266,
+    "success_count": 2,
+    "fail_count": 0,
+    "last_tested": 1781162261.4989402,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks4://47.82.176.97:1080": {
+    "proxy": "socks4://47.82.176.97:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.7569358,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "http://45.89.111.179:1082": {
+    "proxy": "http://45.89.111.179:1082",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.7761037,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://65.109.178.5:8080": {
+    "proxy": "http://65.109.178.5:8080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.7923772,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://63.33.46.125:11714": {
+    "proxy": "socks5://63.33.46.125:11714",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.8074849,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://45.70.236.194:999": {
+    "proxy": "http://45.70.236.194:999",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.822485,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://47.79.253.66:1080": {
+    "proxy": "socks5://47.79.253.66:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.835433,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://113.160.132.26:8080": {
+    "proxy": "http://113.160.132.26:8080",
+    "latency_ms": 5489.066171646118,
+    "success_count": 2,
+    "fail_count": 0,
+    "last_tested": 1781162260.1906784,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks4://47.82.178.140:1080": {
+    "proxy": "socks4://47.82.178.140:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.8627765,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks4://47.82.152.70:1080": {
+    "proxy": "socks4://47.82.152.70:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.87616,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks4"
+  },
+  "socks5://77.232.142.77:31336": {
+    "proxy": "socks5://77.232.142.77:31336",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.889362,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://47.82.162.6:1080": {
+    "proxy": "socks5://47.82.162.6:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.9032128,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://137.31.45.79:80": {
+    "proxy": "http://137.31.45.79:80",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.915781,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://47.82.181.62:1080": {
+    "proxy": "socks5://47.82.181.62:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.92979,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://2.26.103.243:1080": {
+    "proxy": "socks5://2.26.103.243:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.942772,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://199.127.62.89:3129": {
+    "proxy": "http://199.127.62.89:3129",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.9535398,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://102.68.83.9:1080": {
+    "proxy": "socks5://102.68.83.9:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.961501,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://176.111.37.216:39811": {
+    "proxy": "http://176.111.37.216:39811",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162252.970937,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://170.106.136.181:31002": {
+    "proxy": "http://170.106.136.181:31002",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162253.2174406,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://167.71.42.89:1080": {
+    "proxy": "socks5://167.71.42.89:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162253.3155084,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://2.78.60.10:3129": {
+    "proxy": "http://2.78.60.10:3129",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162253.6647952,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://43.161.239.147:8888": {
+    "proxy": "http://43.161.239.147:8888",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162253.6849444,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://109.71.246.44:1080": {
+    "proxy": "socks5://109.71.246.44:1080",
+    "latency_ms": 5148.354554176331,
+    "success_count": 2,
+    "fail_count": 0,
+    "last_tested": 1781162262.4489846,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://147.45.231.206:1080": {
+    "proxy": "socks5://147.45.231.206:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162254.386092,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://200.174.198.32:8888": {
+    "proxy": "http://200.174.198.32:8888",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162254.5397816,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://212.58.132.5:8888": {
+    "proxy": "http://212.58.132.5:8888",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162255.5934818,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://194.58.33.7:3128": {
+    "proxy": "http://194.58.33.7:3128",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162255.7330709,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "socks5://45.194.33.12:30001": {
+    "proxy": "socks5://45.194.33.12:30001",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162255.7739892,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "socks5://171.25.158.95:1080": {
+    "proxy": "socks5://171.25.158.95:1080",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162255.7859917,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "socks5"
+  },
+  "http://85.105.165.223:3310": {
+    "proxy": "http://85.105.165.223:3310",
+    "latency_ms": 1000,
+    "success_count": 0,
+    "fail_count": 1,
+    "last_tested": 1781162255.937709,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  },
+  "http://202.5.36.21:32133": {
+    "proxy": "http://202.5.36.21:32133",
+    "latency_ms": 7158.025765419006,
+    "success_count": 2,
+    "fail_count": 0,
+    "last_tested": 1781162263.088457,
+    "uptime_percent": 100.0,
+    "country": "Unknown",
+    "protocol": "http"
+  }
+}
