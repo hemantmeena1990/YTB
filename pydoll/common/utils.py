@@ -143,7 +143,7 @@ async def wait_for_page_load(page, timeout: int = 25) -> bool:
 async def is_video_playing_async(page) -> bool:
     """Check if any video is playing (Pydoll async)."""
     try:
-        return await page.evaluate("""
+        result = await page.evaluate("""
             var videos = document.querySelectorAll('video');
             for (var i = 0; i < videos.length; i++) {
                 var v = videos[i];
@@ -153,6 +153,12 @@ async def is_video_playing_async(page) -> bool:
             }
             return false;
         """)
+        
+        # Unpack Pydoll's CDP dictionary response
+        if isinstance(result, dict):
+            result = result.get('result', {}).get('result', {}).get('value', False)
+        
+        return bool(result)
     except:
         return False
 
@@ -193,7 +199,14 @@ async def handle_cookies_async(page, instance_id: int = 0) -> bool:
 async def is_login_page_async(page) -> bool:
     """Check if current page is a login page (Pydoll async)."""
     try:
-        current_url = await page.evaluate("window.location.href")
+        raw_url = await page.evaluate("window.location.href")
+        
+        # Safely unpack Pydoll's CDP dictionary response
+        if isinstance(raw_url, dict):
+            current_url = raw_url.get('result', {}).get('result', {}).get('value', '')
+        else:
+            current_url = str(raw_url) if raw_url else ''
+        
         current_url = current_url.lower()
         login_patterns = ['accounts.google.com', 'accounts.youtube.com', 'signin', 'servicelogin', 'login']
         for pattern in login_patterns:
@@ -268,24 +281,24 @@ def get_variable_watch_time(min_time: int, max_time: int) -> int:
 # COMPATIBILITY WRAPPERS (Sync)
 # ============================================================================
 
-def wait_for_page_load_sync(page, timeout: int = 25) -> bool:
-    """Sync wrapper for wait_for_page_load."""
-    return asyncio.run(wait_for_page_load(page, timeout))
-
-
-def is_video_playing_sync(page) -> bool:
-    """Sync wrapper for is_video_playing_async."""
-    return asyncio.run(is_video_playing_async(page))
-
-
-def handle_cookies_sync(page, instance_id: int = 0) -> bool:
-    """Sync wrapper for handle_cookies_async."""
-    return asyncio.run(handle_cookies_async(page, instance_id))
-
-
-def is_login_page_sync(page) -> bool:
-    """Sync wrapper for is_login_page_async."""
-    return asyncio.run(is_login_page_async(page))
+#def wait_for_page_load_sync(page, timeout: int = 25) -> bool:
+#    """Sync wrapper for wait_for_page_load."""
+#    return asyncio.run(wait_for_page_load(page, timeout))
+#
+#
+#def is_video_playing_sync(page) -> bool:
+#    """Sync wrapper for is_video_playing_async."""
+#    return asyncio.run(is_video_playing_async(page))
+#
+#
+#def handle_cookies_sync(page, instance_id: int = 0) -> bool:
+#    """Sync wrapper for handle_cookies_async."""
+#    return asyncio.run(handle_cookies_async(page, instance_id))
+#
+#
+#def is_login_page_sync(page) -> bool:
+#    """Sync wrapper for is_login_page_async."""
+#    return asyncio.run(is_login_page_async(page))
 
 
 # ============================================================================
@@ -309,10 +322,10 @@ __all__ = [
     'handle_cookies_async', 'is_login_page_async',
     
     # Page verification (sync wrappers)
-    'wait_for_page_load_sync', 'is_video_playing_sync',
+#    'wait_for_page_load_sync', 'is_video_playing_sync',
     
     # Cookie handling (sync wrappers)
-    'handle_cookies_sync', 'is_login_page_sync',
+#    'handle_cookies_sync', 'is_login_page_sync',
     
     # System
     'get_system_ram_usage', 'get_variable_watch_time',

@@ -125,7 +125,7 @@ async def random_mouse_movement(page):
 async def is_video_playing(page) -> bool:
     """Check if video is playing"""
     try:
-        return await page.execute_script("""
+        result = await page.execute_script("""
             var videos = document.querySelectorAll('video');
             for (var i = 0; i < videos.length; i++) {
                 var v = videos[i];
@@ -135,6 +135,12 @@ async def is_video_playing(page) -> bool:
             }
             return false;
         """)
+        
+        # Unpack Pydoll's CDP dictionary response
+        if isinstance(result, dict):
+            result = result.get('result', {}).get('result', {}).get('value', False)
+        
+        return bool(result)
     except:
         return False
 
@@ -231,10 +237,32 @@ async def attempt_video_playback_with_retry(page, instance_id: int, is_mobile: b
             logger.info(f"Instance {instance_id}: Retry attempt {attempt+1}/{max_retries}")
             await asyncio.sleep(random.uniform(2, 4))
             
+            # ========== MOBILE: Click overlay first ==========
+            if is_mobile:
+                # Try mobile-specific play button/overlay
+                mobile_selectors = [
+                    '.player-control-overlay',
+                    '.ytp-play-button',
+                    '.ytp-large-play-button',
+                    'button[aria-label*="Play"]',
+                    '.ytp-play-button.ytp-player-button'
+                ]
+                for selector in mobile_selectors:
+                    try:
+                        overlay = await page.find(selector=selector)
+                        if overlay:
+                            await overlay.click(humanize=True)
+                            await asyncio.sleep(1.5)
+                            if await is_video_playing(page):
+                                logger.info(f"Instance {instance_id}: Started with mobile overlay click (attempt {attempt+1})")
+                                return True
+                    except:
+                        pass
+            
+            # Try video element click (fallback)
             try:
                 video = await page.find(tag_name="video")
                 if video:
-                    # ✅ Use Pydoll's native humanize=True
                     await video.click(humanize=True)
                     await asyncio.sleep(1.5)
                     if await is_video_playing(page):
@@ -243,6 +271,7 @@ async def attempt_video_playback_with_retry(page, instance_id: int, is_mobile: b
             except:
                 pass
             
+            # Try spacebar
             try:
                 await page.keyboard.press('Space')
             except:
@@ -252,10 +281,10 @@ async def attempt_video_playback_with_retry(page, instance_id: int, is_mobile: b
                 logger.info(f"Instance {instance_id}: Started with spacebar (attempt {attempt+1})")
                 return True
             
+            # Try player container
             try:
                 player = await page.find(selector=".html5-video-player")
                 if player:
-                    # ✅ Use Pydoll's native humanize=True
                     await player.click(humanize=True)
                     await asyncio.sleep(1.5)
                     if await is_video_playing(page):
@@ -264,6 +293,7 @@ async def attempt_video_playback_with_retry(page, instance_id: int, is_mobile: b
             except:
                 pass
             
+            # JavaScript fallback
             try:
                 await page.execute_script("document.querySelector('video')?.play();")
                 await asyncio.sleep(1.5)
@@ -299,19 +329,30 @@ async def simulate_pause(page):
 
 # ========== WATCHING ==========
 
-async def watch_with_human_behavior(page, duration: int, is_mobile: bool = False):
-    """Watch video with human-like behavior."""
-    start = time.time()
+async def watch_with_human_behavior(page, duration: int, is_mobile: bool = False, cfg=None, instance_id: int = 0, heartbeat_func=None):
+    """
+    Watch video with human-like behavior and fingerprint heartbeat.
+    Ensures fingerprint consistency during playback.
+    """
+    start_time = time.time()
     next_action = random.randint(5, 15)
     paused = False
+    heartbeat_interval = random.randint(15, 25)
+    last_heartbeat = start_time
+    last_fingerprint_check = start_time
     
-    while time.time() - start < duration:
-        remaining = duration - (time.time() - start)
+    
+    while time.time() - start_time < duration:
+        elapsed = time.time() - start_time
+        remaining = duration - elapsed
+        
         if remaining < next_action:
             await asyncio.sleep(remaining)
             break
+        
         await asyncio.sleep(next_action)
         
+        # Random human-like actions
         r = random.random()
         if r < 0.4:
             await random_scroll(page, is_mobile)
@@ -320,78 +361,250 @@ async def watch_with_human_behavior(page, duration: int, is_mobile: bool = False
         else:
             await random_key_press(page)
         
+        # ========== HEARTBEAT: Prevent background throttling ==========
+        if time.time() - last_heartbeat > heartbeat_interval:
+            try:
+                await page.execute_script("""
+                    var ev = new MouseEvent('mousemove', {
+                        view: window,
+                        bubbles: true,
+                        cancelable: true,
+                        clientX: Math.random() * window.innerWidth,
+                        clientY: Math.random() * window.innerHeight
+                    });
+                    document.dispatchEvent(ev);
+                """)
+                last_heartbeat = time.time()
+                heartbeat_interval = random.randint(15, 25)
+            except Exception as e:
+                if _script_logger:
+                    _script_logger.debug(f"Heartbeat mouse move failed: {e}")
+        
+        # ========== FINGERPRINT HEARTBEAT: Check consistency ==========
+        if cfg and heartbeat_func and time.time() - last_fingerprint_check > 30:
+            try:
+                await heartbeat_func(page, cfg, instance_id)
+                last_fingerprint_check = time.time()
+            except Exception as e:
+                if _script_logger:
+                    _script_logger.debug(f"Fingerprint heartbeat check failed: {e}")
+        
+        # Simulate pause if not already paused and duration is long enough
         if not paused and random.random() < 0.06 and duration > 30:
             if await simulate_pause(page):
                 paused = True
         
+        # Randomize next action time
         next_action = random.expovariate(0.12) + random.uniform(2, 8)
         next_action = min(max(next_action, 4), 20)
+
+
 
 
 # ========== POPUPS & COOKIES ==========
 
 async def handle_consent_popups(page, instance_id: int = 0) -> bool:
-    """Handle consent popups."""
-    consent_texts = ['Accept all', 'I agree', 'Accept', 'Got it', 'OK']
-    
+    """
+    Handle consent popups using Pydoll's native methods.
+    Improved version with better detection and clicking.
+    """
     try:
-        await asyncio.sleep(1.5)
+        # Wait for popups to fully load
+        await asyncio.sleep(2)
+        
+        # ========== METHOD 1: Find by text content ==========
+        consent_texts = [
+            'Accept all', 'I agree', 'Accept', 'Got it', 'OK',
+            'Agree', 'Continue', 'Allow', 'Dismiss', 'Close',
+            'No thanks', 'Skip', 'Next', 'Accept All'
+        ]
         
         for text in consent_texts:
             try:
+                # Use Pydoll's find with text
                 button = await page.find(text=text)
-                if button and await button.is_visible():
-                    logger.info(f"Instance {instance_id}: Found consent popup - clicking: {text}")
-                    # ✅ Use Pydoll's native humanize=True
-                    await button.click(humanize=True)
-                    await asyncio.sleep(random.uniform(1, 2))
-                    return True
-            except:
+                if button:
+                    # Check if visible and enabled
+                    is_visible = await button.is_visible()
+                    if is_visible:
+                        logger.info(f"Instance {instance_id}: Found consent popup - clicking: {text}")
+                        # Use Pydoll's native humanized click
+                        await button.click(humanize=True)
+                        await asyncio.sleep(random.uniform(1, 2))
+                        return True
+            except Exception as e:
+                logger.debug(f"Instance {instance_id}: Text search '{text}' failed: {e}")
                 continue
         
+        # ========== METHOD 2: Find by aria-label ==========
+        aria_labels = [
+            'Accept all', 'Accept', 'I agree', 'Agree', 
+            'Got it', 'OK', 'Dismiss', 'Close'
+        ]
+        
+        for label in aria_labels:
+            try:
+                button = await page.find(aria_label=label)
+                if button:
+                    is_visible = await button.is_visible()
+                    if is_visible:
+                        logger.info(f"Instance {instance_id}: Found consent popup via aria-label - clicking: {label}")
+                        await button.click(humanize=True)
+                        await asyncio.sleep(random.uniform(1, 2))
+                        return True
+            except Exception as e:
+                logger.debug(f"Instance {instance_id}: Aria-label search '{label}' failed: {e}")
+                continue
+        
+        # ========== METHOD 3: Find by CSS selector ==========
+        selectors = [
+            'button[aria-label*="Accept"]',
+            'button[aria-label*="accept"]',
+            'button[aria-label*="Agree"]',
+            'button[aria-label*="agree"]',
+            'button[aria-label*="Got it"]',
+            'button[aria-label*="got it"]',
+            'button[aria-label*="OK"]',
+            'button[aria-label*="Dismiss"]',
+            'button[aria-label*="Close"]',
+            'button[aria-label*="close"]',
+            'button[aria-label*="consent"]',
+            'button[aria-label*="Consent"]',
+            '#accept-consent',
+            '#consent-accept',
+            '.consent-accept',
+            '.accept-all',
+            '.accept',
+            '[data-action="accept"]',
+            '[data-action="Accept"]',
+            '.yt-spec-button-shape-next',
+            'button[jsname="V67aGc"]',  # Google-specific
+            'button[jsname="XSnjRc"]',  # Google-specific
+            'button[aria-label="Accept all"]',
+            'button[aria-label="I agree"]',
+            'button[aria-label="Got it"]',
+        ]
+        
+        for selector in selectors:
+            try:
+                buttons = await page.find_all(selector)
+                for button in buttons:
+                    is_visible = await button.is_visible()
+                    if is_visible:
+                        logger.info(f"Instance {instance_id}: Found consent popup via selector - clicking: {selector}")
+                        await button.click(humanize=True)
+                        await asyncio.sleep(random.uniform(1, 2))
+                        return True
+            except Exception as e:
+                logger.debug(f"Instance {instance_id}: Selector '{selector}' failed: {e}")
+                continue
+        
+        # ========== METHOD 4: JavaScript fallback ==========
         try:
-            button = await page.find(aria_label='Accept all')
-            if button and await button.is_visible():
-                await button.click(humanize=True)
+            result = await page.execute_script("""
+                (function() {
+                    // Try to find and click accept button
+                    var selectors = [
+                        'button[aria-label*="Accept"]',
+                        'button[aria-label*="accept"]',
+                        'button[aria-label*="Agree"]',
+                        'button[aria-label*="agree"]',
+                        'button[aria-label*="Got it"]',
+                        'button[aria-label*="got it"]',
+                        'button[aria-label*="OK"]',
+                        'button[aria-label*="Dismiss"]',
+                        'button[aria-label*="Close"]',
+                        'button[aria-label*="close"]',
+                        '#accept-consent',
+                        '#consent-accept',
+                        '.consent-accept',
+                        '.accept-all',
+                        '.accept',
+                        '.yt-spec-button-shape-next'
+                    ];
+                    
+                    for (var i = 0; i < selectors.length; i++) {
+                        var elements = document.querySelectorAll(selectors[i]);
+                        for (var j = 0; j < elements.length; j++) {
+                            var el = elements[j];
+                            // Check if visible
+                            var rect = el.getBoundingClientRect();
+                            if (rect.width > 0 && rect.height > 0) {
+                                el.click();
+                                return true;
+                            }
+                        }
+                    }
+                    
+                    // Fallback: find any button with consent text
+                    var buttons = document.querySelectorAll('button');
+                    var consentTexts = ['accept all', 'i agree', 'accept', 'got it', 'ok', 'agree', 'continue', 'allow', 'dismiss', 'close'];
+                    for (var i = 0; i < buttons.length; i++) {
+                        var text = buttons[i].innerText.toLowerCase();
+                        for (var j = 0; j < consentTexts.length; j++) {
+                            if (text.includes(consentTexts[j])) {
+                                buttons[i].click();
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                })();
+            """)
+            if result:
+                logger.info(f"Instance {instance_id}: Consent handled via JavaScript fallback")
                 await asyncio.sleep(random.uniform(1, 2))
                 return True
-        except:
-            pass
-        
-        result = await page.execute_script("""
-            var buttons = document.querySelectorAll('button');
-            for (var i = 0; i < buttons.length; i++) {
-                var text = buttons[i].innerText.toLowerCase();
-                if (text.includes('accept') || text.includes('agree') || text.includes('got it')) {
-                    buttons[i].click();
-                    return true;
-                }
-            }
-            return false;
-        """)
-        if result:
-            logger.info(f"Instance {instance_id}: Consent handled via JavaScript fallback")
-            return True
+        except Exception as e:
+            logger.debug(f"Instance {instance_id}: JavaScript fallback failed: {e}")
         
         return False
+        
     except Exception as e:
-        logger.debug(f"Instance {instance_id}: Consent handling error - {e}")
+        logger.warning(f"Instance {instance_id}: Consent handling error - {e}")
         return False
 
 
 async def handle_all_popups(page, instance_id: int = 0) -> int:
-    """Comprehensive popup handler."""
+    """
+    Comprehensive popup handler with improved detection.
+    """
     popups_handled = 0
     
-    for attempt in range(3):
-        if await handle_consent_popups(page, instance_id):
-            popups_handled += 1
-        await asyncio.sleep(0.5)
-    
-    if popups_handled > 0:
-        logger.info(f"Instance {instance_id}: Handled {popups_handled} popup(s)")
+    try:
+        # Wait for popups to appear
+        await asyncio.sleep(2)
+        
+        # Try multiple times with increasing delays
+        for attempt in range(4):
+            if await handle_consent_popups(page, instance_id):
+                popups_handled += 1
+                # After handling one popup, wait for others to appear
+                await asyncio.sleep(1.5)
+            else:
+                # If no popup found, wait a bit and try again
+                await asyncio.sleep(0.5)
+        
+        # Check for any remaining popups using JavaScript
+        try:
+            remaining = await page.execute_script("""
+                var popups = document.querySelectorAll('[role="dialog"], .modal, .popup, .consent, .overlay');
+                return popups.length;
+            """)
+            if remaining > 0:
+                logger.debug(f"Instance {instance_id}: {remaining} popups still visible")
+        except:
+            pass
+        
+        if popups_handled > 0:
+            logger.info(f"Instance {instance_id}: Handled {popups_handled} popup(s)")
+        
+    except Exception as e:
+        logger.warning(f"Instance {instance_id}: Popup handling error: {e}")
     
     return popups_handled
+
+
 
 
 # ========== SUGGESTED VIDEO ==========

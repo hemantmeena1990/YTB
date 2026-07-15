@@ -227,9 +227,6 @@ def get_preview_info(url: str, view_type: str):
     DESKTOP_AGENTS = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"]
     MOBILE_AGENTS = ["Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.113 Mobile Safari/537.36"]
     
-    if view_type == "Auto/Random":
-        return {"success": True, "constructed_url": f"Auto-selected per instance", "user_agent": "Random", "is_mobile": "Random", "video_id": video_id}
-    
     if view_type == "Google Search":
         return {"success": True, "constructed_url": f"Via Google Search → {url}", "user_agent": "Random", "is_mobile": "Random", "video_id": video_id}
     
@@ -779,6 +776,22 @@ def api_save_config():
         existing = load_config()
         if 'channel_name' in existing:
             data['channel_name'] = existing['channel_name']
+    
+    # ========== ENSURE ARRAY FIELDS ARE SAVED ==========
+    # Convert view_types and traffic_sources to lists if they exist
+    if 'view_types' in data and not isinstance(data['view_types'], list):
+        data['view_types'] = [data['view_types']]
+    if 'traffic_sources' in data and not isinstance(data['traffic_sources'], list):
+        data['traffic_sources'] = [data['traffic_sources']]
+    
+    # If view_types is empty, set default
+    if 'view_types' not in data or not data['view_types']:
+        data['view_types'] = ['Direct/Unknown']
+    
+    # If traffic_sources is empty, set default
+    if 'traffic_sources' not in data or not data['traffic_sources']:
+        data['traffic_sources'] = ['direct']
+    
     save_config(data)
     return jsonify({"success": True})
 
@@ -799,7 +812,22 @@ def api_load_config():
     config = load_config()
     if 'channel_name' not in config:
         config['channel_name'] = ''
-    print(f"[DEBUG] Loading config - channel: '{config.get('channel_name', '')}'")
+    
+    # ========== ENSURE ARRAY FIELDS EXIST ==========
+    # Ensure view_types is a list
+    if 'view_types' not in config or not config['view_types']:
+        config['view_types'] = ['Direct/Unknown']
+    elif not isinstance(config['view_types'], list):
+        config['view_types'] = [config['view_types']]
+    
+    # Ensure traffic_sources is a list
+    if 'traffic_sources' not in config or not config['traffic_sources']:
+        config['traffic_sources'] = ['direct']
+    elif not isinstance(config['traffic_sources'], list):
+        config['traffic_sources'] = [config['traffic_sources']]
+    
+    print(f"[DEBUG] Loading config - view_types: {config.get('view_types', [])}")
+    print(f"[DEBUG] Loading config - traffic_sources: {config.get('traffic_sources', [])}")
     return jsonify(config)
 
 @app.route('/api/auto_fetch_channel', methods=['POST'])
@@ -911,9 +939,9 @@ def api_get_view_types_by_type():
     """Return view types based on is_short flag from yt-dlp."""
     is_short = request.json.get('is_short', False)
     if is_short:
-        view_types = ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View", "External(Embed)"]
+        view_types = ["Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View", "External(Embed)"]
     else:
-        view_types = ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View", "External(Embed)"]
+        view_types = ["Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View", "External(Embed)"]
     return jsonify({"view_types": view_types})
 
 @app.route('/api/detect_view_types', methods=['POST'])
@@ -922,16 +950,16 @@ def api_detect_view_types():
     if not urls:
         return jsonify({"view_types": []})
     if '/shorts/' in urls[0]:
-        return jsonify({"view_types": ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View", "External(Embed)"]})
+        return jsonify({"view_types": ["Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "Channel View", "External(Embed)"]})
     else:
-        return jsonify({"view_types": ["Auto/Random", "Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View", "External(Embed)"]})
+        return jsonify({"view_types": ["Google Search", "Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View", "External(Embed)"]})
 
 @app.route('/api/validate_view_type', methods=['POST'])
 def api_validate_view_type():
     url = request.json.get('url', '')
     view_type = request.json.get('view_type', '')
     
-    if view_type in ("Auto/Random", "Google Search", "External(Embed)"):
+    if view_type in ("Google Search", "External(Embed)"):
         return jsonify({"valid": True})
     
     details = get_video_details_ytdlp(url)
@@ -980,12 +1008,26 @@ def api_cleanup():
 @app.route('/api/launch', methods=['POST'])
 def api_launch():
     data = request.json
-    view_type = data['view_type']
+    # ========== GET ARRAYS FROM CONFIG ==========
+    view_types = data.get('view_types', ['Direct/Unknown'])
+    traffic_sources = data.get('traffic_sources', ['direct'])
+    
+    # Ensure they are lists
+    if not isinstance(view_types, list):
+        view_types = [view_types]
+    if not isinstance(traffic_sources, list):
+        traffic_sources = [traffic_sources]
+    
+    # If empty, use defaults
+    if not view_types:
+        view_types = ['Direct/Unknown']
+    if not traffic_sources:
+        traffic_sources = ['direct']
+    
     automation_version = data.get('automation_version', 'selenium')
     url = data['urls'][0]
     cycles = data.get('cycles', 1)
     num_instances = data.get('num_instances', 1)
-    traffic_source = data.get('traffic_source', 'direct')
     proxy_mode = data.get('proxy_mode', 'none')
     po_token_source = data.get('po_token_source', 'native')
     
@@ -1020,9 +1062,10 @@ def api_launch():
     else:
         available_types = ["Other YouTube features", "Direct/Unknown", "Suggested", "Search (Video)", "Channel View", "External(Embed)"]
     
-    # Validate view_type
-    if view_type not in ["Auto/Random", "Google Search"] and view_type not in available_types:
-        return jsonify({"success": False, "error": f"View type '{view_type}' not valid for this video"})
+    # Validate that at least one selected view type is valid
+    valid_selected = [vt for vt in view_types if vt in available_types or vt == "Google Search"]
+    if not valid_selected:
+        return jsonify({"success": False, "error": f"None of the selected view types are valid for this video. Available: {available_types}"})
     
     view_to_script = {
         "Google Search": "YTGoogleSearch.py",
@@ -1051,6 +1094,10 @@ def api_launch():
     launched_total = 0
     use_undetected = (automation_version == 'selenium_undetected')
     
+    # Log selected configurations
+    print(f"[DEBUG] Selected View Types: {view_types}")
+    print(f"[DEBUG] Selected Traffic Sources: {traffic_sources}")
+    
     # Log proxy mode
     if proxy_mode == 'tor_service':
         print(f"[PROXY] Using Tor Service on port 9050")
@@ -1077,12 +1124,19 @@ def api_launch():
             instance_id = (cycle - 1) * num_instances + i + 1
             url = data['urls'][i % len(data['urls'])]
             
-            if view_type == "Auto/Random":
-                selected_view_type = random.choice(available_types + ["Google Search"])
-                is_auto_random = True
-            else:
-                selected_view_type = view_type
-                is_auto_random = False
+            # Randomly pick a view type from selected ones
+            selected_view_type = random.choice(view_types)
+            is_auto_random = False  # No longer needed since user selects multiple
+            
+            # Validate that selected view type is applicable for this video
+            if selected_view_type not in available_types and selected_view_type != "Google Search":
+                # Filter to only available types
+                available_selected = [vt for vt in view_types if vt in available_types or vt == "Google Search"]
+                if available_selected:
+                    selected_view_type = random.choice(available_selected)
+                else:
+                    # Fallback to first available
+                    selected_view_type = available_types[0] if available_types else "Direct/Unknown"
             
             cfg = build_script_config(instance_id, data, url, selected_view_type)
             if 'video_title' in data:
@@ -1091,7 +1145,12 @@ def api_launch():
             cfg['available_view_types'] = available_types if is_auto_random else []
             cfg['cycle_number'] = cycle
             cfg['cycles'] = 1
-            cfg['traffic_source'] = traffic_source
+            
+            # Randomly pick a traffic source from selected ones
+            selected_traffic_source = random.choice(traffic_sources)
+            cfg['traffic_source'] = selected_traffic_source
+            cfg['traffic_source_raw'] = selected_traffic_source
+            
             cfg['po_token_source'] = po_token_source
             cfg['proxy_mode'] = proxy_mode
             cfg['num_instances'] = num_instances
@@ -1118,7 +1177,7 @@ def api_launch():
                     else:
                         print(f"[PROXY] WARNING: No proxy available for instance {instance_id}")
             
-            # ========== FIX: Set automation_version for ALL cases ==========
+            # ========== SET automation_version for ALL cases ==========
             if automation_version == 'pydoll':
                 cfg['use_undetected'] = True
                 cfg['automation_version'] = 'pydoll'
@@ -1130,8 +1189,9 @@ def api_launch():
                 cfg['automation_version'] = 'selenium'
             # =============================================================
             
-            if selected_view_type in direct_url_view_types and traffic_source != 'direct' and traffic_source in referer_map:
-                cfg['referer'] = referer_map[traffic_source]
+            # ========== SET REFERRER ==========
+            if selected_view_type in direct_url_view_types and selected_traffic_source != 'direct' and selected_traffic_source in referer_map:
+                cfg['referer'] = referer_map[selected_traffic_source]
             
             cycle_configs.append(cfg)
         
@@ -1155,16 +1215,24 @@ def api_launch():
                     print(f"[ERROR] Failed to write config file: {e}")
                     continue
                 
+                # ========== DYNAMIC SCRIPT PATH ROUTING ==========
+                # Determine which framework to use based on automation_version
                 if automation_version == 'playwright':
+                    # Playwright (incomplete/deferred)
                     script_path = BASE_DIR / "playwright" / "scripts" / script_file
                 elif automation_version == 'pydoll':
+                    # Pydoll (async stealth) - USE THE PYDOLI SCRIPTS FOLDER
                     script_path = BASE_DIR / "pydoll" / "scripts" / script_file
                 else:
+                    # Selenium (default - includes 'selenium' and 'selenium_undetected')
                     script_path = BASE_DIR / "selenium" / "scripts" / script_file
+                # ===================================================
                 
                 if script_path.exists():
                     cmd = [sys.executable, str(script_path), str(group_temp_file)]
                     print(f"[LAUNCH] {script_path.name} with {len(group_configs)} instance(s)")
+                    print(f"[LAUNCH] Framework: {automation_version}")
+                    print(f"[LAUNCH] Script path: {script_path}")
                     if sys.platform == "win32":
                         proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
                     else:
@@ -1174,6 +1242,22 @@ def api_launch():
                     print(f"[DEBUG] Process launched with PID: {proc.pid}")
                 else:
                     print(f"[WARNING] Script not found: {script_path}")
+                    print(f"[WARNING] Expected path: {script_path}")
+                    # For Pydoll, check if script exists and warn if missing
+                    if automation_version == 'pydoll':
+                        print(f"[WARNING] Pydoll script '{script_file}' not found. Only YTDirect.py currently exists.")
+                        print(f"[WARNING] Falling back to Selenium for this script.")
+                        # Fallback to Selenium
+                        fallback_path = BASE_DIR / "selenium" / "scripts" / script_file
+                        if fallback_path.exists():
+                            cmd = [sys.executable, str(fallback_path), str(group_temp_file)]
+                            print(f"[FALLBACK] Using Selenium version: {fallback_path}")
+                            if sys.platform == "win32":
+                                proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
+                            else:
+                                proc = subprocess.Popen(cmd)
+                            cycle_processes.append(proc)
+                            launched_total += len(group_configs)
         
         if cycle_processes:
             print(f"[DEBUG] Cycle {cycle}: Waiting for {len(cycle_processes)} process(es) to complete...")
@@ -1194,7 +1278,7 @@ def api_launch():
             print(f"[DEBUG] Waiting {wait_time:.1f}s before starting Cycle {cycle + 1}...")
             time.sleep(wait_time)
     
-    # Build status message
+    # ========== BUILD STATUS MESSAGE ==========
     proxy_msg = ""
     if proxy_mode == 'tor_service':
         proxy_msg = " Proxy: Tor Service (port 9050)"
@@ -1226,20 +1310,27 @@ def api_launch():
     else:
         po_msg = " PO Token: po-token-generator (Node.js)"
     
-    # Add random traffic source info to message
+    # ========== FIXED: Traffic source message ==========
     traffic_msg = ""
-    if traffic_source == 'random':
-        traffic_msg = " Traffic Source: Random (per instance)"
-    elif traffic_source != 'direct':
-        traffic_msg = f" Traffic Source: {traffic_source}"
+    if len(traffic_sources) > 1:
+        traffic_msg = f" Traffic Source: Random from {len(traffic_sources)} selected ({', '.join(traffic_sources)})"
+    elif traffic_sources[0] != 'direct':
+        traffic_msg = f" Traffic Source: {traffic_sources[0]}"
+    # If traffic_sources[0] == 'direct', traffic_msg stays empty (no need to show "Direct")
+    
+    # View Types message
+    view_msg = ""
+    if len(view_types) > 1:
+        view_msg = f" View Types: {len(view_types)} selected ({', '.join(view_types)})"
+    elif view_types[0] != 'Direct/Unknown':
+        view_msg = f" View Type: {view_types[0]}"
     
     print(f"[DEBUG] ========================================")
     print(f"[DEBUG] ALL CYCLES COMPLETED at {time.strftime('%H:%M:%S')}")
     print(f"[DEBUG] Total sessions launched: {launched_total}")
     print(f"[DEBUG] ========================================")
     
-    return jsonify({"success": True, "message": f"Completed {cycles} cycle(s) with {num_instances} instance(s) each. Total {launched_total} sessions.{po_msg}{proxy_msg}{stealth_msg}{traffic_msg}{force_msg}"})
-    
+    return jsonify({"success": True, "message": f"Completed {cycles} cycle(s) with {num_instances} instance(s) each. Total {launched_total} sessions.{po_msg}{proxy_msg}{stealth_msg}{traffic_msg}{view_msg}{force_msg}"})   
     
     
 def open_browser():
