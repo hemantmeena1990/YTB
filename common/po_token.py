@@ -47,7 +47,7 @@ def get_po_token_from_potgen(video_id, instance_id):
         response = requests.post(
             "http://127.0.0.1:4417/get_token",
             json={"videoId": video_id},
-            timeout=30
+            timeout=15
         )
         elapsed = (time.time() - start_time) * 1000
         

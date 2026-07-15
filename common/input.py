@@ -422,51 +422,81 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
     # Resolve traffic source (handles 'random')
     resolved_source, referrer_url, source_type = resolve_traffic_source(raw_traffic_source)
     
-    # ========== USE INTOLI FINGERPRINTS ==========
+    # ========== USE INTOLI FINGERPRINTS (Complete Object) ==========
     from common.fingerprint_manager import get_fingerprint_for_view_type, get_random_mobile_fingerprint, get_random_desktop_fingerprint
     
     # Get force flags from data
     force_mobile = data.get('force_mobile', False)
     force_desktop = data.get('force_desktop', False)
-    force_platform = data.get('force_platform', 'none')  # 'mobile', 'desktop', or 'none'
+    force_platform = data.get('force_platform', 'none')
     
     # Force Mobile takes precedence over Force Desktop
     if force_mobile or force_platform == 'mobile':
-        # Force mobile fingerprint
         fingerprint = get_random_mobile_fingerprint()
         print(f"[DEBUG] Force Mobile fingerprint selected")
-        if fingerprint:
-            print(f"[DEBUG] Mobile UA: {fingerprint.get('userAgent', '')[:80]}...")
-        else:
-            print(f"[DEBUG] WARNING: No mobile fingerprint returned!")
     elif force_desktop or force_platform == 'desktop':
-        # Force desktop fingerprint
         fingerprint = get_random_desktop_fingerprint()
         print(f"[DEBUG] Force Desktop fingerprint selected")
-        if fingerprint:
-            print(f"[DEBUG] Desktop UA: {fingerprint.get('userAgent', '')[:80]}...")
-        else:
-            print(f"[DEBUG] WARNING: No desktop fingerprint returned!")
     else:
-        # Normal fingerprint selection based on view type
         fingerprint = get_fingerprint_for_view_type(view_type)
     
-    # Extract all signals from fingerprint
-    user_agent = fingerprint.get('userAgent', '')
-    platform = fingerprint.get('platform', 'Win32')
-    screen_width = fingerprint.get('screenWidth', 1920)
-    screen_height = fingerprint.get('screenHeight', 1080)
-    viewport_width = fingerprint.get('viewportWidth', screen_width)
-    viewport_height = fingerprint.get('viewportHeight', screen_height - 100)
-    plugins_length = fingerprint.get('pluginsLength', 5)
-    device_category = fingerprint.get('deviceCategory', 'desktop')
-    vendor = fingerprint.get('vendor', 'Google Inc.')
-    connection = fingerprint.get('connection', {})
+    # ========== EXTRACT ALL SIGNALS FROM FINGERPRINT ==========
+    user_agent = fingerprint.get('userAgent')
+    platform = fingerprint.get('platform')
+    screen_width = fingerprint.get('screenWidth')
+    screen_height = fingerprint.get('screenHeight')
+    viewport_width = fingerprint.get('viewportWidth')
+    viewport_height = fingerprint.get('viewportHeight')
+    plugins_length = fingerprint.get('pluginsLength')
+    device_category = fingerprint.get('deviceCategory')
+    vendor = fingerprint.get('vendor')
     fp_type = fingerprint.get('_type', device_category)
+    
+    # ========== WARNING: If any critical field is missing ==========
+    if not user_agent or not platform or not screen_width or not screen_height:
+        print(f"[WARNING] Instance {instance_id}: Fingerprint missing critical fields!")
+        print(f"[WARNING] user_agent: {user_agent}, platform: {platform}, screen: {screen_width}x{screen_height}")
     
     is_mobile = (device_category == 'mobile')
     
-    print(f"[FINGERPRINT] Instance {instance_id}: Using {device_category} fingerprint")
+    # ========== DETECT PLATFORM TYPE (For Cross-Platform Consistency) ==========
+    is_ios = 'iPhone' in platform or 'iPad' in platform or 'iOS' in user_agent
+    is_android = 'Android' in user_agent or 'Linux' in user_agent
+    
+    # If vendor doesn't match platform, force correct vendor (only if fingerprint is missing)
+    if not vendor:
+        if is_ios:
+            vendor = "Apple Computer, Inc."
+        elif is_android:
+            vendor = "Google Inc."
+        else:
+            vendor = "Google Inc."
+    
+    print(f"[FINGERPRINT] Instance {instance_id}: Using {device_category} fingerprint (iOS: {is_ios}, Android: {is_android})")
+
+
+
+    # ========== WARNING: If any critical field is missing ==========
+    if not user_agent or not platform or not screen_width or not screen_height:
+        print(f"[WARNING] Instance {instance_id}: Fingerprint missing critical fields!")
+        print(f"[WARNING] user_agent: {user_agent}, platform: {platform}, screen: {screen_width}x{screen_height}")
+
+    
+    is_mobile = (device_category == 'mobile')
+    
+    # ========== DETECT PLATFORM TYPE (For Cross-Platform Consistency) ==========
+    is_ios = 'iPhone' in platform or 'iPad' in platform or 'iOS' in user_agent
+    is_android = 'Android' in user_agent or 'Linux' in user_agent
+    
+    # If vendor doesn't match platform, force correct vendor
+    if is_ios and vendor != "Apple Computer, Inc.":
+        vendor = "Apple Computer, Inc."
+        print(f"[FINGERPRINT] Instance {instance_id}: Forced vendor to Apple Computer, Inc. for iOS")
+    elif is_android and vendor != "Google Inc.":
+        vendor = "Google Inc."
+        print(f"[FINGERPRINT] Instance {instance_id}: Forced vendor to Google Inc. for Android")
+    
+    print(f"[FINGERPRINT] Instance {instance_id}: Using {device_category} fingerprint (iOS: {is_ios}, Android: {is_android})")
     # ============================================
     
     # Build constructed URL based on view type
@@ -503,7 +533,6 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
         "num_instances": data.get("num_instances", 1),
         "force_mobile": force_mobile,
         
-        
         # ========== FINGERPRINT SIGNALS ==========
         "platform": platform,
         "screen_width": screen_width,
@@ -513,8 +542,12 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
         "plugins_length": plugins_length,
         "device_category": device_category,
         "vendor": vendor,
-        "connection": connection,
         "fingerprint_type": fp_type,
+        # ========== PLATFORM DETECTION (For Cross-Platform Consistency) ==========
+        "is_ios": is_ios,
+        "is_android": is_android,
+        # ========== COMPLETE FINGERPRINT OBJECT (For CDP Injection) ==========
+        "fingerprint_profile": fingerprint,  # ✅ PASS THE ENTIRE OBJECT
         # ===========================================
     }
     
