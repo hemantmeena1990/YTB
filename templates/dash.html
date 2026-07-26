@@ -10,57 +10,57 @@
         .container { max-width: 1400px; margin: 0 auto; }
 		
 		/* Modern Toggle Switch */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-}
+		.switch {
+		    position: relative;
+		    display: inline-block;
+		    width: 50px;
+		    height: 24px;
+		}
 
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
+		.switch input {
+		    opacity: 0;
+		    width: 0;
+		    height: 0;
+		}
 
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.3s;
-    border-radius: 24px;
-}
+		.slider {
+		    position: absolute;
+		    cursor: pointer;
+		    top: 0;
+		    left: 0;
+		    right: 0;
+		    bottom: 0;
+		    background-color: #ccc;
+		    transition: 0.3s;
+		    border-radius: 24px;
+		}
 
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.3s;
-    border-radius: 50%;
-}
+		.slider:before {
+		    position: absolute;
+		    content: "";
+		    height: 18px;
+		    width: 18px;
+		    left: 3px;
+		    bottom: 3px;
+		    background-color: white;
+		    transition: 0.3s;
+		    border-radius: 50%;
+		}
 
-input:checked + .slider {
-    background-color: #667eea;
-}
+		input:checked + .slider {
+		    background-color: #667eea;
+		}
 
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
+		input:checked + .slider:before {
+		    transform: translateX(26px);
+		}
 
-.toggle-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-}
+		.toggle-label {
+		    display: flex;
+		    align-items: center;
+		    gap: 12px;
+		    cursor: pointer;
+		}
         
         .header { background: white; border-radius: 15px; padding: 20px 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .header h1 { color: #667eea; font-size: 1.8rem; }
@@ -78,6 +78,75 @@ input:checked + .slider:before {
         label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; font-size: 0.85rem; }
         input, select { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; }
         input:focus, select:focus { outline: none; border-color: #667eea; }
+        
+        /* ========== CHECKBOX GROUP STYLES ========== */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f9fafb;
+            max-height: 150px;
+            overflow-y: auto;
+            min-height: 60px;
+        }
+        .checkbox-group.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f0f0f0;
+        }
+        .checkbox-group.disabled .checkbox-item {
+            cursor: not-allowed;
+        }
+        .checkbox-group.disabled .checkbox-item input[type="checkbox"] {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .checkbox-item:hover {
+            background: #eef2ff;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            accent-color: #667eea;
+            flex-shrink: 0;
+        }
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 13px;
+            color: #333;
+            user-select: none;
+        }
+        .checkbox-item label.disabled-label {
+            color: #999;
+        }
+        .form-text {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.75rem;
+            color: #888;
+        }
+        .selected-count {
+            font-size: 0.75rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+        /* =========================================== */
         
         button { background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: background 0.3s; margin-right: 10px; margin-top: 10px; }
         button:hover { background: #5a67d8; }
@@ -135,11 +204,27 @@ input:checked + .slider:before {
             100% { transform: rotate(360deg); }
         }
         
-        /* Disabled select styling */
         select:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             background-color: #e0e0e0;
+        }
+
+        /* Select All / Clear All buttons for checkboxes */
+        .checkbox-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .checkbox-controls button {
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            margin: 0;
+            background: #e0e0e0;
+            color: #333;
+        }
+        .checkbox-controls button:hover {
+            background: #ccc;
         }
     </style>
 </head>
@@ -167,36 +252,60 @@ input:checked + .slider:before {
 
                 <div class="row" style="align-items: center;">
                     <div class="col"><div class="form-group"><label>🤖 Automation Version</label><select id="automationVersion"><option value="selenium">Selenium (Standard)</option><option value="selenium_undetected">Selenium (Undetected Stealth)</option><option value="playwright">Playwright</option><option value="pydoll">Pydoll (Async Stealth)</option></select></div></div>
-                    <div class="col"><div class="form-group"><label>🔐 PO Token Source</label><select id="poTokenSource"><option value="native">🌿 Native Browser</option><option value="external">🖥️ External Server (bgutil, port 4416)</option><option value="potgen">🤖 po-token-generator (Node.js, port 4417)</option></select></div></div>
+                    <div class="col"><div class="form-group"><label>🔐 PO Token Source</label><select id="poTokenSource"><option value="native">🌿 Native Browser</option><option value="external">🖥️ External Server (bgutil, port 4416)</option><option value="potgen">🤖 po-token-generator (Node.js, port 4417)<option value="wpc">WPC (yt-dlp-getpot-wpc - port 4418)</option></option></select></div></div>
                 </div>
                 
+                <!-- ========== VIEW TYPE - CHECKBOX GROUP ========== -->
+                <div class="form-group">
+                    <label>🎯 View Type <span class="selected-count" id="viewTypeCount">(0 selected)</span></label>
+                    <div class="checkbox-controls">
+                        <button id="selectAllViewTypes" class="btn-secondary" style="padding:2px 10px;font-size:0.7rem;">Select All</button>
+                        <button id="clearAllViewTypes" class="btn-secondary" style="padding:2px 10px;font-size:0.7rem;">Clear All</button>
+                    </div>
+                    <div class="checkbox-group" id="viewTypeGroup">
+                        <!-- Populated dynamically by JavaScript -->
+                    </div>
+                    <small class="form-text">Select one or more view types. The script will randomly pick from selected options per instance.</small>
+                </div>
+
+                <!-- ========== TRAFFIC SOURCE - CHECKBOX GROUP ========== -->
+                <div class="form-group">
+                    <label>📊 Traffic Source <span class="selected-count" id="trafficSourceCount">(0 selected)</span></label>
+                    <div class="checkbox-controls">
+                        <button id="selectAllTrafficSources" class="btn-secondary" style="padding:2px 10px;font-size:0.7rem;">Select All</button>
+                        <button id="clearAllTrafficSources" class="btn-secondary" style="padding:2px 10px;font-size:0.7rem;">Clear All</button>
+                    </div>
+                    <div class="checkbox-group" id="trafficSourceGroup">
+                        <!-- Populated dynamically by JavaScript -->
+                    </div>
+                    <small class="form-text" id="trafficSourceHint">Select one or more traffic sources. The script will randomly pick from selected options per instance.</small>
+                </div>
+
                 <div class="row" style="align-items: center;">
-                    <div class="col" style="flex: 1; min-width: 0;"><div class="form-group"><label>🎯 View Type</label><select id="viewType"></select></div></div>
-                    <div class="col" style="flex: 1; min-width: 0;"><div class="form-group"><label>📊 Traffic Source</label><select id="trafficSource"><option value="random">🎲 Random</option><option value="direct">Direct</option><option value="google_search">Google Search</option><option value="whatsapp_web">WhatsApp Web</option><option value="instagram">Instagram</option><option value="telegram_web">Telegram Web</option><option value="github">GitHub</option><option value="bing">Bing</option><option value="twitter">Twitter</option><option value="reddit">Reddit</option><option value="facebook">Facebook</option><option value="linkedin">LinkedIn</option></select></div></div>
-					<div class="col" style="flex: 1; min-width: 0;">
-						<div class="form-group">
-							<label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 0; margin-bottom: 0;">
-								<input type="checkbox" id="forceMobile" style="width: 18px; height: 18px; margin: 0; cursor: pointer; accent-color: #667eea;">
-								<span style="display: flex; align-items: center; gap: 6px;">
-									<span style="font-size: 1.1rem;">📱</span>
-									<span style="font-weight: 500;">Force Mobile</span>
-									<span style="font-size: 0.65rem; color: #888; font-weight: normal;">(Use mobile for all)</span>
-								</span>
-							</label>
-						</div>
-					</div>
-					<div class="col" style="flex: 1; min-width: 0;">
-						<div class="form-group">
-							<label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 0; margin-bottom: 0;">
-								<input type="checkbox" id="forceDesktop" style="width: 18px; height: 18px; margin: 0; cursor: pointer; accent-color: #667eea;">
-								<span style="display: flex; align-items: center; gap: 6px;">
-									<span style="font-size: 1.1rem;">💻</span>
-									<span style="font-weight: 500;">Force Desktop</span>
-									<span style="font-size: 0.65rem; color: #888; font-weight: normal;">(Use desktop for all)</span>
-								</span>
-							</label>
-						</div>
-					</div>
+                    <div class="col" style="flex: 1; min-width: 0;">
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 0; margin-bottom: 0;">
+                                <input type="checkbox" id="forceMobile" style="width: 18px; height: 18px; margin: 0; cursor: pointer; accent-color: #667eea;">
+                                <span style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="font-size: 1.1rem;">📱</span>
+                                    <span style="font-weight: 500;">Force Mobile</span>
+                                    <span style="font-size: 0.65rem; color: #888; font-weight: normal;">(Use mobile for all)</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col" style="flex: 1; min-width: 0;">
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 0; margin-bottom: 0;">
+                                <input type="checkbox" id="forceDesktop" style="width: 18px; height: 18px; margin: 0; cursor: pointer; accent-color: #667eea;">
+                                <span style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="font-size: 1.1rem;">💻</span>
+                                    <span style="font-weight: 500;">Force Desktop</span>
+                                    <span style="font-size: 0.65rem; color: #888; font-weight: normal;">(Use desktop for all)</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -223,34 +332,31 @@ input:checked + .slider:before {
                 
                 <div class="row" style="align-items: center;">
                     <div class="col"><div class="form-group"><label>📊 Suggested Min Watch (s)</label><input type="number" id="suggestedMin" value="15"></div></div>
-					<div class="col"><div class="form-group"><label>📊 Suggested Max Watch (s)</label><input type="number" id="suggestedMax" value="35"></div></div>
+                    <div class="col"><div class="form-group"><label>📊 Suggested Max Watch (s)</label><input type="number" id="suggestedMax" value="35"></div></div>
                 </div>
 				
 				<div class="row" style="align-items: center;">	
 					<div class="col"><div class="form-group">
-										<label>🎲 Suggested Chance (%) <span id="suggestedChanceValue" style="color:#667eea; font-weight:bold;">40%</span></label>
-										<input type="range" id="suggestedChance" min="0" max="100" value="40" step="1" style="width:100%;">
-									</div>
-					</div>
+						<label>🎲 Suggested Chance (%) <span id="suggestedChanceValue" style="color:#667eea; font-weight:bold;">40%</span></label>
+						<input type="range" id="suggestedChance" min="0" max="100" value="40" step="1" style="width:100%;">
+					</div></div>
 									
-									<div class="col"><div class="form-group">
-    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px 0;">
-        <input type="checkbox" id="headlessMode" style="width: 18px; height: 18px; margin: 0; cursor: pointer; accent-color: #667eea;">
-        <span style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 1.1rem;">🕶️</span>
-            <span style="font-weight: 500;">Headless Mode</span>
-            <span style="font-size: 0.7rem; color: #888; font-weight: normal;">(Run without visible browser window)</span>
-        </span>
-    </label>
-</div></div>
+					<div class="col"><div class="form-group">
+					    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px 0;">
+					        <input type="checkbox" id="headlessMode" style="width: 18px; height: 18px; margin: 0; cursor: pointer; accent-color: #667eea;">
+					        <span style="display: flex; align-items: center; gap: 8px;">
+					            <span style="font-size: 1.1rem;">🕶️</span>
+					            <span style="font-weight: 500;">Headless Mode</span>
+					            <span style="font-size: 0.7rem; color: #888; font-weight: normal;">(Run without visible browser window)</span>
+					        </span>
+					    </label>
+					</div></div>
                 </div>
                 
                 <div class="row" style="align-items: center;">
                     <div class="col"><div class="form-group"><label>🖥️ Number of Instances</label><input type="number" id="numInstances" value="1" min="1"></div></div>
                     <div class="col"><div class="form-group"><label>🔄 Cycles</label><input type="number" id="cycles" value="1" min="1"></div></div>
                 </div>
-
-                
 
                 <div class="button-group">
                     <button id="saveConfigBtn">💾 Save Configuration</button>
@@ -290,13 +396,12 @@ input:checked + .slider:before {
 <div id="proxyModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>🌐 Proxy Manager</h3><button id="closeProxyModal" style="background:#ef4444;padding:4px 12px;">✕</button></div><div class="modal-body" id="proxyModalBody">Loading...</div></div></div>
 
 <script>
+// ========== CONFIGURATION ==========
 const urlsContainer = document.getElementById('urlsContainer');
 const addUrlBtn = document.getElementById('addUrlBtn');
 const automationVersion = document.getElementById('automationVersion');
-const viewType = document.getElementById('viewType');
 const poTokenSource = document.getElementById('poTokenSource');
 const proxyMode = document.getElementById('proxyMode');
-const trafficSource = document.getElementById('trafficSource');
 const minWatchTime = document.getElementById('minWatchTime');
 const maxWatchTime = document.getElementById('maxWatchTime');
 const suggestedChance = document.getElementById('suggestedChance');
@@ -319,6 +424,10 @@ const clearLogBtn = document.getElementById('clearLogBtn');
 const logContainer = document.getElementById('logContainer');
 const cacheStatsDisplay = document.getElementById('cacheStatsDisplay');
 
+// Checkbox containers
+const viewTypeGroup = document.getElementById('viewTypeGroup');
+const trafficSourceGroup = document.getElementById('trafficSourceGroup');
+
 let urls = [''];
 let isOnlineMode = false;
 let onlineModeTimeout = null;
@@ -326,8 +435,43 @@ let videoDebounceTimer = null;
 let channelDebounceTimer = null;
 let currentVideoIsShort = false;
 
+// ========== STORED CONFIG FOR RE-POPULATION ==========
+let savedViewTypes = [];
+let savedTrafficSources = [];
+let configLoaded = false;
+
+// ========== VIEW TYPE DEFINITIONS ==========
+const ALL_VIEW_TYPES = [
+    { value: 'Google Search', label: 'Google Search' },
+    { value: 'Other YouTube features', label: 'Other YouTube features' },
+    { value: 'Direct/Unknown', label: 'Direct/Unknown' },
+    { value: 'Suggested', label: 'Suggested' },
+    { value: 'Search (Video)', label: 'Search (Video)' },
+    { value: 'Short Feeds', label: 'Short Feeds' },
+    { value: 'Channel View', label: 'Channel View' },
+    { value: 'External(Embed)', label: 'External(Embed)' }
+];
+
+const ALL_TRAFFIC_SOURCES = [
+    { value: 'direct', label: 'Direct' },
+    { value: 'google_search', label: 'Google Search' },
+    { value: 'whatsapp_web', label: 'WhatsApp Web' },
+    { value: 'instagram', label: 'Instagram' },
+    { value: 'telegram_web', label: 'Telegram Web' },
+    { value: 'github', label: 'GitHub' },
+    { value: 'bing', label: 'Bing' },
+    { value: 'twitter', label: 'Twitter' },
+    { value: 'reddit', label: 'Reddit' },
+    { value: 'facebook', label: 'Facebook' },
+    { value: 'linkedin', label: 'LinkedIn' }
+];
+
 // View types that support traffic sources (referer headers)
 const TRAFFIC_SOURCE_VIEW_TYPES = ["Other YouTube features", "Direct/Unknown", "Suggested", "Short Feeds", "External(Embed)"];
+
+// ========== HELPER FUNCTIONS ==========
+
+function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
 function addLog(message, type = 'info') {
     const logEntry = document.createElement('div');
@@ -341,112 +485,102 @@ function addLog(message, type = 'info') {
 
 clearLogBtn.onclick = () => { logContainer.innerHTML = '<div class="log-entry">Log cleared.</div>'; };
 
-// Function to update Traffic Source dropdown state based on selected view type
-function updateTrafficSourceState() {
-    const selectedViewType = viewType.value;
-    const isSupported = TRAFFIC_SOURCE_VIEW_TYPES.includes(selectedViewType);
+function formatNumber(num) { if (!num) return '—'; if (num >= 1000000) return (num/1000000).toFixed(1)+'M'; if (num >= 1000) return (num/1000).toFixed(1)+'K'; return num.toString(); }
+
+// ========== CHECKBOX GROUP FUNCTIONS ==========
+
+function populateViewTypes(availableTypes) {
+    viewTypeGroup.innerHTML = '';
+    let selectedCount = 0;
     
-    if (isSupported) {
-        trafficSource.disabled = false;
-        trafficSource.style.opacity = '1';
+    // Filter available types from ALL_VIEW_TYPES
+    const typesToShow = ALL_VIEW_TYPES.filter(t => availableTypes.includes(t.value));
+    
+    typesToShow.forEach(type => {
+        const item = document.createElement('div');
+        item.className = 'checkbox-item';
+        const id = `view_${type.value.replace(/[^a-zA-Z0-9]/g, '_')}`;
+        item.innerHTML = `
+            <input type="checkbox" id="${id}" value="${type.value}" checked>
+            <label for="${id}">${type.label}</label>
+        `;
+        viewTypeGroup.appendChild(item);
+        selectedCount++;
+    });
+    
+    // Also add External(Embed) if not already included
+    if (!availableTypes.includes('External(Embed)')) {
+        const item = document.createElement('div');
+        item.className = 'checkbox-item';
+        const id = 'view_External_Embed';
+        item.innerHTML = `
+            <input type="checkbox" id="${id}" value="External(Embed)" checked>
+            <label for="${id}">External(Embed)</label>
+        `;
+        viewTypeGroup.appendChild(item);
+        selectedCount++;
+    }
+    
+    updateViewTypeCount();
+}
+
+function populateTrafficSources() {
+    trafficSourceGroup.innerHTML = '';
+    let selectedCount = 0;
+    
+    ALL_TRAFFIC_SOURCES.forEach(source => {
+        const item = document.createElement('div');
+        item.className = 'checkbox-item';
+        const id = `traffic_${source.value}`;
+        item.innerHTML = `
+            <input type="checkbox" id="${id}" value="${source.value}" checked>
+            <label for="${id}">${source.label}</label>
+        `;
+        trafficSourceGroup.appendChild(item);
+        selectedCount++;
+    });
+    
+    updateTrafficSourceCount();
+}
+
+function updateViewTypeCount() {
+    const checked = viewTypeGroup.querySelectorAll('input[type="checkbox"]:checked');
+    document.getElementById('viewTypeCount').textContent = `(${checked.length} selected)`;
+}
+
+function updateTrafficSourceCount() {
+    const checked = trafficSourceGroup.querySelectorAll('input[type="checkbox"]:checked');
+    document.getElementById('trafficSourceCount').textContent = `(${checked.length} selected)`;
+}
+
+function getSelectedViewTypes() {
+    const checked = viewTypeGroup.querySelectorAll('input[type="checkbox"]:checked');
+    return Array.from(checked).map(cb => cb.value);
+}
+
+function getSelectedTrafficSources() {
+    const checked = trafficSourceGroup.querySelectorAll('input[type="checkbox"]:checked');
+    return Array.from(checked).map(cb => cb.value);
+}
+
+// ========== TRAFFIC SOURCE ENABLE/DISABLE ==========
+
+function updateTrafficSourceState() {
+    const selectedViewTypes = getSelectedViewTypes();
+    
+    // Check if ANY selected view type supports traffic sources
+    const hasSupported = selectedViewTypes.some(vt => TRAFFIC_SOURCE_VIEW_TYPES.includes(vt));
+    
+    if (hasSupported) {
+        trafficSourceGroup.classList.remove('disabled');
+        document.getElementById('trafficSourceHint').textContent = 'Select one or more traffic sources. The script will randomly pick from selected options per instance.';
     } else {
-        trafficSource.disabled = true;
-        trafficSource.style.opacity = '0.5';
+        trafficSourceGroup.classList.add('disabled');
+        document.getElementById('trafficSourceHint').textContent = '⚠️ Selected view types do not support traffic sources (referrer headers). Traffic sources will be ignored.';
     }
 }
 
-// Function to update view types based on video type (Short vs Regular)
-async function updateViewTypesByType(isShort) {
-    try {
-        const response = await fetch('/api/get_view_types_by_type', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ is_short: isShort })
-        });
-        const data = await response.json();
-        const availableTypes = data.view_types || [];
-		
-		// Ensure "External(Embed)" is always available
-			if (!availableTypes.includes("External(Embed)")) {
-				availableTypes.push("External(Embed)");
-			}
-        
-        // Save current selection if any
-        const currentSelection = viewType.value;
-        
-        // Clear existing options
-        viewType.innerHTML = '';
-        
-        // Add new options
-        for (const type of availableTypes) {
-            const option = document.createElement('option');
-            option.value = type;
-            option.textContent = type;
-            viewType.appendChild(option);
-        }
-        
-        // Try to restore previous selection if still valid
-        let selectionFound = false;
-        for (let i = 0; i < viewType.options.length; i++) {
-            if (viewType.options[i].value === currentSelection) {
-                viewType.selectedIndex = i;
-                selectionFound = true;
-                break;
-            }
-        }
-        
-        // If no selection found, select first option
-        if (!selectionFound && viewType.options.length > 0) {
-            viewType.selectedIndex = 0;
-            if (availableTypes.length === 1) {
-                addLog(`Auto-selected view type: ${viewType.value}`, 'info');
-            }
-        }
-        
-        updateTrafficSourceState();
-        updatePreview();
-        
-    } catch (err) {
-        addLog(`Error loading view types: ${err.message}`, 'error');
-    }
-}
-
-// Update proxy stats display
-async function updateProxyStats() {
-    try {
-        const response = await fetch('/api/proxy/status');
-        const stats = await response.json();
-        document.getElementById('proxyTotalCount').innerText = stats.total_proxies || 0;
-        document.getElementById('proxyWorkingCount').innerText = stats.working_proxies || 0;
-        document.getElementById('proxyBlacklistCount').innerText = stats.blacklisted || 0;
-    } catch(e) {
-        console.error('Failed to fetch proxy stats:', e);
-    }
-}
-
-async function updateCacheStats() {
-    try {
-        const response = await fetch('/api/cache/stats');
-        const stats = await response.json();
-        cacheStatsDisplay.innerHTML = `💾 ${stats.videos} videos | ${stats.channels} channels | ${stats.total_size_mb} MB`;
-    } catch(e) {}
-}
-
-function toggleOnlineMode() {
-    isOnlineMode = true;
-    fetchOnlineBtn.style.background = '#10b981';
-    fetchOnlineBtn.innerHTML = '✅ Online Mode Active';
-    addLog('🌐 Online mode activated - fetching fresh data from YouTube');
-    if (onlineModeTimeout) clearTimeout(onlineModeTimeout);
-    onlineModeTimeout = setTimeout(() => {
-        isOnlineMode = false;
-        fetchOnlineBtn.style.background = '#06b6d4';
-        fetchOnlineBtn.innerHTML = '🌐 Fetch from Online';
-        addLog('🔄 Returning to cache mode');
-        updateProxyStats();
-    }, 10000);
-}
-fetchOnlineBtn.onclick = toggleOnlineMode;
+// ========== URL FUNCTIONS ==========
 
 function renderUrls() {
     urlsContainer.innerHTML = '';
@@ -463,7 +597,8 @@ function renderUrls() {
     });
 }
 addUrlBtn.onclick = () => { urls.push(''); renderUrls(); };
-function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+// ========== VIDEO/CHANNEL FETCH ==========
 
 async function onUrlChange() {
     const url = document.querySelector('.url-input')?.value;
@@ -490,6 +625,65 @@ async function onUrlChange() {
             }
         } catch(e) {}
     }, 500);
+}
+
+async function updateViewTypesByType(isShort) {
+    try {
+        const response = await fetch('/api/get_view_types_by_type', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ is_short: isShort })
+        });
+        const data = await response.json();
+        const availableTypes = data.view_types || [];
+        
+        // Ensure "External(Embed)" is always available
+        if (!availableTypes.includes("External(Embed)")) {
+            availableTypes.push("External(Embed)");
+        }
+        
+        // Populate view types checkboxes
+        populateViewTypes(availableTypes);
+        updateTrafficSourceState();
+        updatePreview();
+        
+        // ========== RE-APPLY SAVED SELECTIONS ==========
+        // After re-populating, restore saved selections from config
+        if (savedViewTypes && savedViewTypes.length > 0) {
+            const checkboxes = viewTypeGroup.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                cb.checked = savedViewTypes.includes(cb.value);
+            });
+            updateViewTypeCount();
+            console.log('[DEBUG] Re-applied saved view types after video load:', savedViewTypes);
+        }
+        
+        // Add event listeners to view type checkboxes
+        viewTypeGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                // Update saved selections when user changes them
+                savedViewTypes = getSelectedViewTypes();
+                updateViewTypeCount();
+                updateTrafficSourceState();
+                updatePreview();
+            });
+        });
+        
+        // Add event listeners to traffic source checkboxes
+        trafficSourceGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                savedTrafficSources = getSelectedTrafficSources();
+                updateTrafficSourceCount();
+            });
+        });
+        
+        if (availableTypes.length === 1) {
+            addLog(`Auto-selected view type: ${availableTypes[0]}`, 'info');
+        }
+        
+    } catch (err) {
+        addLog(`Error loading view types: ${err.message}`, 'error');
+    }
 }
 
 async function onChannelChange() {
@@ -537,13 +731,21 @@ async function onChannelChange() {
     }, 500);
 }
 
-function formatNumber(num) { if (!num) return '—'; if (num >= 1000000) return (num/1000000).toFixed(1)+'M'; if (num >= 1000) return (num/1000).toFixed(1)+'K'; return num.toString(); }
+// ========== PREVIEW ==========
 
 async function updatePreview() {
     const url = urls[0];
-    if (!url) { document.getElementById('previewUrl').innerText = '—'; document.getElementById('previewUA').innerText = '—'; document.getElementById('previewMobile').innerText = '—'; return; }
+    const selectedTypes = getSelectedViewTypes();
+    const previewViewType = selectedTypes.length > 0 ? selectedTypes[0] : 'Direct/Unknown';
+    
+    if (!url) { 
+        document.getElementById('previewUrl').innerText = '—'; 
+        document.getElementById('previewUA').innerText = '—'; 
+        document.getElementById('previewMobile').innerText = '—'; 
+        return; 
+    }
     try {
-        const response = await fetch('/api/preview', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, view_type: viewType.value }) });
+        const response = await fetch('/api/preview', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, view_type: previewViewType }) });
         const data = await response.json();
         if (data.success) {
             document.getElementById('previewUrl').innerText = data.constructed_url || '—';
@@ -552,6 +754,48 @@ async function updatePreview() {
         }
     } catch(e) {}
 }
+
+// ========== PROXY/CACHE STATS ==========
+
+async function updateProxyStats() {
+    try {
+        const response = await fetch('/api/proxy/status');
+        const stats = await response.json();
+        document.getElementById('proxyTotalCount').innerText = stats.total_proxies || 0;
+        document.getElementById('proxyWorkingCount').innerText = stats.working_proxies || 0;
+        document.getElementById('proxyBlacklistCount').innerText = stats.blacklisted || 0;
+    } catch(e) {
+        console.error('Failed to fetch proxy stats:', e);
+    }
+}
+
+async function updateCacheStats() {
+    try {
+        const response = await fetch('/api/cache/stats');
+        const stats = await response.json();
+        cacheStatsDisplay.innerHTML = `💾 ${stats.videos} videos | ${stats.channels} channels | ${stats.total_size_mb} MB`;
+    } catch(e) {}
+}
+
+// ========== ONLINE MODE ==========
+
+function toggleOnlineMode() {
+    isOnlineMode = true;
+    fetchOnlineBtn.style.background = '#10b981';
+    fetchOnlineBtn.innerHTML = '✅ Online Mode Active';
+    addLog('🌐 Online mode activated - fetching fresh data from YouTube');
+    if (onlineModeTimeout) clearTimeout(onlineModeTimeout);
+    onlineModeTimeout = setTimeout(() => {
+        isOnlineMode = false;
+        fetchOnlineBtn.style.background = '#06b6d4';
+        fetchOnlineBtn.innerHTML = '🌐 Fetch from Online';
+        addLog('🔄 Returning to cache mode');
+        updateProxyStats();
+    }, 10000);
+}
+fetchOnlineBtn.onclick = toggleOnlineMode;
+
+// ========== FETCH BUTTONS ==========
 
 fetchVideoBtn.onclick = async () => { const url = urls[0]; if(url) await fetchVideoDetails(url, true); else addLog('⚠️ Enter a YouTube URL', 'warning'); };
 fetchChannelBtn.onclick = async () => { const handle = channelHandle.value; if(handle) await fetchChannelInfo(handle, true); else addLog('⚠️ Enter a channel handle', 'warning'); };
@@ -588,22 +832,23 @@ async function fetchChannelInfo(handle, forceRefresh) {
     } else addLog(`❌ Failed: ${data.error}`, 'error');
 }
 
+// ========== SAVE / LOAD / LAUNCH ==========
+
 saveConfigBtn.onclick = async () => {
-    const trafficSourceValue = trafficSource.disabled ? 'direct' : trafficSource.value;
-	
-	// Force Mobile takes precedence over Force Desktop
+    const selectedViewTypes = getSelectedViewTypes();
+    const selectedTrafficSources = getSelectedTrafficSources();
+    
     const forceMobile = document.getElementById('forceMobile').checked;
     const forceDesktop = document.getElementById('forceDesktop').checked;
-    // If both are checked, forceMobile wins (mobile takes priority)
     const forcePlatform = forceMobile ? 'mobile' : (forceDesktop ? 'desktop' : 'none');
     
     const config = { 
         urls: urls.filter(u=>u.trim()), 
         automation_version: automationVersion.value, 
-        view_type: viewType.value, 
+        view_types: selectedViewTypes,
+        traffic_sources: selectedTrafficSources,
         po_token_source: poTokenSource.value, 
         proxy_mode: proxyMode.value, 
-        traffic_source: trafficSourceValue,
         force_mobile: forceMobile,
         force_desktop: forceDesktop,
         force_platform: forcePlatform,
@@ -649,13 +894,13 @@ loadConfigBtn.onclick = async () => {
     if (config.min_watch_time) minWatchTime.value = config.min_watch_time;
     if (config.max_watch_time) maxWatchTime.value = config.max_watch_time;
     if (config.suggested_chance) {
-		suggestedChance.value = config.suggested_chance * 100;
-		suggestedChanceValue.innerText = Math.round(config.suggested_chance * 100) + '%';
-	}
-	if (config.force_mobile !== undefined) {
-		document.getElementById('forceMobile').checked = config.force_mobile;
-	}
-	    if (config.force_desktop !== undefined) {
+        suggestedChance.value = config.suggested_chance * 100;
+        suggestedChanceValue.innerText = Math.round(config.suggested_chance * 100) + '%';
+    }
+    if (config.force_mobile !== undefined) {
+        document.getElementById('forceMobile').checked = config.force_mobile;
+    }
+    if (config.force_desktop !== undefined) {
         document.getElementById('forceDesktop').checked = config.force_desktop;
     }
     if (config.suggested_min) suggestedMin.value = config.suggested_min;
@@ -664,30 +909,60 @@ loadConfigBtn.onclick = async () => {
     if (config.cycles) cycles.value = config.cycles;
     if (config.headless) headlessMode.checked = config.headless;
     
-    // Load view type after video is loaded (view type options depend on video type)
-    if (config.view_type) {
-        // Wait for view types to be populated, then set value
-        const checkAndSetViewType = setInterval(() => {
-            if (viewType.options.length > 0) {
-                for (let i = 0; i < viewType.options.length; i++) {
-                    if (viewType.options[i].value === config.view_type) {
-                        viewType.selectedIndex = i;
-                        break;
-                    }
-                }
-                updateTrafficSourceState();
-                updatePreview();
-                clearInterval(checkAndSetViewType);
-            }
-        }, 100);
-        
-        // Timeout after 5 seconds
-        setTimeout(() => clearInterval(checkAndSetViewType), 5000);
-    }
-    
-    if (config.traffic_source) {
-        trafficSource.value = config.traffic_source;
-    }
+// ========== LOAD VIEW TYPES ==========
+if (config.view_types && config.view_types.length > 0) {
+    // Store saved selections globally for re-population
+    savedViewTypes = config.view_types;
+    const applyViewTypes = () => {
+        const checkboxes = viewTypeGroup.querySelectorAll('input[type="checkbox"]');
+        if (checkboxes.length === 0) {
+            setTimeout(applyViewTypes, 100);
+            return;
+        }
+        // Check all view types that are in the config
+        checkboxes.forEach(cb => {
+            cb.checked = savedViewTypes.includes(cb.value);
+        });
+        updateViewTypeCount();
+        updateTrafficSourceState();
+        updatePreview();
+        console.log('[DEBUG] View types loaded:', savedViewTypes);
+    };
+    applyViewTypes();
+} else {
+    // If no view types in config, select all by default
+    savedViewTypes = ALL_VIEW_TYPES.map(t => t.value);
+    const checkboxes = viewTypeGroup.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = true);
+    updateViewTypeCount();
+    updateTrafficSourceState();
+}
+
+// ========== LOAD TRAFFIC SOURCES ==========
+if (config.traffic_sources && config.traffic_sources.length > 0) {
+    savedTrafficSources = config.traffic_sources;
+    const applyTrafficSources = () => {
+        const checkboxes = trafficSourceGroup.querySelectorAll('input[type="checkbox"]');
+        if (checkboxes.length === 0) {
+            setTimeout(applyTrafficSources, 100);
+            return;
+        }
+        checkboxes.forEach(cb => {
+            cb.checked = savedTrafficSources.includes(cb.value);
+        });
+        updateTrafficSourceCount();
+        console.log('[DEBUG] Traffic sources loaded:', savedTrafficSources);
+    };
+    applyTrafficSources();
+} else {
+    // If no traffic sources in config, select all by default
+    savedTrafficSources = ALL_TRAFFIC_SOURCES.map(t => t.value);
+    const checkboxes = trafficSourceGroup.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = true);
+    updateTrafficSourceCount();
+}
+
+configLoaded = true;
     
     // Load channel from config
     if (config.channel_name && config.channel_name !== '') {
@@ -696,8 +971,6 @@ loadConfigBtn.onclick = async () => {
         setTimeout(() => {
             onChannelChange();
         }, 500);
-    } else {
-        addLog(`📺 No saved channel found in config`);
     }
     
     addLog('✅ Configuration loaded successfully');
@@ -708,9 +981,12 @@ launchBtn.onclick = async () => {
     const validUrls = urls.filter(u=>u.trim());
     if (validUrls.length === 0) { addLog('❌ Enter at least one URL', 'error'); return; }
     
-    const trafficSourceValue = trafficSource.disabled ? 'direct' : trafficSource.value;
-	
-	// Force Mobile takes precedence over Force Desktop
+    const selectedViewTypes = getSelectedViewTypes();
+    if (selectedViewTypes.length === 0) { addLog('❌ Select at least one View Type', 'error'); return; }
+    
+    const selectedTrafficSources = getSelectedTrafficSources();
+    if (selectedTrafficSources.length === 0) { addLog('❌ Select at least one Traffic Source', 'error'); return; }
+    
     const forceMobile = document.getElementById('forceMobile').checked;
     const forceDesktop = document.getElementById('forceDesktop').checked;
     const forcePlatform = forceMobile ? 'mobile' : (forceDesktop ? 'desktop' : 'none');
@@ -718,10 +994,10 @@ launchBtn.onclick = async () => {
     const config = { 
         urls: validUrls, 
         automation_version: automationVersion.value, 
-        view_type: viewType.value, 
+        view_types: selectedViewTypes,
+        traffic_sources: selectedTrafficSources,
         po_token_source: poTokenSource.value, 
         proxy_mode: proxyMode.value, 
-        traffic_source: trafficSourceValue,
         force_mobile: forceMobile,
         force_desktop: forceDesktop,
         force_platform: forcePlatform,
@@ -737,6 +1013,9 @@ launchBtn.onclick = async () => {
         channel_name: channelHandle.value
     };
     addLog(`🚀 Launching ${config.num_instances} instance(s) x ${config.cycles} cycle(s)`);
+    addLog(`📋 Selected View Types: ${selectedViewTypes.join(', ')}`);
+    addLog(`📋 Selected Traffic Sources: ${selectedTrafficSources.join(', ')}`);
+    
     launchBtn.disabled = true; launchBtn.textContent = 'Launching...';
     try {
         const response = await fetch('/api/launch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
@@ -745,6 +1024,34 @@ launchBtn.onclick = async () => {
     } catch(e) { addLog(`❌ Launch error: ${e.message}`, 'error'); }
     finally { launchBtn.disabled = false; launchBtn.textContent = '🚀 Launch Automation'; }
 };
+
+// ========== SELECT ALL / CLEAR ALL ==========
+
+document.getElementById('selectAllViewTypes').onclick = () => {
+    viewTypeGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+    updateViewTypeCount();
+    updateTrafficSourceState();
+    updatePreview();
+};
+
+document.getElementById('clearAllViewTypes').onclick = () => {
+    viewTypeGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    updateViewTypeCount();
+    updateTrafficSourceState();
+    updatePreview();
+};
+
+document.getElementById('selectAllTrafficSources').onclick = () => {
+    trafficSourceGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+    updateTrafficSourceCount();
+};
+
+document.getElementById('clearAllTrafficSources').onclick = () => {
+    trafficSourceGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    updateTrafficSourceCount();
+};
+
+// ========== PROXY MANAGER ==========
 
 proxySettingsBtn.onclick = async () => {
     const modal = document.getElementById('proxyModal');
@@ -777,6 +1084,8 @@ proxySettingsBtn.onclick = async () => {
 
 document.getElementById('closeProxyModal').onclick = () => { document.getElementById('proxyModal').style.display = 'none'; };
 
+// ========== CLEANUP ==========
+
 cleanupBtn.onclick = async () => {
     if (confirm('Delete all logs, temp profiles, and old configs?')) {
         addLog('🧹 Running cleanup...');
@@ -798,21 +1107,53 @@ cleanupBtn.onclick = async () => {
     }
 };
 
-// Event listeners
-viewType.onchange = () => {
-    updatePreview();
-    updateTrafficSourceState();
-};
-// Suggested Chance slider update
+// ========== SUGGESTED CHANCE SLIDER ==========
+
 suggestedChance.oninput = function() {
     suggestedChanceValue.innerText = this.value + '%';
 };
+
+// ========== INITIALIZATION ==========
+
+// Populate traffic sources initially
+populateTrafficSources();
+
+// Set initial state for view types with default values
+populateViewTypes(ALL_VIEW_TYPES.map(t => t.value));
+
+// Add event listeners for view types
+viewTypeGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+        savedViewTypes = getSelectedViewTypes();
+        updateViewTypeCount();
+        updateTrafficSourceState();
+        updatePreview();
+    });
+});
+
+// Add event listeners for traffic sources
+trafficSourceGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+        savedTrafficSources = getSelectedTrafficSources();
+        updateTrafficSourceCount();
+    });
+});
+
+// Initial render
 renderUrls();
 updatePreview();
 updateCacheStats();
 setInterval(updateProxyStats, 30000);
 updateProxyStats();
-setTimeout(() => loadConfigBtn.click(), 1000);
+
+// ========== LOAD CONFIG FIRST, THEN APPLY ==========
+// Load config immediately and apply to checkboxes
+loadConfigBtn.click();
+
+// Also trigger video load after config loads
+setTimeout(() => {
+    if (urls[0]) onUrlChange();
+}, 1500);
 </script>
 </body>
 </html>

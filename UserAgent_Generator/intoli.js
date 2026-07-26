@@ -29,16 +29,41 @@ function getOsTierScore(ua, type) {
     }
 }
 
+// Strictly validates browser parameters to protect against telemetry traps
+function isValidAndModern(ua, isMobile) {
+    // 1. Drop fringe custom layouts or non-standard tracking strings (e.g. ADG, SamsungBrowser fragments on desktop)
+    if (!isMobile && /(ADG\/|SamsungBrowser)/i.test(ua)) return false;
+
+    // 2. Drop ancient versions below Chrome/CriOS/Firefox/Safari 120
+    const versionMatch = ua.match(/(?:Chrome|CriOS|Firefox|Version)\/(\d+)/);
+    if (versionMatch) {
+        const version = parseInt(versionMatch[1], 10);
+        if (version < 120) return false;
+    }
+
+    if (isMobile) {
+        const isIphone = /iPhone|iPad|iPod/i.test(ua);
+        
+        // 3. Prevent the Fake iPhone Chrome trap
+        // Real Chrome on iOS uses the 'CriOS' identifier token, never the standard desktop 'Chrome/' token
+        if (isIphone && /Chrome\/\d+/i.test(ua) && !/CriOS\/\d+/i.test(ua)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function compileFingerprint(uaString, category) {
     const isWin = /Windows/i.test(uaString);
     const isMac = /Macintosh/i.test(uaString);
+    const isIphone = /iPhone|iPad|iPod/i.test(uaString);
     
     let platform = "Linux x86_64";
     if (category === 'desktop') {
         if (isWin) platform = "Win32";
         else if (isMac) platform = "MacIntel";
     } else {
-        platform = /iPhone|iPad|iPod/i.test(uaString) ? "iPhone" : "Linux armv8l";
+        platform = isIphone ? "iPhone" : "Linux armv8l";
     }
 
     const desktopScreens = [[1920, 1080], [2560, 1440], [1440, 900], [1536, 864], [1366, 768]];
@@ -46,6 +71,25 @@ function compileFingerprint(uaString, category) {
     const [sw, sh] = category === 'desktop' 
         ? desktopScreens[Math.floor(Math.random() * desktopScreens.length)]
         : mobileScreens[Math.floor(Math.random() * mobileScreens.length)];
+
+    // FIX: Enforce real layout viewport offsets so bounding rect calculations pass bot checks
+    let vh = sh;
+    if (category === 'desktop') {
+        vh = sh - 80;
+    } else {
+        // Simulates mobile navigation bars/status bars cleanly (subtracting between 60px and 90px loss)
+        vh = sh - (Math.floor(Math.random() * (90 - 60 + 1)) + 60);
+    }
+
+    // FIX: Enforce strictly accurate vendors across core OS platforms
+    let vendor = "";
+    if (category === 'mobile' && isIphone) {
+        vendor = "Apple Computer, Inc."; // All browsers on iOS run inside WebKit and present this vendor token
+    } else if (/Chrome|Edge/i.test(uaString)) {
+        vendor = "Google Inc.";
+    } else if (/Safari/i.test(uaString) && !/Chrome/i.test(uaString)) {
+        vendor = "Apple Computer, Inc.";
+    }
 
     return {
         appName: "Netscape",
@@ -56,12 +100,13 @@ function compileFingerprint(uaString, category) {
         },
         deviceCategory: category,
         platform: platform,
-        pluginsLength: category === 'desktop' ? Math.floor(Math.random() * 4) + 1 : 0,
+        // FIX: Hardcode to 5 for desktop platforms to match modern browser fingerprint standards
+        pluginsLength: category === 'desktop' ? 5 : 0,
         screenHeight: sh,
         screenWidth: sw,
         userAgent: uaString,
-        vendor: /Chrome|Edge/i.test(uaString) ? "Google Inc." : (/Safari/i.test(uaString) && !/Chrome/i.test(uaString) ? "Apple Computer, Inc." : ""),
-        viewportHeight: sh - (category === 'desktop' ? 80 : 0),
+        vendor: vendor,
+        viewportHeight: vh,
         viewportWidth: sw
     };
 }
@@ -84,14 +129,23 @@ async function runPipeline() {
         // Helper tracker hook to route raw string loops cleanly
         const processRawString = (ua, forceCategory = null) => {
             if (!ua || typeof ua !== 'string' || uniqueStrings.has(ua)) return;
-            uniqueStrings.add(ua);
 
             const isMobile = forceCategory ? (forceCategory === 'mobile') : /Mobi|Android|iPhone|iPad/i.test(ua);
             const targetCategory = isMobile ? 'mobile' : 'desktop';
+
+            // FIX: Prevent inconsistent, corrupted, or legacy browser structures entirely
+            if (!isValidAndModern(ua, isMobile)) return;
+
+            // Strip out Tier 3 legacy entries to maintain clean, human-like execution pools
+            const score = getOsTierScore(ua, targetCategory);
+            if (score === 3) return; 
+
+            uniqueStrings.add(ua);
+
             const itemObj = { 
                 useragent: ua, 
                 type: targetCategory, 
-                score: getOsTierScore(ua, targetCategory) 
+                score: score 
             };
 
             if (targetCategory === 'desktop') desktopCandidates.push(itemObj);
@@ -124,9 +178,9 @@ async function runPipeline() {
             try { JSON.parse(resMicroMob).forEach(ua => processRawString(ua, 'mobile')); } catch(e){}
         }
 
-        console.log(`Aggregated and isolated ${uniqueStrings.size} total individual unique variants across pools.`);
+        console.log(`Aggregated, sanitized, and isolated ${uniqueStrings.size} valid modern unique variants.`);
 
-        // Step 2: Sort descending (Ascending priority tier: 1 first, then 2, then 3)
+        // Step 2: Sort descending (Ascending priority tier: 1 first, then 2)
         desktopCandidates.sort((a, b) => a.score - b.score);
         mobileCandidates.sort((a, b) => a.score - b.score);
 
@@ -139,13 +193,13 @@ async function runPipeline() {
                 .map(obj => '  ' + JSON.stringify(obj, null, 2).replace(/\n/g, '\n  '))
                 .join(',\n\n');
             fs.writeFileSync(filename, `[\n${body}\n]`, 'utf-8');
-            console.log(`[Success] Written ${dataArray.length} unique tier-sorted profiles straight into ${filename}`);
+            console.log(`[Success] Written ${dataArray.length} unique sanitized profiles straight into ${filename}`);
         };
 
         saveWithFormatting('intoli_desktop.json', finalDesktopPool);
         saveWithFormatting('intoli_mobile.json', finalMobilePool);
 
-        console.log("\nMulti-source aggregation matrix finished successfully.");
+        console.log("\nMulti-source aggregation matrix finished successfully with zero inconsistencies.");
 
     } catch (error) {
         console.error("Critical Execution Abort Error:", error.message);

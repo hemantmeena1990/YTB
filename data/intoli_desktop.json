@@ -2,73 +2,37 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 8.7,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.9,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.5,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0",
-    "vendor": "",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.2,
+      "downlink": 7.8,
       "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 4.6,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
   },
 
   {
@@ -76,431 +40,17 @@
     "connection": {
       "downlink": 6.4,
       "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.7049.85 ADG/11.1.4840 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.1,
-      "effectiveType": "4g",
       "rtt": 0
     },
     "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.6,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 2,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0",
-    "vendor": "",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.1,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 2,
+    "pluginsLength": 5,
     "screenHeight": 1080,
     "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.5,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
-    "vendor": "",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.1,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 2,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.6,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 2,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.6,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.25 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.8,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.1,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.2,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 2,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.2,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.3,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0",
     "vendor": "",
     "viewportHeight": 1000,
     "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.6,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36     (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.1,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.6,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.6,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.4,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 2,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.4,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 3,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.7,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0",
-    "vendor": "",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.2,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.3,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:136.0) Gecko/20100101 Firefox/136.0",
-    "vendor": "",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
   },
 
   {
@@ -508,320 +58,14 @@
     "connection": {
       "downlink": 8.7,
       "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6833.84 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.4,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/28.0 Chrome/130.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.9,
-      "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.6,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
+    "pluginsLength": 5,
     "screenHeight": 900,
     "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.7,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 2,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.2,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.2,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-2)",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.8,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.2,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 2,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.9,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.1,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.5,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 2,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.4,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:141.0) Gecko/20100101 Firefox/141.0",
-    "vendor": "",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.5,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
-    "vendor": "",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.8,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:141.0) Gecko/20100101 Firefox/141.0",
-    "vendor": "",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.1,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.4,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 2,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.4,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0",
     "vendor": "Google Inc.",
     "viewportHeight": 820,
     "viewportWidth": 1440
@@ -835,12 +79,12 @@
       "rtt": 50
     },
     "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
     "screenHeight": 900,
     "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0",
+    "vendor": "",
     "viewportHeight": 820,
     "viewportWidth": 1440
   },
@@ -848,16 +92,88 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 5,
+      "downlink": 9.2,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.4,
       "effectiveType": "4g",
       "rtt": 0
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 2,
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.3,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
+    "vendor": "",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 4.4,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
+    "screenHeight": 864,
+    "screenWidth": 1536,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 784,
+    "viewportWidth": 1536
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 7.9,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
     "screenHeight": 1080,
     "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 1000,
     "viewportWidth": 1920
@@ -866,35 +182,53 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 5,
+      "downlink": 9.5,
       "effectiveType": "4g",
       "rtt": 0
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.25 Safari/537.36",
     "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
+    "viewportHeight": 688,
+    "viewportWidth": 1366
   },
 
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 8.1,
+      "downlink": 7.1,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 7.1,
       "effectiveType": "4g",
       "rtt": 50
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 3,
+    "pluginsLength": 5,
     "screenHeight": 1080,
     "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
-    "vendor": "",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
     "viewportHeight": 1000,
     "viewportWidth": 1920
   },
@@ -908,46 +242,64 @@
     },
     "deviceCategory": "desktop",
     "platform": "Linux x86_64",
-    "pluginsLength": 2,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0",
+    "vendor": "",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
   },
 
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 9.2,
+      "downlink": 5.3,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
+    "screenHeight": 864,
+    "screenWidth": 1536,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 784,
+    "viewportWidth": 1536
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8.4,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 864,
+    "screenWidth": 1536,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36     (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0",
+    "vendor": "Google Inc.",
+    "viewportHeight": 784,
+    "viewportWidth": 1536
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 7.6,
       "effectiveType": "4g",
       "rtt": 50
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 2,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.1,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
+    "pluginsLength": 5,
     "screenHeight": 1080,
     "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0",
     "vendor": "Google Inc.",
     "viewportHeight": 1000,
     "viewportWidth": 1920
@@ -956,16 +308,16 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 9.4,
+      "downlink": 4.4,
       "effectiveType": "4g",
-      "rtt": 50
+      "rtt": 100
     },
     "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
     "screenHeight": 768,
     "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 OPR/132.0.0.0",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 688,
     "viewportWidth": 1366
@@ -974,34 +326,88 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 9.5,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.8,
+      "downlink": 6.3,
       "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 4,
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 6,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 864,
+    "screenWidth": 1536,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 784,
+    "viewportWidth": 1536
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8.9,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8.7,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0",
+    "vendor": "",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 7.5,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
     "screenHeight": 1080,
     "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 1000,
     "viewportWidth": 1920
@@ -1010,16 +416,232 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 8.2,
+      "downlink": 5.3,
       "effectiveType": "4g",
       "rtt": 0
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 3,
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:136.0) Gecko/20100101 Firefox/136.0",
+    "vendor": "",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.7,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6833.84 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 6.3,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0",
+    "vendor": "Google Inc.",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8.9,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 OPR/119.0.0.0 (Edition std-2)",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.8,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 6.3,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8.8,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
     "screenHeight": 864,
     "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 784,
+    "viewportWidth": 1536
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.6,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 6.4,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:141.0) Gecko/20100101 Firefox/141.0",
+    "vendor": "",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+    "vendor": "",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.6,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:141.0) Gecko/20100101 Firefox/141.0",
+    "vendor": "",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 4.9,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 864,
+    "screenWidth": 1536,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0",
     "vendor": "Google Inc.",
     "viewportHeight": 784,
     "viewportWidth": 1536
@@ -1034,10 +656,28 @@
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 2,
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 6.5,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
     "screenHeight": 1440,
     "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0",
     "vendor": "Google Inc.",
     "viewportHeight": 1360,
     "viewportWidth": 2560
@@ -1046,16 +686,16 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 7.5,
+      "downlink": 5.6,
       "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 3,
+    "pluginsLength": 5,
     "screenHeight": 900,
     "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 820,
     "viewportWidth": 1440
@@ -1064,91 +704,19 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 4.8,
+      "downlink": 8.7,
       "effectiveType": "4g",
       "rtt": 50
     },
     "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 3,
+    "platform": "Win32",
+    "pluginsLength": 5,
     "screenHeight": 1440,
     "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:152.0) Gecko/20100101 Firefox/152.0",
-    "vendor": "",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 3,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 1360,
     "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.2,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.9,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.8,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0",
-    "vendor": "",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
   },
 
   {
@@ -1160,517 +728,13 @@
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 1,
+    "pluginsLength": 5,
     "screenHeight": 768,
     "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 YaBrowser/26.4.0.0 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 688,
     "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.4,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0",
-    "vendor": "",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.6,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 1,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.7,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.132 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-    "vendor": "",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.9,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:151.0) Gecko/20100101 Firefox/151.0",
-    "vendor": "",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) obsidian/1.5.12 Chrome/120.0.6099.283 Electron/28.2.3 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.5,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.8,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.9,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 2,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0",
-    "vendor": "",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.9,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 2,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 2,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.3,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.9,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.2,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.6,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.4,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.1,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.5,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.8,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.1,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.7452.1062 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.8,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.1,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.3,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.9,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.8,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.13 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.2,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.4,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)     Chrome/135.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
   },
 
   {
@@ -1681,30 +745,30 @@
       "rtt": 0
     },
     "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "vendor": "",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
   },
 
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 7.7,
+      "downlink": 8.7,
       "effectiveType": "4g",
       "rtt": 50
     },
     "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
     "screenHeight": 864,
     "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
     "viewportHeight": 784,
     "viewportWidth": 1536
   },
@@ -1712,106 +776,16 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 8.4,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.9,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.7927.1540 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.2,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.1,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Brave/1 Version/18.5 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.1,
+      "downlink": 8.3,
       "effectiveType": "4g",
       "rtt": 50
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 3,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.9459.1774 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.9,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 3,
+    "pluginsLength": 5,
     "screenHeight": 900,
     "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.140",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 820,
     "viewportWidth": 1440
@@ -1820,37 +794,19 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 6,
+      "downlink": 9.3,
       "effectiveType": "4g",
-      "rtt": 0
+      "rtt": 50
     },
     "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.4,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
   },
 
   {
@@ -1858,86 +814,14 @@
     "connection": {
       "downlink": 9.9,
       "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.7,
-      "effectiveType": "4g",
       "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.9,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.8.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.3,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.3,
-      "effectiveType": "4g",
-      "rtt": 50
     },
     "deviceCategory": "desktop",
     "platform": "Win32",
-    "pluginsLength": 3,
+    "pluginsLength": 5,
     "screenHeight": 768,
     "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.117 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 OPR/132.0.0.0",
     "vendor": "Google Inc.",
     "viewportHeight": 688,
     "viewportWidth": 1366
@@ -1946,577 +830,19 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 7.1,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Win32",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0",
-    "vendor": "",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.4,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.9,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 YaBrowser/25.4.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.1,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.1,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.3,
+      "downlink": 4.6,
       "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
-    "vendor": "",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.4,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.5,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.3,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.1,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Safari/605.1.15 Ddg/18.5",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.3,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/137 Version/11.1.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.8,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.3,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
     "screenHeight": 768,
     "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 688,
     "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.8,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.3,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.3,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.3,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.3,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.8,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 OPR/129.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.7,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.7,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.1,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.5,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.5,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.4,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.4,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.5,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.8,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.8,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.3.1 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.3 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.4,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
   },
 
   {
@@ -2527,173 +853,11 @@
       "rtt": 50
     },
     "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.4,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.6,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.8,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0",
-    "vendor": "",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.4,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:109.0) Gecko/20100101 Firefox/115.0",
-    "vendor": "",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.2,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.2,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.7,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.9,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.7,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 4,
+    "platform": "Win32",
+    "pluginsLength": 5,
     "screenHeight": 1440,
     "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.5594.1889 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 1360,
     "viewportWidth": 2560
@@ -2702,143 +866,17 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 9.8,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.7952.1151 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.8,
+      "downlink": 8.4,
       "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 3,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.5031.1212 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.3,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0",
-    "vendor": "",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.5,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.3,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 18_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/137.0.7151.79 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 18_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) GSA/372.0.765951532 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.2,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.8,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 2,
+    "platform": "Win32",
+    "pluginsLength": 5,
     "screenHeight": 864,
     "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0",
+    "vendor": "Google Inc.",
     "viewportHeight": 784,
     "viewportWidth": 1536
   },
@@ -2846,70 +884,16 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 9.6,
+      "downlink": 8.3,
       "effectiveType": "4g",
       "rtt": 50
     },
     "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.7,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 18_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Mobile/15E148 Safari/604.1 OPT/5.5.3",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 5.4,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 3,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.7,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
+    "platform": "Win32",
+    "pluginsLength": 5,
     "screenHeight": 1080,
     "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Linux; Android 9; KFONWI) AppleWebKit/537.36 (KHTML, like Gecko) Silk/134.4.19 like Chrome/134.0.6998.207 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 1000,
     "viewportWidth": 1920
@@ -2924,47 +908,101 @@
     },
     "deviceCategory": "desktop",
     "platform": "Linux x86_64",
-    "pluginsLength": 3,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 18_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/137.0.7151.107 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "vendor": "",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
   },
 
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 10,
+      "downlink": 7.9,
       "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
     "platform": "Linux x86_64",
-    "pluginsLength": 3,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 18_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) GSA/371.0.763199552 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
+    "pluginsLength": 5,
+    "screenHeight": 864,
+    "screenWidth": 1536,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 784,
+    "viewportWidth": 1536
   },
 
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 4.8,
+      "downlink": 7.8,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.6,
       "effectiveType": "4g",
       "rtt": 0
     },
     "deviceCategory": "desktop",
     "platform": "Linux x86_64",
-    "pluginsLength": 3,
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.3,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0",
+    "vendor": "",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
     "screenHeight": 1080,
     "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 12_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 YaBrowser/26.4.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
     "viewportHeight": 1000,
     "viewportWidth": 1920
   },
@@ -2972,16 +1010,124 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 9.6,
+      "downlink": 7.3,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0",
+    "vendor": "",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 4.7,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.7,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "vendor": "",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 4.6,
       "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
     "screenHeight": 900,
     "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.8921.1632 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:151.0) Gecko/20100101 Firefox/151.0",
+    "vendor": "",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.8,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 864,
+    "screenWidth": 1536,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) obsidian/1.5.12 Chrome/120.0.6099.283 Electron/28.2.3 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 784,
+    "viewportWidth": 1536
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.5,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "Win32",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 7.6,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "Linux x86_64",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 820,
     "viewportWidth": 1440
@@ -2996,265 +1142,13 @@
     },
     "deviceCategory": "desktop",
     "platform": "Linux x86_64",
-    "pluginsLength": 2,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Linux; Android 9; KFONWI) AppleWebKit/537.36 (KHTML, like Gecko) Silk/136.4.1 like Chrome/136.0.7103.159 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.2,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 2,
-    "screenHeight": 900,
-    "screenWidth": 1440,
-    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 820,
-    "viewportWidth": 1440
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.5,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
+    "pluginsLength": 5,
     "screenHeight": 1440,
     "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 18_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/136.0.7103.91 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.3,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.1,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 17_7_8 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) GSA/362.0.741018905 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.4,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3059.1159 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 6.1,
-      "effectiveType": "4g",
-      "rtt": 100
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.3613.1979 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 1,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:128.0) Gecko/20100101 Firefox/128.0",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0",
     "vendor": "",
     "viewportHeight": 1360,
     "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.9,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) EdgiOS/134.0.3124.68 Version/17.0 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.2,
-      "effectiveType": "4g",
-      "rtt": 0
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 2,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (iPad; CPU OS 16_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Mobile/15E148 Safari/604.1",
-    "vendor": "Apple Computer, Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 864,
-    "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.7647.1276 Safari/537.36",
-    "vendor": "Google Inc.",
-    "viewportHeight": 784,
-    "viewportWidth": 1536
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 7.9,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 1440,
-    "screenWidth": 2560,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:141.0) Gecko/20100101 Firefox/141.0",
-    "vendor": "",
-    "viewportHeight": 1360,
-    "viewportWidth": 2560
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 9.2,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
-    "vendor": "",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 8.2,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 4,
-    "screenHeight": 1080,
-    "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:141.0) Gecko/20100101 Firefox/141.0",
-    "vendor": "",
-    "viewportHeight": 1000,
-    "viewportWidth": 1920
-  },
-
-  {
-    "appName": "Netscape",
-    "connection": {
-      "downlink": 4.3,
-      "effectiveType": "4g",
-      "rtt": 50
-    },
-    "deviceCategory": "desktop",
-    "platform": "MacIntel",
-    "pluginsLength": 2,
-    "screenHeight": 768,
-    "screenWidth": 1366,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0",
-    "vendor": "",
-    "viewportHeight": 688,
-    "viewportWidth": 1366
   },
 
   {
@@ -3266,11 +1160,47 @@
     },
     "deviceCategory": "desktop",
     "platform": "MacIntel",
-    "pluginsLength": 3,
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 6.6,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
     "screenHeight": 1080,
     "screenWidth": 1920,
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:151.0) Gecko/20100101 Firefox/151.0",
-    "vendor": "",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
     "viewportHeight": 1000,
     "viewportWidth": 1920
   },
@@ -3278,17 +1208,233 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 4.2,
+      "downlink": 6.8,
       "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 1,
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.6,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)     Chrome/135.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 6.8,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.4,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8.3,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 6,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 YaBrowser/25.4.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.6,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 6.7,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+    "vendor": "",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.4,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/137 Version/11.1.1 Safari/605.1.15",
+    "vendor": "Apple Computer, Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 7.5,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.4,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 7.7,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 1440,
+    "screenWidth": 2560,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1360,
+    "viewportWidth": 2560
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.7,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
     "screenHeight": 864,
     "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:152.0) Gecko/20100101 Firefox/152.0",
-    "vendor": "",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
     "viewportHeight": 784,
     "viewportWidth": 1536
   },
@@ -3296,18 +1442,216 @@
   {
     "appName": "Netscape",
     "connection": {
-      "downlink": 6.2,
+      "downlink": 6.7,
       "effectiveType": "4g",
       "rtt": 100
     },
     "deviceCategory": "desktop",
-    "platform": "Linux x86_64",
-    "pluginsLength": 3,
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.4,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.6,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 OPR/129.0.0.0",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 10,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 7.9,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 5.1,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
     "screenHeight": 864,
     "screenWidth": 1536,
-    "userAgent": "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "vendor": "Google Inc.",
     "viewportHeight": 784,
     "viewportWidth": 1536
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 7.8,
+      "effectiveType": "4g",
+      "rtt": 100
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 768,
+    "screenWidth": 1366,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0",
+    "vendor": "Google Inc.",
+    "viewportHeight": 688,
+    "viewportWidth": 1366
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 864,
+    "screenWidth": 1536,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0",
+    "vendor": "Google Inc.",
+    "viewportHeight": 784,
+    "viewportWidth": 1536
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 9.3,
+      "effectiveType": "4g",
+      "rtt": 0
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 900,
+    "screenWidth": 1440,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 820,
+    "viewportWidth": 1440
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8.9,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 864,
+    "screenWidth": 1536,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 784,
+    "viewportWidth": 1536
+  },
+
+  {
+    "appName": "Netscape",
+    "connection": {
+      "downlink": 8,
+      "effectiveType": "4g",
+      "rtt": 50
+    },
+    "deviceCategory": "desktop",
+    "platform": "MacIntel",
+    "pluginsLength": 5,
+    "screenHeight": 1080,
+    "screenWidth": 1920,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+    "vendor": "Google Inc.",
+    "viewportHeight": 1000,
+    "viewportWidth": 1920
   }
 ]

@@ -1,22 +1,41 @@
 {
   "urls": [
-    "https://www.youtube.com/watch?v=l07pozKpx1w"
+    "https://www.youtube.com/watch?v=-g-H_hKKTOs",
+    "https://www.youtube.com/watch?v=l07pozKpx1w",
+    "https://www.youtube.com/watch?v=UJXysKrsx10",
+    "https://www.youtube.com/watch?v=HZUY7kDtCsk"
   ],
   "automation_version": "pydoll",
-  "view_type": "Direct/Unknown",
-  "po_token_source": "external",
+  "view_types": [
+    "Other YouTube features",
+    "Direct/Unknown",
+    "Suggested"
+  ],
+  "traffic_sources": [
+    "direct",
+    "google_search",
+    "whatsapp_web",
+    "instagram",
+    "telegram_web",
+    "github",
+    "bing",
+    "twitter",
+    "reddit",
+    "facebook",
+    "linkedin"
+  ],
+  "po_token_source": "native",
   "proxy_mode": "tor_browser",
-  "traffic_source": "random",
   "force_mobile": false,
   "force_desktop": false,
   "force_platform": "none",
-  "min_watch_time": 30,
-  "max_watch_time": 60,
+  "min_watch_time": 150,
+  "max_watch_time": 300,
   "suggested_chance": 1,
-  "suggested_min": 5,
-  "suggested_max": 15,
-  "num_instances": 1,
-  "cycles": 1,
+  "suggested_min": 15,
+  "suggested_max": 25,
+  "num_instances": 3,
+  "cycles": 100,
   "headless": false,
   "channel_name": "@rajasthanidesidiaries"
 }

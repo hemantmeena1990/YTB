@@ -19,6 +19,14 @@ timeout /t 2 /nobreak >nul
 echo [OK] Existing servers stopped
 
 REM ==============================================
+REM Clear any proxy environment variables
+REM ==============================================
+set HTTP_PROXY=
+set HTTPS_PROXY=
+set ALL_PROXY=
+set NO_PROXY=
+
+REM ==============================================
 REM Start po-token-generator on port 4417
 REM ==============================================
 echo.
@@ -34,7 +42,7 @@ if exist "%SCRIPT_DIR%token_service.js" (
 timeout /t 2 /nobreak >nul
 
 REM ==============================================
-REM Start bgutil PO token server on port 4416
+REM Start bgutil PO token server on port 4416 (NO PROXY)
 REM ==============================================
 echo.
 echo [3/4] Starting bgutil PO token server on port 4416...
@@ -50,6 +58,24 @@ if exist "%BGUTIL_PATH%" (
 )
 
 timeout /t 3 /nobreak >nul
+
+
+REM ==============================================
+REM Start yt-dlp-getpot-wpc on port 4418
+REM ==============================================
+echo.
+echo [4/5] Starting yt-dlp-getpot-wpc on port 4418...
+
+set "WPC_PATH=%SCRIPT_DIR%yt-dlp-getpot-wpc\main.js"
+
+if exist "%WPC_PATH%" (
+    echo Starting WPC server...
+    start "WPC PO Token Server (Port 4418)" /min cmd /c "cd /d "%SCRIPT_DIR%yt-dlp-getpot-wpc" && node main.js --port 4418"
+    echo [OK] WPC server starting...
+) else (
+    echo [WARNING] WPC not found at: %WPC_PATH%
+)
+
 
 REM ==============================================
 REM Verify servers are running
@@ -80,6 +106,8 @@ echo ==============================================
 echo.
 echo Port 4416: bgutil PO token server
 echo Port 4417: po-token-generator
+echo.
+echo NOTE: Proxy is handled by Python script!
 echo.
 echo To stop all servers: taskkill /f /im node.exe
 echo ==============================================

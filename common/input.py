@@ -417,6 +417,12 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
     video_id = extract_video_id(url)
     raw_traffic_source = data.get('traffic_source', 'direct')
     po_token_source = data.get('po_token_source', 'native')
+    
+    # Validate po_token_source
+    valid_sources = ['native', 'external', 'potgen', 'wpc']
+    if po_token_source not in valid_sources:
+        po_token_source = 'native'
+        
     proxy_mode = data.get('proxy_mode', 'none')
     
     # Resolve traffic source (handles 'random')
@@ -546,8 +552,12 @@ def build_script_config(instance_id: int, data: dict, url: str, view_type: str) 
         # ========== PLATFORM DETECTION (For Cross-Platform Consistency) ==========
         "is_ios": is_ios,
         "is_android": is_android,
-        # ========== COMPLETE FINGERPRINT OBJECT (For CDP Injection) ==========
-        "fingerprint_profile": fingerprint,  # ✅ PASS THE ENTIRE OBJECT
+
+        # ========== FINGERPRINT PROFILE (COMMENTED OUT - NOT USED IN PYDOLL) ==========
+        # The fingerprint_profile is not used in pydoll. 
+        # Only top-level fields (platform, screen_width, etc.) are used.
+        # Uncomment if needed for future Selenium implementation.
+        # "fingerprint_profile": fingerprint,
         # ===========================================
     }
     

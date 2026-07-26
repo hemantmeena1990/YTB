@@ -130,15 +130,35 @@ def get_random_resolution(is_mobile: bool) -> Tuple[int, int]:
 # PAGE & VIDEO VERIFICATION (Async)
 # ============================================================================
 
-async def wait_for_page_load(page, timeout: int = 25) -> bool:
-    """Wait for page to finish loading (Pydoll async)."""
+async def wait_for_page_load(page, timeout: int = 10) -> bool:
+    """
+    Wait for page to reach 'complete' or 'interactive' state.
+    Returns as soon as page is ready, no extra waits.
+    
+    Args:
+        page: Pydoll page/tab object
+        timeout: Maximum time to wait in seconds
+    
+    Returns:
+        bool: True if page loaded, False if timeout
+    """
     try:
-        await page.wait_for_load_state("networkidle", timeout=timeout)
-        await asyncio.sleep(0.5)  # Extra time for dynamic content
-        return True
+        start_time = asyncio.get_event_loop().time()
+        while (asyncio.get_event_loop().time() - start_time) < timeout:
+            try:
+                ready_state = await page.execute_script("return document.readyState;")
+                if isinstance(ready_state, dict):
+                    ready_state = ready_state.get('result', {}).get('result', {}).get('value', '')
+                # 'interactive' or 'complete' means page is ready for interaction
+                if ready_state in ["interactive", "complete"]:
+                    await asyncio.sleep(0.2)  # Small buffer
+                    return True
+            except:
+                pass
+            await asyncio.sleep(0.2)  # Check every 200ms
+        return False
     except Exception:
         return False
-
 
 async def is_video_playing_async(page) -> bool:
     """Check if any video is playing (Pydoll async)."""
